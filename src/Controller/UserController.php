@@ -18,7 +18,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/login", name="userLogin")
      */
-    public function login(Request $req, SessionInterface $s)
+    public function login(Request $req, SessionInterface $session)
     {
         $form=$this->createFormBuilder()
         ->add('Username', TextType::class, [
@@ -127,6 +127,8 @@ class UserController extends AbstractController
                     $em->persist($user);
                     $em->flush();
 
+                    $this->addFlash('success', 'You were registered');
+
                     return $this->redirectToRoute('userLogin', []);
                 }
                 else
@@ -143,5 +145,15 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', [
             'form'=>$form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/user/logout", name="userLogout")
+     */
+    public function logout(SessionInterface $session)
+    {
+        $session->clear();
+
+        return $this->redirectToRoute('userLogin', []);
     }
 }
