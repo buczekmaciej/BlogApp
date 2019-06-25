@@ -3,4 +3,17 @@
 {% block title %}Login
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block body %}
+    <div class="logContainer">
+        <div class="logForm">
+            <h2>Login</h2>
+            {{form_start(form)}}
+            {{form_widget(form.Username)}}
+            {{form_widget(form.Password)}}
+            {{form_widget(form.Login)}}
+            {{form_end(form)}}
+            <a href="{{path('userRegister')}}">You have no account yet? Register now!</a>
+        </div>
+    </div>
+{% endblock %}

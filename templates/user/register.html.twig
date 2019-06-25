@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block body %}
+    <div class="regContainer">
+        <div class="regForm">
+            <h2>Register</h2>
+            {{form_start(form)}}
+            {{form_widget(form.Username)}}
+            {{form_widget(form.Password.first)}}
+            {{form_widget(form.Password.second)}}
+            {{form_errors(form.Password)}}
+            {{form_widget(form.Email)}}
+            {{form_widget(form.Submit)}}
+            {{form_end(form)}}
+            <a href="{{path('userLogin')}}">You have account already? Login now!</a>
+        </div>
+    </div>
+{% endblock %}

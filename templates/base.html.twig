@@ -17,6 +17,17 @@
                 {% endfor %}
             {% endfor %}
         {% endif %}
+        {% block navbar %}
+            <div class="navbar">
+                <a href="{{path('appHomepage')}}">
+                    <h2>Eat much</h2>
+                </a>
+
+                <a href="{{path('userLogout')}}">
+                    <button>Logout</button>
+                </a>
+            </div>
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
