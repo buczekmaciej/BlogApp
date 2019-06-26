@@ -1,0 +1,239 @@
+.logContainer {
+  width: 100%;
+  height: 100%;
+}
+.regContainer {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .logContainer .logForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .logContainer .logForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .logContainer .logForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .logContainer .logForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .logContainer .logForm a {
+    margin-left: 6.5%;
+    text-decoration: none;
+  }
+
+  .regContainer .regForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .regContainer .regForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .regContainer .regForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .regContainer .regForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .regContainer .regForm a {
+    margin-left: 8%;
+    text-decoration: none;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .logContainer .logForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .logContainer .logForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .logContainer .logForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .logContainer .logForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .logContainer .logForm a {
+    margin-left: 8%;
+    text-decoration: none;
+  }
+
+  .regContainer .regForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .regContainer .regForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .regContainer .regForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .regContainer .regForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .regContainer .regForm a {
+    margin-left: 10%;
+    text-decoration: none;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .logContainer .logForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .logContainer .logForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .logContainer .logForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .logContainer .logForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .logContainer .logForm a {
+    margin-left: 18.5%;
+    text-decoration: none;
+  }
+
+  .regContainer .regForm {
+    width: 33%;
+    height: auto;
+    margin-left: 33%;
+    margin-top: 10%;
+    border: 0.5px solid black;
+    box-shadow: 0 0 15px 3px gray;
+    background-color: rgb(207, 248, 214);
+  }
+  .regContainer .regForm h2 {
+    text-align: center;
+    font-size: 35px;
+  }
+  .regContainer .regForm input {
+    width: 84%;
+    height: 35px;
+    display: block;
+    margin: 8%;
+    border: none;
+    text-align: center;
+  }
+  .regContainer .regForm button {
+    width: 50%;
+    height: 35px;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(129, 137, 241);
+    color: #fff;
+  }
+  .regContainer .regForm a {
+    margin-left: 20.5%;
+    text-decoration: none;
+  }
+}
