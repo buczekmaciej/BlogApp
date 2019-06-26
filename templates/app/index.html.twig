@@ -28,10 +28,22 @@
         <div class="recentPost"></div>
         <div class="listPost">
             {% for key,val in posts %}
-                <div class="articleContainer">
-                    {{val.Content}}
-                </div>
-            {% endfor %}
+                <a href="">
+                    <div class="articleContainer">
+                        <div class="articleTitle">
+                            <h2>{{val.Title}}</h2>
+                        </div>
+                        <div class="articleCreated">
+                            <i>Created at:
+                                {{val.createdAt|date("Y-m-d")}}</i>
+                        </div>
+                        <div class="articleAuthor">
+                            <b>Created by:
+                                {{val.user.Login}}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}

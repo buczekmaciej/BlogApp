@@ -23,6 +23,7 @@ class AppController extends AbstractController
         }
         $id=$logged->getId();
         $posts=$aR->findBy(['user'=>$id]);
+        dump($posts);
 
         return $this->render('app/index.html.twig', [
             'name'=>$logged->getLogin(),

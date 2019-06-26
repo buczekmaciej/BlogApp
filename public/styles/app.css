@@ -15,6 +15,7 @@ a:link {
   }
   .navbar .homeLink {
     float: left;
+    margin: 0.5%;
   }
   .navbar .homeLink h2 {
     color: #ffeaa7;
@@ -43,6 +44,30 @@ a:link {
   }
   .glyphicon-search {
     cursor: pointer;
+  }
+
+  .listPost {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 15px;
+  }
+  .listPost .articleContainer {
+    width: 100%;
+    padding: 2.5%;
+    border: 0.5px solid black;
+    color: black;
+  }
+  .listPost .articleContainer .articleTitle {
+    text-align: center;
+  }
+  .listPost .articleContainer .articleAuthor,
+  .listPost .articleContainer .articleCreated {
+    text-align: right;
+    display: block;
+    font-size: 13px;
+  }
+  .listPost .articleContainer:hover .articleTitle {
+    color: blue;
   }
 }
 
