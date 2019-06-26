@@ -47,14 +47,15 @@ a:link {
   }
 
   .listPost {
-    width: 50%;
-    margin-left: 25%;
+    width: 60%;
+    margin-left: 20%;
     margin-top: 15px;
   }
   .listPost .articleContainer {
     width: 100%;
-    padding: 2.5%;
-    border: 0.5px solid black;
+    padding: 1.5%;
+    border: 0.5px solid gray;
+    box-shadow: 0 0 2px 0.1px gray;
     color: black;
   }
   .listPost .articleContainer .articleTitle {
@@ -63,6 +64,7 @@ a:link {
   .listPost .articleContainer .articleAuthor,
   .listPost .articleContainer .articleCreated {
     text-align: right;
+    margin-right: 5px;
     display: block;
     font-size: 13px;
   }
