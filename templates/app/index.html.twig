@@ -3,4 +3,35 @@
 {% block title %}Eat much blog
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block navbar %}
+    <div class="navbar">
+        <div class="homeLink">
+            <a href="{{path('appHomepage')}}">
+                <h2>Eat much</h2>
+            </a>
+        </div>
+        <div class="rightNav">
+            <div class="glypSrch">
+                <i class="glyphicon glyphicon-search"></i>
+            </div>
+            <div class="glypUsr">
+                <i class="glyphicon glyphicon-user" title="{{name}}"></i>
+            </div>
+            <a href="{{path('userLogout')}}">
+                <button>Logout</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+    <div class="contentContainer">
+        <div class="recentPost"></div>
+        <div class="listPost">
+            {% for key,val in posts %}
+                <div class="articleContainer">
+                    {{val.Content}}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

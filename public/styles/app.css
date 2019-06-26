@@ -1,10 +1,48 @@
+body {
+  font-size: 15px;
+}
+a:link {
+  text-decoration: none;
+}
+
 @media screen and (min-width: 768px) and (max-width: 1023px) {
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
-  .glypSrch,
-  .glypUsr {
-    width: 5%;
+  .navbar {
+    width: 100%;
+    background-color: #b2bec3;
+  }
+  .navbar .homeLink {
+    float: left;
+  }
+  .navbar .homeLink h2 {
+    color: #ffeaa7;
+    font-size: 40px;
+    cursor: pointer;
+  }
+  .navbar .rightNav {
+    float: right;
+    width: auto;
+    min-width: 20%;
+  }
+  .navbar .rightNav div {
+    float: left;
+    margin: 5%;
+    width: 15%;
+    font-size: 20px;
+  }
+  .navbar .rightNav button {
+    margin: 5%;
+    width: 40%;
+    height: 30px;
+    border: none;
+    border-radius: 25px;
+    background-color: #0984e3;
+    color: #fff;
+  }
+  .glyphicon-search {
+    cursor: pointer;
   }
 }
 
