@@ -10,6 +10,7 @@
                 <h2>Eat much</h2>
             </a>
         </div>
+        <div class="separator"></div>
         <div class="rightNav">
             <div class="glypSrch">
                 <i class="glyphicon glyphicon-search"></i>
@@ -28,14 +29,18 @@
         <div class="recentPost"></div>
         <div class="listPost">
             {% for key,val in posts %}
-                <a href="">
+                <a
+                    href="">
+                    {# {{val.Content|markdown}} #}
                     <div class="articleContainer">
                         <div class="articleTitle">
                             <h2>{{val.Title}}</h2>
                         </div>
                         <div class="articleCreated">
-                            <i>Created at:
-                                {{val.createdAt|date("Y-m-d")}}</i>
+                            <b>
+                                <i>Created at:
+                                    {{val.createdAt|date("Y-m-d")}}</i>
+                            </b>
                         </div>
                         <div class="articleAuthor">
                             <b>Created by:

@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\ArticlesRepository;
 use App\Entity\Articles;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AppController extends AbstractController
 {
@@ -33,29 +38,63 @@ class AppController extends AbstractController
     /**
      * @Route("/article/new", name="newArticle")
      */
-    public function createArticle(SessionInterface $session, EntityManagerInterface $em)
+    public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req)
     {
         $special=array('!','?','.',',','/','#','%','*','(',')','[',']','+','-','_','@','$','^','&','<','>','|',':',';','"',"'");
         $user=$session->get('user');
-        $title='Most recent post! You have to check it out! 100% legit it is increadible';
         
-        $slug=str_replace($special, "", $title);
-        $slug=str_replace(' ','-', $slug);
-        $slug=mb_strtolower($slug);
+        $form=$this->createFormBuilder()
+        ->add('Title', TextType::class, [
+            'attr'=>[
+                'class'=>'ninp',
+                'placeholder'=>'Title'
+            ]
+        ])
+        ->add('Content', TextareaType::class, [
+            'attr'=>[
+                'class'=>'narea',
+                'placeholder'=>'Post content'
+            ]
+        ])
+        ->add('Create', SubmitType::class, [
+            'class'=>'nsub'
+        ])
+        ->getForm();
+        
+        $form->handleRequest($req);
 
-        $now=new \DateTime();
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $slug=str_replace($special, "", $title);
+            $slug=str_replace(' ','-', $slug);
+            $slug=mb_strtolower($slug);
 
-        $article=new Articles();
-        $article->setTitle($title);
-        $article->setContent('This is **most recent post** of *admin* that is about to check how app is working. **Let it go!**');
-        $article->setCreatedAt($now);
-        $article->setUser($user);
-        $article->setLink($slug);
+            $now=new \DateTime();
 
-        $em->merge($article);
-        $em->flush();
+            $article=new Articles();
+            $article->setTitle($title);
+            $article->setContent();
+            $article->setCreatedAt($now);
+            $article->setUser($user);
+            $article->setLink($slug);
 
+            $em->merge($article);
+            $em->flush();
 
-        return $this->render('name.html.twig', []);
+            return $this->redirectToRoute('appHomepage', []);
+        }
+
+        return $this->render('app/new.html.twig', [
+            'form'=>$form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/article/{slug}", name="articleShow")
+     */
+    public function articleShow($slug)
+    {
+
+        return new Response();
     }
 }

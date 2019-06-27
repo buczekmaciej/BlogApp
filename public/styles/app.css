@@ -1,77 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   font-size: 15px;
+  background-color: rgb(235, 235, 235);
 }
 a:link {
   text-decoration: none;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+.navbar {
+  width: 90%;
+  margin: auto;
+  align-items: center;
+  display: flex;
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1439px) {
-  .navbar {
-    width: 100%;
-    background-color: #b2bec3;
-  }
-  .navbar .homeLink {
-    float: left;
-    margin: 0.5%;
-  }
-  .navbar .homeLink h2 {
-    color: #ffeaa7;
-    font-size: 40px;
-    cursor: pointer;
-  }
-  .navbar .rightNav {
-    float: right;
-    width: auto;
-    min-width: 20%;
-  }
-  .navbar .rightNav div {
-    float: left;
-    margin: 5%;
-    width: 15%;
-    font-size: 20px;
-  }
-  .navbar .rightNav button {
-    margin: 5%;
-    width: 40%;
-    height: 30px;
-    border: none;
-    border-radius: 25px;
-    background-color: #0984e3;
-    color: #fff;
-  }
-  .glyphicon-search {
-    cursor: pointer;
-  }
-
-  .listPost {
-    width: 60%;
-    margin-left: 20%;
-    margin-top: 15px;
-  }
-  .listPost .articleContainer {
-    width: 100%;
-    padding: 1.5%;
-    border: 0.5px solid gray;
-    box-shadow: 0 0 2px 0.1px gray;
-    color: black;
-  }
-  .listPost .articleContainer .articleTitle {
-    text-align: center;
-  }
-  .listPost .articleContainer .articleAuthor,
-  .listPost .articleContainer .articleCreated {
-    text-align: right;
-    margin-right: 5px;
-    display: block;
-    font-size: 13px;
-  }
-  .listPost .articleContainer:hover .articleTitle {
-    color: blue;
-  }
+.navbar .homeLink,
+.navbar .separator,
+.navbar .rightNav {
+  display: flex;
 }
 
-@media screen and (min-width: 1440px) {
+.navbar .homeLink,
+.navbar .rightNav {
+  flex: 1;
+}
+
+.navbar .separator {
+  flex: 3;
+}
+
+.navbar .homeLink h2 {
+  background: linear-gradient(to right, #a57171, #a2a2ce);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.navbar .rightNav div {
+  flex: 0.5;
+  font-size: 20px;
+}
+.navbar .rightNav button {
+  width: 100px;
+  height: 28px;
+  border: none;
+  border-radius: 25px;
+  background-color: #0984e3;
+  color: #fff;
+}
+.glyphicon-search {
+  cursor: pointer;
+}
+
+.contentContainer {
+  width: 80%;
+  margin: auto;
+  display: flex;
+}
+
+.listPost {
+  flex: 1;
+}
+.listPost .articleContainer {
+  margin-top: 1.5%;
+  width: 100%;
+  padding: 1.5%;
+  border: 0.5px solid gray;
+  box-shadow: 0 0 2px 0.1px gray;
+  background-color: #fff;
+  color: black;
+}
+.listPost .articleContainer .articleTitle {
+  text-align: center;
+}
+.listPost .articleContainer .articleAuthor,
+.listPost .articleContainer .articleCreated {
+  text-align: right;
+  margin-right: 5px;
+  display: block;
+  font-size: 13px;
+}
+.listPost .articleContainer:hover .articleTitle {
+  color: blue;
 }
