@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\ArticlesRepository;
 use App\Entity\Articles;
+use App\Entity\Comments;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -67,6 +68,11 @@ class AppController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $data=$form->getData();
+
+            $title=$data['Title'];
+            $content=$data['Content'];
+
             $slug=str_replace($special, "", $title);
             $slug=str_replace(' ','-', $slug);
             $slug=mb_strtolower($slug);
@@ -75,7 +81,7 @@ class AppController extends AbstractController
 
             $article=new Articles();
             $article->setTitle($title);
-            $article->setContent();
+            $article->setContent($content);
             $article->setCreatedAt($now);
             $article->setUser($user);
             $article->setLink($slug);
@@ -96,9 +102,56 @@ class AppController extends AbstractController
     /**
      * @Route("/article/{slug}", name="articleShow")
      */
-    public function articleShow($slug)
+    public function articleShow($slug,EntityManagerInterface $em, SessionInterface $session, ArticlesRepository $aR, Request $req)
     {
 
-        return new Response();
+        $user=$session->get('user');
+
+        $post=$aR->findBy(['link'=>$slug]);
+        dump($post);
+        $id=$post[0]->getId();
+        $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));
+        dump($comments);
+
+        $form=$this->createFormBuilder()
+        ->add('Comment', TextType::class, [
+            'attr'=>[
+                'class'=>'cinp',
+                'placeholder'=>'Comment content'
+            ]
+        ])
+        ->add('Submit', SubmitType::class, [
+            'attr'=>[
+                'class'=>'csub'
+            ]
+        ])
+        ->getForm();
+
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $content=$form->getData();
+            
+            $now=new \DateTime();
+
+            $comment=new Comments();
+            $comment->setContent($content['Comment']);
+            $comment->setAddedAt($now);
+            $comment->setArticle($post);
+            $comment->setUser($user);
+
+            $em->merge($comment);
+            $em->flush();
+
+            return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
+        }
+
+        return $this->render('app/show.html.twig', [
+            'name'=>$user->getLogin(),
+            'post'=>$post,
+            'comments'=>$comments,
+            'form'=>$form->createView()
+        ]);
     }
 }

@@ -35,9 +35,7 @@
         <div class="recentPost"></div>
         <div class="listPost">
             {% for key,val in posts %}
-                <a
-                    href="">
-                    {# {{val.Content|markdown}} #}
+                <a href="{{path('articleShow', {'slug':val.link})}}">
                     <div class="articleContainer">
                         <div class="articleTitle">
                             <h2>{{val.Title}}</h2>

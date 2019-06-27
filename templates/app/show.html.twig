@@ -1,1 +1,46 @@
-{% extends "base.html.twig" %}
+{% extends "app/index.html.twig" %}
+
+{% block body %}
+    <div class="articleContainer">
+        <div class="post">
+            <div class="artTitle">
+                <h2>{{post.0.Title}}</h2>
+            </div>
+            <div class="artAuthor">
+                <i>{{post.0.user.Login}}</i>
+            </div>
+            <div class="artDate">
+                <i>{{post.0.createdAt.date|date('Y-m-d H:i')}}</i>
+            </div>
+            <div class="artContent">
+                <p>{{post.0.Content}}</p>
+            </div>
+        </div>
+        <div class="comments">
+            <div class="counter">
+                <h2>Comments ({{comments|length}})</h2>
+            </div>
+            <div class="newComment">
+                {{form_start(form)}}
+                {{form_widget(form.Comment)}}
+                {{form_widget(form.Submit)}}
+                {{form_end(form)}}
+            </div>
+            <div class="commentsList">
+                {% if comments == null %}
+                    <div class="comment">
+                        <p>This article hasn't been commented yet</p>
+                    </div>
+                {% else %}
+                    {% for comment in comments %}
+                        <div class="comment">
+                            <div class="comContent">{{comment.Content}}</div>
+                            <div class="comAuthor">{{comment.User.Login}}</div>
+                            <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
