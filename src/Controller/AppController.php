@@ -27,8 +27,7 @@ class AppController extends AbstractController
         {
             return $this->redirectToRoute('userLogin', []);
         }
-        $id=$logged->getId();
-        $posts=$aR->findBy(['user'=>$id]);
+        $posts=$aR->findAll();
 
         return $this->render('app/index.html.twig', [
             'name'=>$logged->getLogin(),
@@ -109,9 +108,8 @@ class AppController extends AbstractController
 
         $post=$aR->findBy(['link'=>$slug]);
         $id=$post[0]->getId();
+        $post=$post[0];
         $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));
-        dump($post);
-        dump($comments);
         
         $form=$this->createFormBuilder()
         ->add('Comment', TextType::class, [
@@ -138,8 +136,8 @@ class AppController extends AbstractController
             $comment=new Comments();
             $comment->setContent($content['Comment']);
             $comment->setAddedAt($now);
-            $comment->setArticle($post);
             $comment->setUser($user);
+            $comment->setArticle($post);
 
             $em->merge($comment);
             $em->flush();
@@ -153,5 +151,13 @@ class AppController extends AbstractController
             'comments'=>$comments,
             'form'=>$form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/admin/posts/manage", name="adminPM")
+     */
+    public function adminPM()
+    {
+        return new Response("<html><body>I'm admin haha</body></html>");
     }
 }

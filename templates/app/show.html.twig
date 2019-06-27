@@ -4,18 +4,18 @@
     <div class="postContainer">
         <div class="post">
             <div class="artTitle">
-                <h2>{{post.0.Title}}</h2>
+                <h2>{{post.Title}}</h2>
             </div>
             <div class="artExtra">
                 <div class="artAuthor">
-                    <i>{{post.0.user.Login}}</i>
+                    <i>{{post.user.Login}}</i>
                 </div>
                 <div class="artDate">
-                    <i>{{post.0.createdAt.date|date('Y-m-d H:i')}}</i>
+                    <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
                 </div>
             </div>
             <div class="artContent">
-                <p>{{post.0.Content|markdown}}</p>
+                <p>{{post.Content|markdown}}</p>
             </div>
         </div>
         <div class="comments">

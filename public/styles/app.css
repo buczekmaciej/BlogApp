@@ -228,5 +228,8 @@ a:link {
 .postContainer .comments .commentsList .comment {
   flex: 1;
   min-height: 55px;
-  background-color: rgb(24, 141, 30);
+  box-shadow: 0 0 5px 0.2px gray;
+  border-radius: 7px;
+  padding: 8px;
+  margin-bottom: 1%;
 }
