@@ -152,12 +152,4 @@ class AppController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
-
-    /**
-     * @Route("/admin/posts/manage", name="adminPM")
-     */
-    public function adminPM()
-    {
-        return new Response("<html><body>I'm admin haha</body></html>");
-    }
 }
