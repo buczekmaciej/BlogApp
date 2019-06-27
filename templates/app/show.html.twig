@@ -1,19 +1,21 @@
 {% extends "app/index.html.twig" %}
 
 {% block body %}
-    <div class="articleContainer">
+    <div class="postContainer">
         <div class="post">
             <div class="artTitle">
                 <h2>{{post.0.Title}}</h2>
             </div>
-            <div class="artAuthor">
-                <i>{{post.0.user.Login}}</i>
-            </div>
-            <div class="artDate">
-                <i>{{post.0.createdAt.date|date('Y-m-d H:i')}}</i>
+            <div class="artExtra">
+                <div class="artAuthor">
+                    <i>{{post.0.user.Login}}</i>
+                </div>
+                <div class="artDate">
+                    <i>{{post.0.createdAt.date|date('Y-m-d H:i')}}</i>
+                </div>
             </div>
             <div class="artContent">
-                <p>{{post.0.Content}}</p>
+                <p>{{post.0.Content|markdown}}</p>
             </div>
         </div>
         <div class="comments">
@@ -28,7 +30,7 @@
             </div>
             <div class="commentsList">
                 {% if comments == null %}
-                    <div class="comment">
+                    <div class="commentNone">
                         <p>This article hasn't been commented yet</p>
                     </div>
                 {% else %}

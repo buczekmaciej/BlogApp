@@ -108,11 +108,11 @@ class AppController extends AbstractController
         $user=$session->get('user');
 
         $post=$aR->findBy(['link'=>$slug]);
-        dump($post);
         $id=$post[0]->getId();
         $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));
+        dump($post);
         dump($comments);
-
+        
         $form=$this->createFormBuilder()
         ->add('Comment', TextType::class, [
             'attr'=>[
