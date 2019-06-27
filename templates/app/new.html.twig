@@ -1,1 +1,22 @@
 {% extends "base.html.twig" %}
+
+
+{% block body %}
+    <div class="creatorContainer">
+        <div class="back">
+            <a href="{{path('appHomepage')}}">
+                <p>
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                    <b>Homepage</b>
+                </p>
+            </a>
+        </div>
+        <div class="formContainer">
+            {{form_start(form)}}
+            {{form_widget(form.Title)}}
+            {{form_widget(form.Content)}}
+            {{form_widget(form.Create)}}
+            {{form_end(form)}}
+        </div>
+    </div>
+{% endblock %}

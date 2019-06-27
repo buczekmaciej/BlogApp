@@ -12,8 +12,13 @@
         </div>
         <div class="separator"></div>
         <div class="rightNav">
+            <div class="glypNew">
+                <a href="{{path('newArticle')}}" title="Create new article">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+            </div>
             <div class="glypSrch">
-                <i class="glyphicon glyphicon-search"></i>
+                <i class="glyphicon glyphicon-search" title="Find post"></i>
             </div>
             <div class="glypUsr">
                 <i class="glyphicon glyphicon-user" title="{{name}}"></i>
@@ -24,6 +29,7 @@
         </div>
     </div>
 {% endblock %}
+
 {% block body %}
     <div class="contentContainer">
         <div class="recentPost"></div>

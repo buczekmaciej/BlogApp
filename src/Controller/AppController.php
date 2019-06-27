@@ -57,7 +57,9 @@ class AppController extends AbstractController
             ]
         ])
         ->add('Create', SubmitType::class, [
-            'class'=>'nsub'
+            'attr'=>[
+                'class'=>'nsub'
+            ]
         ])
         ->getForm();
         
@@ -81,7 +83,9 @@ class AppController extends AbstractController
             $em->merge($article);
             $em->flush();
 
-            return $this->redirectToRoute('appHomepage', []);
+            return $this->redirectToRoute('articleShow', [
+                'slug'=>$slug
+            ]);
         }
 
         return $this->render('app/new.html.twig', [
