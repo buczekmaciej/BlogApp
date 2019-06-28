@@ -12,6 +12,11 @@ class AdminDashboardController extends AbstractController
      */
     public function dashboard()
     {
-        return $this->render('admin_dashboard/dash.html.twig', []);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('admin_dashboard/dash.html.twig', [
+            'user'=>$user
+        ]);
     }
+
 }

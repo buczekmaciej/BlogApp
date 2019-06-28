@@ -2,15 +2,13 @@ security:
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
 
   encoders:
-    Symfony\Component\Security\Core\User\User:
-      algorithm: bcrypt
-      cost: 12
+    Symfony\Component\Security\Core\User\User: plaintext
   providers:
     in_memory:
       memory:
         users:
           admin:
-            password: 1234
+            password: "admin"
             roles: "ROLE_ADMIN"
   firewalls:
     dev:

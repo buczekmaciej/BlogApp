@@ -20,6 +20,11 @@ class UserController extends AbstractController
      */
     public function login(Request $req, SessionInterface $session)
     {
+        $logged=$session->get('user');
+        if($logged)
+        {
+            return $this->redirectToRoute('appHomepage');
+        }
         $form=$this->createFormBuilder()
         ->add('Username', TextType::class, [
             'attr'=>[
@@ -78,8 +83,13 @@ class UserController extends AbstractController
     /**
      * @Route("/user/register", name="userRegister")
      */
-    public function register(Request $req, EntityManagerInterface $em)
+    public function register(Request $req, EntityManagerInterface $em, SessionInterface $session)
     {
+        $logged=$session->get('user');
+        if($logged)
+        {
+            return $this->redirectToRoute('appHomepage');
+        }
         $form=$this->createFormBuilder()
         ->add('Username', TextType::class, [
             'attr'=>[
