@@ -8,12 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminDashboardController extends AbstractController
 {
     /**
-     * @Route("/admin/dashboard", name="admin_dashboard")
+     * @Route("/admin/dashboard", name="adminDashboard")
      */
-    public function index()
+    public function dashboard()
     {
-        return $this->render('admin_dashboard/index.html.twig', [
-            'controller_name' => 'AdminDashboardController',
-        ]);
+        return $this->render('admin_dashboard/dash.html.twig', []);
     }
 }

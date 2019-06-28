@@ -233,3 +233,23 @@ a:link {
   padding: 8px;
   margin-bottom: 1%;
 }
+
+.postContainer .comments .commentsList .comment .comContent {
+  width: 100%;
+  height: auto;
+  min-height: 35px;
+}
+.postContainer .comments .commentsList .comment .comAuthor {
+  width: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  float: left;
+}
+.postContainer .comments .commentsList .comment .comDate {
+  width: 50%;
+  font-size: 12px;
+  font-style: oblique;
+  float: left;
+  text-align: right;
+  padding-right: 5px;
+}
