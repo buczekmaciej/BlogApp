@@ -172,16 +172,29 @@ a:link {
 }
 .postContainer .post .artExtra {
   display: flex;
-  margin: 1% auto;
+  margin: auto;
   justify-content: flex-start;
   width: 100%;
   font-weight: 650;
 }
 .postContainer .post .artExtra .artAuthor {
-  flex: 0.15;
+  flex: 0.07;
 }
 .postContainer .post .artExtra .artDate {
-  flex: 2;
+  flex: 0.12;
+}
+.postContainer .post .artExtra .artLikes {
+  flex: 0.035;
+  display: flex;
+  align-items: center;
+}
+.postContainer .post .artExtra .artLikes a,
+.postContainer .post .artExtra .artLikes p {
+  text-align: center;
+  flex: 1;
+}
+.postContainer .post .artExtra .artLikes a {
+  color: black;
 }
 
 .postContainer .post .artContent {
@@ -250,23 +263,24 @@ a:link {
   display: flex;
   flex-direction: column;
 }
-.postContainer .comments .commentsList .comment .authorSection .glyph {
+.postContainer .comments .commentsList .comment a .authorSection .glyph {
   flex: 1;
   text-align: center;
 }
-.postContainer .comments .commentsList .comment .authorSection .glyph i {
+.postContainer .comments .commentsList .comment a .authorSection .glyph i {
   font-size: 250%;
 }
-.postContainer .comments .commentsList .comment .comAuthor {
+.postContainer .comments .commentsList .comment a .authorSection .comAuthor {
   text-align: center;
 }
 .postContainer .comments .commentsList .comment .orgSection {
-  flex: 20;
+  flex: 1;
   flex-direction: column;
 }
 .postContainer .comments .commentsList .comment .comContent {
   width: 95%;
   height: auto;
+  padding: 0.2%;
   min-height: 35px;
 }
 .postContainer .comments .commentsList .comment .comDate {

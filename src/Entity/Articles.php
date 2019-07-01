@@ -42,6 +42,11 @@ class Articles
      */
     private $link;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $likes = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Articles
     public function setLink(string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(int $likes): self
+    {
+        $this->likes = $likes;
 
         return $this;
     }
