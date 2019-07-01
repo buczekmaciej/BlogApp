@@ -3,46 +3,66 @@
 {% block body %}
     <div class="postContainer">
         <div class="post">
-            <div class="artTitle">
-                <h2>{{post.Title}}</h2>
+            <div class="path">
+                <p>
+                    <a href="{{path('appHomepage')}}">
+                        <b>Home</b>
+                    </a>
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                    <span title="Your current location">
+                        <i>
+                            <b>{{post.Title}}</b>
+                        </i>
+                    </span>
+                </p>
+            </p>
+        </div>
+        <div class="artTitle">
+            <h2>{{post.Title}}</h2>
+        </div>
+        <div class="artExtra">
+            <div class="artAuthor">
+                <i>{{post.user.Login}}</i>
             </div>
-            <div class="artExtra">
-                <div class="artAuthor">
-                    <i>{{post.user.Login}}</i>
-                </div>
-                <div class="artDate">
-                    <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
-                </div>
-            </div>
-            <div class="artContent">
-                <p>{{post.Content|markdown}}</p>
+            <div class="artDate">
+                <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
             </div>
         </div>
-        <div class="comments">
-            <div class="counter">
-                <h2>Comments ({{comments|length}})</h2>
-            </div>
-            <div class="newComment">
-                {{form_start(form)}}
-                {{form_widget(form.Comment)}}
-                {{form_widget(form.Submit)}}
-                {{form_end(form)}}
-            </div>
-            <div class="commentsList">
-                {% if comments == null %}
-                    <div class="commentNone">
-                        <p>This article hasn't been commented yet</p>
-                    </div>
-                {% else %}
-                    {% for comment in comments %}
-                        <div class="comment">
-                            <div class="comContent">{{comment.Content}}</div>
-                            <div class="comAuthor">{{comment.User.Login}}</div>
-                            <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+        <div class="artContent">
+            <p>{{post.Content|markdown}}</p>
         </div>
     </div>
-{% endblock %}
+    <div class="comments">
+        <div class="counter">
+            <h2>Comments ({{comments|length}})</h2>
+        </div>
+        <div class="newComment">
+            {{form_start(form)}}
+            {{form_widget(form.Comment)}}
+            {{form_widget(form.Submit)}}
+            {{form_end(form)}}
+        </div>
+        <div class="commentsList">
+            {% if comments == null %}
+                <div class="commentNone">
+                    <p>This article hasn't been commented yet</p>
+                </div>
+            {% else %}
+                {% for comment in comments %}
+                    <div class="comment">
+                        <div class="authorSection">
+                            <div class="glyph">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <div class="comAuthor">{{comment.User.Login}}</div>
+                        </div>
+                        <div class="orgSection">
+                            <div class="comContent">{{comment.Content}}</div>
+                            <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>{% endblock %}

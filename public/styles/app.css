@@ -147,6 +147,7 @@ a:link {
   border: 0.5px solid black;
   box-shadow: 0 0 8px 1px gray;
   margin: auto;
+  margin-bottom: 1.5%;
   background-color: rgb(252, 252, 252);
   height: auto;
 }
@@ -155,6 +156,12 @@ a:link {
   margin: auto;
   display: flex;
   flex-direction: column;
+}
+.postContainer .post .path {
+  width: 100%;
+  height: 20px;
+  text-align: left;
+  padding: 8px;
 }
 .postContainer .post .artTitle {
   display: flex;
@@ -194,6 +201,7 @@ a:link {
   border-bottom: 0.5px gray solid;
   margin-bottom: 1.5%;
   margin-top: 2%;
+  padding-bottom: 0.8%;
 }
 
 .postContainer .comments .newComment {
@@ -232,21 +240,37 @@ a:link {
   border-radius: 7px;
   padding: 8px;
   margin-bottom: 1%;
+  display: flex;
 }
 
+.postContainer .comments .commentsList .comment .authorSection {
+  flex: 1;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+}
+.postContainer .comments .commentsList .comment .authorSection .glyph {
+  flex: 1;
+  text-align: center;
+}
+.postContainer .comments .commentsList .comment .authorSection .glyph i {
+  font-size: 250%;
+}
+.postContainer .comments .commentsList .comment .comAuthor {
+  text-align: center;
+}
+.postContainer .comments .commentsList .comment .orgSection {
+  flex: 20;
+  flex-direction: column;
+}
 .postContainer .comments .commentsList .comment .comContent {
-  width: 100%;
+  width: 95%;
   height: auto;
   min-height: 35px;
 }
-.postContainer .comments .commentsList .comment .comAuthor {
-  width: 50%;
-  font-size: 12px;
-  font-weight: bold;
-  float: left;
-}
 .postContainer .comments .commentsList .comment .comDate {
-  width: 50%;
+  width: 100%;
   font-size: 12px;
   font-style: oblique;
   float: left;
