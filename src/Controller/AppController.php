@@ -43,9 +43,6 @@ class AppController extends AbstractController
      */
     public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req)
     {
-        $special=array('!','?','.',',','/','#','%','*','(',')','[',']','+','-','_','@','$','^','&','<','>','|',':',';','"',"'");
-        $user=$session->get('user');
-        
         $form=$this->createFormBuilder()
         ->add('Title', TextType::class, [
             'attr'=>[
@@ -72,8 +69,12 @@ class AppController extends AbstractController
         {
             $data=$form->getData();
 
+            $user=$session->get('user');
+
             $title=$data['Title'];
             $content=$data['Content'];
+            
+            $special=array('!','?','.',',','/','#','%','*','(',')','[',']','+','-','_','@','$','^','&','<','>','|',':',';','"',"'");
 
             $slug=str_replace($special, "", $title);
             $slug=str_replace(' ','-', $slug);
