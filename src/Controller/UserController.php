@@ -133,6 +133,7 @@ class UserController extends AbstractController
                     $user->setLogin($data['Username']);
                     $user->setPassword($data['Password']);
                     $user->setEmail($data['Email']);
+                    $user->setRole('ROLE_USER');
 
                     $em->persist($user);
                     $em->flush();

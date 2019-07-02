@@ -38,11 +38,6 @@ class User
      */
     private $Article;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $Role;
-
     public function __construct()
     {
         $this->Article = new ArrayCollection();
@@ -116,18 +111,6 @@ class User
                 $article->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->Role;
-    }
-
-    public function setRole(?string $Role): self
-    {
-        $this->Role = $Role;
 
         return $this;
     }

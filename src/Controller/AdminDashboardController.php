@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminDashboardController extends AbstractController
 {
@@ -26,8 +26,15 @@ class AdminDashboardController extends AbstractController
     public function dashLogout()
     {
         $this->get('security.token_storage')->setToken(null);
-
+    
         return $this->redirectToRoute('appHomepage', []);
     }
 
+    /**
+     * @Route("/admin/manage/posts", name="managePosts")
+     */
+    public function managePosts()
+    {
+        return $this->render('admin_dashboard/postManage.html.twig', []);
+    }
 }

@@ -1,0 +1,7 @@
+{% extends "base.html.twig" %}
+{% block title %}Post management
+{% endblock %}
+
+{% block navbar %}
+    {% include "admin_dashboard/dash.html.twig" with {user: user, username: username} only %}
+{% endblock %}

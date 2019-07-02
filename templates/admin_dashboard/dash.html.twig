@@ -9,18 +9,20 @@
     <link href="{{asset('styles/admin.css')}}" rel="stylesheet"/>
 {% endblock %}
 
-{% block body %}
+{% block navbar %}
     <div class="nav">
-        <div class="logo"><img src="{{asset('images/aDash.png')}}" alt="dashLogo" title="Admin dashboard"/></div>
+        <a href="{{path('adminDashboard')}}"><img src="{{asset('images/aDash.png')}}" alt="dashLogo" title="Admin dashboard"/></a>
         <div class="userManage">
             <button title="Users">
                 <i class="glyphicon glyphicon-user"></i>
             </button>
         </div>
         <div class="postManage">
-            <button title="Posts">
-                <i class="glyphicon glyphicon-book"></i>
-            </button>
+            <a href="{{path('managePosts')}}">
+                <button title="Posts">
+                    <i class="glyphicon glyphicon-book"></i>
+                </button>
+            </a>
         </div>
         <div class="commentManage">
             <button title="Comments">
@@ -29,9 +31,13 @@
         </div>
 
         <div class="logOut">
+            {% set user = user %}
+            {% set username = user.username %}
             <p>Logged as
                 {{user.username}}(<a href="{{path('dashLogout')}}">Logout</a>)
             </p>
         </div>
     </div>
 {% endblock %}
+
+{% block body %}{% endblock %}
