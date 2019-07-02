@@ -11,13 +11,13 @@
             </a>
         </div>
         <div class="separator"></div>
-        <div class="rightNav">
+        <div class="rightNav" id="nav">
             <div class="glypNew">
                 <a href="{{path('newArticle')}}" title="Create new article">
                     <i class="glyphicon glyphicon-plus"></i>
                 </a>
             </div>
-            <div class="glypSrch">
+            <div class="glypSrch" id="searchContainer">
                 <i class="glyphicon glyphicon-search" title="Find post"></i>
             </div>
             <div class="glypUsr">
@@ -32,7 +32,6 @@
 
 {% block body %}
     <div class="contentContainer">
-        <div class="recentPost"></div>
         <div class="listPost">
             {% for key,val in posts %}
                 <a href="{{path('articleShow', {'slug':val.link})}}">
@@ -48,11 +47,14 @@
                         </div>
                         <div class="articleAuthor">
                             <b>Created by:
-                                {{val.user.Login}}
-                            </div>
+                                {{val.user.Login}}</b>
                         </div>
-                    </a>
-                {% endfor %}
-            </div>
+                    </div>
+                </a>
+            {% endfor %}
         </div>
-    {% endblock %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('js/search.js')}}"></script>
+{% endblock %}

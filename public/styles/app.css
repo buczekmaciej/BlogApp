@@ -53,18 +53,45 @@ a:link {
   cursor: pointer;
 }
 
+.searchContainer {
+  width: 0%;
+}
+.active {
+  width: 100%;
+  transition: 1s all ease;
+}
+.search {
+  max-width: 40px;
+  height: 30px;
+  position: absolute;
+  border-radius: 50px;
+  z-index: 5;
+}
+.searchInput {
+  width: 100%;
+  height: auto;
+  border-radius: 25px;
+  position: relative;
+  z-index: 2;
+  outline: none;
+  border: none;
+  padding-left: 43px;
+}
+
 .contentContainer {
   width: 80%;
-  margin: auto;
+  margin: 1% auto;
   display: flex;
+  flex-direction: column;
 }
 
 .listPost {
   flex: 1;
 }
 .listPost .articleContainer {
+  margin: auto;
   margin-top: 1.5%;
-  width: 100%;
+  width: 75%;
   padding: 1.5%;
   border: 0.5px solid gray;
   box-shadow: 0 0 2px 0.1px gray;
@@ -74,6 +101,7 @@ a:link {
 .listPost .articleContainer .articleTitle {
   text-align: center;
 }
+
 .listPost .articleContainer .articleAuthor,
 .listPost .articleContainer .articleCreated {
   text-align: right;

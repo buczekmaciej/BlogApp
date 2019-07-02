@@ -27,10 +27,13 @@ class AppController extends AbstractController
         {
             return $this->redirectToRoute('userLogin', []);
         }
-        $posts=$aR->findAll();
+        $posts=$aR->findBy(array(), array('createdAt'=>'DESC'));
+        dump($posts);
+        $recent=$aR->findOneBy(array(),array('createdAt'=>'DESC'), 1);
 
         return $this->render('app/index.html.twig', [
             'name'=>$logged->getLogin(),
+            'recent'=>$recent,
             'posts'=>$posts
         ]);
     }
@@ -163,5 +166,15 @@ class AppController extends AbstractController
             'comments'=>$comments,
             'form'=>$form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/search/{value}", name="articleSearch", methods={"POST"})
+     */
+    public function search($value, SessionInterface $session)
+    {
+        return $this->render('app/search.html.twig', [
+            'name'=>$user->getLogin()
+        ]);;
     }
 }

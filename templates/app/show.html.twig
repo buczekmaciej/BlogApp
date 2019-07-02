@@ -75,5 +75,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    {{parent()}}
     <script src="{{asset('js/toggleLike.js')}}"></script>
 {% endblock %}
