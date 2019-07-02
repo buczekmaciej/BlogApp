@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class AppController extends AbstractController
@@ -28,7 +29,6 @@ class AppController extends AbstractController
             return $this->redirectToRoute('userLogin', []);
         }
         $posts=$aR->findBy(array(), array('createdAt'=>'DESC'));
-        dump($posts);
         $recent=$aR->findOneBy(array(),array('createdAt'=>'DESC'), 1);
 
         return $this->render('app/index.html.twig', [
@@ -168,10 +168,23 @@ class AppController extends AbstractController
     }
 
     /**
+     * @Route("/article/{slug}/like", name="likeArticle", methods={"POST"})
+     */
+    public function likeArticle($slug, Articles $article, EntityManagerInterface $em)
+    {
+        $article->setLikes($article->getLikes()+1);
+        $em->flush();
+
+        return new JsonResponse(['likes'=>$article->getLikes()]);
+    }
+
+    /**
      * @Route("/search/{value}", name="articleSearch", methods={"GET","POST"})
      */
     public function search($value, SessionInterface $session)
     {
+        // TODO: add users to search
+
         $user=$session->get('user');
 
         $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);

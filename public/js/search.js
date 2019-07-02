@@ -15,7 +15,11 @@ if (searchContainer) {
 function data() {
   var queryContent = document.getElementById("searchContent").value;
 
-  fetch("/search/" + queryContent, {
-    method: "POST"
-  }).then(res => (window.location.href = "/search/" + queryContent));
+  if (!queryContent) {
+    alert("Fill data you want to query for");
+  } else {
+    fetch("/search/" + queryContent, {
+      method: "POST"
+    }).then(res => (window.location.href = "/search/" + queryContent));
+  }
 }

@@ -1,5 +1,15 @@
-const hand = document.getElementById("hand");
+$(document).ready(function() {
+  $(".artLikes").on("click", function(e) {
+    e.preventDefault();
+    var $link = $(e.currentTarget);
 
-hand.addEventListener("click", () => {
-  document.getElementById("hand").style.color = "blue";
+    e.style.color = "blue";
+
+    $.ajax({
+      method: "POST",
+      url: $link.attr("href")
+    }).done(function(data) {
+      $(".likesCounter").html(data.likes);
+    });
+  });
 });

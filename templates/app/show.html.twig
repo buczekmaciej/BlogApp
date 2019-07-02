@@ -33,8 +33,8 @@
                     <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
                 </div>
                 <div class="artLikes" id="likeSections">
-                    <a class="glyphicon glyphicon-thumbs-up" href="#" id="hand"></a>
-                    <p>{{post.Likes}}</p>
+                    <a class="glyphicon glyphicon-thumbs-up" href="{{path('likeArticle', {'slug':post.link})}}" id="hand"></a>
+                    <p class="likesConter">{{post.Likes}}</p>
                 </div>
             </div>
             <div class="artContent">
@@ -80,5 +80,6 @@
 {% endblock %}
 {% block javascripts %}
     {{parent()}}
+    <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/toggleLike.js')}}"></script>
 {% endblock %}
