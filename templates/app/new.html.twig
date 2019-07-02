@@ -1,5 +1,6 @@
 {% extends "base.html.twig" %}
 
+{% set formater = 'You can check formater cheatsheet after click' %}
 
 {% block body %}
     <div class="creatorContainer">
@@ -14,6 +15,9 @@
         <div class="formContainer">
             {{form_start(form)}}
             {{form_widget(form.Title)}}
+            <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
+                <i class="glyphicon glyphicon-question-sign" aria-label="{{formater}}"></i>
+            </a>
             {{form_widget(form.Content)}}
             {{form_widget(form.Create)}}
             {{form_end(form)}}

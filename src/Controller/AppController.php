@@ -15,9 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-// TODO: add to creator information about text formating
-
-
 class AppController extends AbstractController
 {
     /**
@@ -42,7 +39,7 @@ class AppController extends AbstractController
      * @Route("/article/new", name="newArticle")
      */
     public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req)
-    {
+    {    
         $form=$this->createFormBuilder()
         ->add('Title', TextType::class, [
             'attr'=>[
@@ -80,21 +77,32 @@ class AppController extends AbstractController
             $slug=str_replace(' ','-', $slug);
             $slug=mb_strtolower($slug);
 
-            $now=new \DateTime();
+            $exist=$this->getDoctrine()->getRepository(Articles::class)->findBy(['link'=>$slug]);
+            if($exist)
+            {
+                $this->addFlash(
+                    'danger',
+                    'Sorry there is post titled like that'
+                );
+            }
+            else
+            {
+                $now=new \DateTime();
 
-            $article=new Articles();
-            $article->setTitle($title);
-            $article->setContent($content);
-            $article->setCreatedAt($now);
-            $article->setUser($user);
-            $article->setLink($slug);
+                $article=new Articles();
+                $article->setTitle($title);
+                $article->setContent($content);
+                $article->setCreatedAt($now);
+                $article->setUser($user);
+                $article->setLink($slug);
 
-            $em->merge($article);
-            $em->flush();
+                $em->merge($article);
+                $em->flush();
 
-            return $this->redirectToRoute('articleShow', [
-                'slug'=>$slug
-            ]);
+                return $this->redirectToRoute('articleShow', [
+                    'slug'=>$slug
+                ]);
+            }
         }
 
         return $this->render('app/new.html.twig', [
