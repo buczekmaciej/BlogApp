@@ -14,5 +14,8 @@ if (searchContainer) {
 
 function data() {
   var queryContent = document.getElementById("searchContent").value;
-  alert(queryContent);
+
+  fetch("/search/" + queryContent, {
+    method: "POST"
+  }).then(res => (window.location.href = "/search/" + queryContent));
 }

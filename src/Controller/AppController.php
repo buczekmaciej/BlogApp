@@ -118,7 +118,6 @@ class AppController extends AbstractController
      */
     public function articleShow($slug,EntityManagerInterface $em, SessionInterface $session, ArticlesRepository $aR, Request $req)
     {
-
         $user=$session->get('user');
 
         $post=$aR->findBy(['link'=>$slug]);
@@ -169,12 +168,17 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/search/{value}", name="articleSearch", methods={"POST"})
+     * @Route("/search/{value}", name="articleSearch", methods={"GET","POST"})
      */
     public function search($value, SessionInterface $session)
     {
+        $user=$session->get('user');
+
+        $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);
+
         return $this->render('app/search.html.twig', [
-            'name'=>$user->getLogin()
+            'name'=>$user->getLogin(),
+            'result'=>$result
         ]);;
     }
 }

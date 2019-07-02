@@ -1,1 +1,30 @@
-{% extends "base.html.twig" %}
+{% extends "app/index.html.twig" %}
+
+{% block title %}Search result
+{% endblock %}
+
+{% block body %}
+    <div class="contentContainer">
+        <div class="listPost">
+            {% for key,val in result %}
+                <a href="{{path('articleShow', {'slug':val.link})}}">
+                    <div class="articleContainer">
+                        <div class="articleTitle">
+                            <h2>{{val.Title}}</h2>
+                        </div>
+                        <div class="articleCreated">
+                            <b>
+                                <i>Created at:
+                                    {{val.createdAt|date("Y-m-d")}}</i>
+                            </b>
+                        </div>
+                        <div class="articleAuthor">
+                            <b>Created by:
+                                {{val.user.Login}}</b>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
