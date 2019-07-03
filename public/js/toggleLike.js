@@ -1,9 +1,9 @@
 $(document).ready(function() {
-  $(".artLikes").on("click", function(e) {
+  $(".glyphicon-thumbs-up").on("click", function(e) {
     e.preventDefault();
-    var $link = $(e.currentTarget);
 
-    e.style.color = "blue";
+    var $link = $(e.currentTarget);
+    $link.toggleClass("like-o").toggleClass("liked");
 
     $.ajax({
       method: "POST",

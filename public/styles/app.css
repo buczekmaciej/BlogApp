@@ -234,13 +234,16 @@ a:link {
   display: flex;
   align-items: center;
 }
-.postContainer .post .artExtra .artLikes a,
-.postContainer .post .artExtra .artLikes p {
+.postContainer .post .artExtra .artLikes .like-o,
+.postContainer .post .artExtra .artLikes span {
   text-align: center;
   flex: 1;
 }
-.postContainer .post .artExtra .artLikes a {
+.postContainer .post .artExtra .artLikes .like-o {
   color: black;
+}
+.postContainer .post .artExtra .artLikes .liked {
+  color: blue;
 }
 
 .postContainer .post .artContent {
