@@ -45,7 +45,7 @@ class Articles
     /**
      * @ORM\Column(type="integer")
      */
-    private $likes = 0;
+    private $likes;
 
     public function getId(): ?int
     {
@@ -120,6 +120,13 @@ class Articles
     public function setLikes(int $likes): self
     {
         $this->likes = $likes;
+
+        return $this;
+    }
+
+    public function incrementLikes(): self
+    {
+        $this->likes=$this->likes + 1;
 
         return $this;
     }

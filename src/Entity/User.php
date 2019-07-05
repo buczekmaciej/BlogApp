@@ -38,6 +38,16 @@ class User
      */
     private $Article;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $joinedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Details", cascade={"persist", "remove"})
+     */
+    private $details;
+
     public function __construct()
     {
         $this->Article = new ArrayCollection();
@@ -111,6 +121,30 @@ class User
                 $article->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJoinedAt(): ?\DateTimeInterface
+    {
+        return $this->joinedAt;
+    }
+
+    public function setJoinedAt(?\DateTimeInterface $joinedAt): self
+    {
+        $this->joinedAt = $joinedAt;
+
+        return $this;
+    }
+
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?Details $details): self
+    {
+        $this->details = $details;
 
         return $this;
     }

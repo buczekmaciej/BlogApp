@@ -98,6 +98,7 @@ class AppController extends AbstractController
                 $article->setCreatedAt($now);
                 $article->setUser($user);
                 $article->setLink($slug);
+                $article->setLikes(0);
 
                 $em->merge($article);
                 $em->flush();
@@ -170,12 +171,13 @@ class AppController extends AbstractController
     /**
      * @Route("/article/{slug}/like", name="likeArticle", methods={"POST"})
      */
-    public function likeArticle($slug, Articles $article, EntityManagerInterface $em)
+    public function likeArticle($slug, EntityManagerInterface $em)
     {
-        $article->setLikes($article->getLikes()+1);
-        $em->flush();
+        //$article=$this->getDoctrine()->getRepository(Article::class)->findBy(['link'=>$slug]);
+        //$article->incrementLikes();
+        //$em->flush();
 
-        return new JsonResponse(['likes'=>$article->getLikes()]);
+        return new JsonResponse(['likes'=>rand(5, 100)]);
     }
 
     /**

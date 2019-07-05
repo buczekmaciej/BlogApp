@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
+use App\Entity\Details;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserController extends AbstractController
@@ -129,11 +130,15 @@ class UserController extends AbstractController
                 $taken=$this->getDoctrine()->getRepository(User::class)->findOneBy(array('Email'=>$data['Email']),array());
                 if(!$taken)
                 {
+                    $detail=new Details();
+
                     $user=new User();
                     $user->setLogin($data['Username']);
                     $user->setPassword($data['Password']);
                     $user->setEmail($data['Email']);
-                    $user->setRole('ROLE_USER');
+                    $user->setJoinedAt(new \DateTime());
+                    $user->setDetails($detail);
+
 
                     $em->persist($user);
                     $em->flush();
@@ -146,6 +151,10 @@ class UserController extends AbstractController
                 {
                     $this->addFlash('danger','E-mail is already taken');
                 }
+            }
+            else if($data['Username']==='admin'||'Admin')
+            {
+                $this->addFlash('danger','That is restricted');
             }
             else
             {
@@ -166,5 +175,25 @@ class UserController extends AbstractController
         $session->clear();
 
         return $this->redirectToRoute('userLogin', []);
+    }
+
+    /**
+     * @Route("/{user}/profile", name="userProfile")
+     */
+    public function userProfile($user, SessionInterface $session)
+    {
+        $user=$session->get('user');
+
+        dump($user);
+
+        $details=$user->getDetails();
+
+        dump($details);
+
+        return $this->render('user/profile.html.twig', [
+            'name'=>$user->getLogin(),
+            'user'=>$user,
+            'details'=>$details
+        ]);
     }
 }

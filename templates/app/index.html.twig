@@ -21,7 +21,9 @@
                 <i class="glyphicon glyphicon-search" title="Find post"></i>
             </div>
             <div class="glypUsr">
-                <i class="glyphicon glyphicon-user" title="{{name}}"></i>
+                <a href="{{path('userProfile', {'user':name})}}">
+                    <i class="glyphicon glyphicon-user" title="{{name}}"></i>
+                </a>
             </div>
             <a href="{{path('userLogout')}}">
                 <button>Logout</button>
