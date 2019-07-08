@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
 use App\Entity\Details;
@@ -178,22 +179,51 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{user}/profile", name="userProfile")
+     * @Route("/{user}", name="userProfile")
      */
     public function userProfile($user, SessionInterface $session)
     {
-        $user=$session->get('user');
+        $session=$session->get('user');
+        $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
 
-        dump($user);
-
-        $details=$user->getDetails();
-
-        dump($details);
-
+        $details=$user[0]->getDetails();
+        
         return $this->render('user/profile.html.twig', [
-            'name'=>$user->getLogin(),
+            'name'=>$session->getLogin(),
             'user'=>$user,
+            'logged'=>$session,
             'details'=>$details
         ]);
+    }
+
+    /**
+     * @Route("/{user}/profile", name="userEditProfile")
+     */
+    public function userEditProfile($user, SessionInterface $session)
+    {
+        $logged=$session->get('user');
+        if($user != $logged->getLogin())
+        {
+            return $this->redirectToRoute('userEditProfile', [
+                'user'=>$logged->getLogin()
+            ]);
+        }
+
+        $details=$logged->getDetails();
+
+        return $this->render('user/profileEdit.html.twig', [
+            'name'=>$logged->getLogin(),
+            'user'=>$logged,
+            'details'=>$details
+        ]);
+    }
+
+    /**
+     * @Route("/{user}/changes/save", name="userUpdateData", methods={"POST"})
+     */
+    public function userUpdateData($user)
+    {
+        $this->addFlash('primary', '');
+        return $this->redirectToRoute('userProfile', []);
     }
 }

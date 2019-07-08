@@ -59,7 +59,7 @@
                 {% else %}
                     {% for comment in comments %}
                         <div class="comment">
-                            <a href="#">
+                            <a href="{{path('userProfile', {'user':comment.User.Login})}}">
                                 <div class="authorSection">
                                     <div class="glyph">
                                         <i class="glyphicon glyphicon-user"></i>

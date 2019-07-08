@@ -88,3 +88,106 @@
   flex: 1;
   text-decoration: none;
 }
+
+.userProfile {
+  margin: auto;
+  width: 80%;
+  height: auto;
+}
+.userMenu {
+  max-width: 30%;
+  margin-right: 5%;
+  float: left;
+}
+.userData {
+  width: 65%;
+  border: 0.5px solid gray;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px gray;
+  display: flex;
+  flex-direction: column;
+  float: left;
+  color: #e74c3c;
+  font-size: 20px;
+}
+
+.login,
+.password,
+.email,
+.joined,
+.firstName,
+.birthdayDate,
+.location,
+.bio {
+  width: 95%;
+  height: 45px;
+  margin: 1.5% auto;
+  display: flex;
+}
+
+.name,
+.value {
+  flex: 1;
+  padding: 1.3%;
+}
+
+.login .name,
+.email .name,
+.firstName .name,
+.location .name,
+.password .value,
+.joined .value,
+.birthdayDate .value,
+.bio .value {
+  background-color: #bdc3c7;
+}
+
+.login .value,
+.email .value,
+.firstName .value,
+.location .value,
+.password .name,
+.joined .name,
+.birthdayDate .name,
+.bio .name {
+  background-color: #95a5a6;
+}
+.bio {
+  height: auto;
+}
+.saveChanges {
+  flex: 1;
+  margin: 2% auto;
+}
+.saveChanges button {
+  border: none;
+  border-radius: 7px;
+  height: 35px;
+  background-color: #2980b9;
+  font-size: 17px;
+  padding: 3px;
+  color: white;
+}
+.makeChanges {
+  flex: 1;
+  margin: 2% auto;
+}
+.makeChanges button {
+  border: none;
+  border-radius: 7px;
+  height: 35px;
+  background-color: #2980b9;
+  font-size: 17px;
+  padding: 3px;
+  color: white;
+}
+
+.bio textarea {
+  height: 300px;
+  resize: none;
+}
+
+input,
+textarea {
+  border: none;
+}

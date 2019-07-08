@@ -1,8 +1,7 @@
 {% extends "app/index.html.twig" %}
 
 {% block title %}
-    {{name}}
-    - profile
+    {{name}}'s profile edition
 {% endblock %}
 
 {% block body %}
@@ -13,47 +12,48 @@
         <div class="userData" id="data">
             <div class="login" id="loginCont">
                 <div class="name">Login</div>
-                <div class="value">{{user.0.Login}}</div>
+                <div class="value" id="login">{{user.Login}}</div>
             </div>
             <div class="password" id="passCont">
                 <div class="name">Password</div>
                 <div class="value">
-                    {% for i in range(1, user.0.Password|length) %}
+                    {% for i in range(1, user.Password|length) %}
                         *
                     {% endfor %}
                 </div>
             </div>
             <div class="email" id="mailCont">
                 <div class="name">E-mail</div>
-                <div class="value">{{user.0.Email}}</div>
+                <input type="text" class="value" value="{{user.Email}}" id="newMail">
             </div>
             <div class="joined" id="joinCont">
                 <div class="name">Joined at</div>
-                <div class="value">{{user.0.joinedAt|date('Y-m-d H:i:s')}}</div>
+                <div class="value">{{user.joinedAt|date('Y-m-d H:i:s')}}</div>
             </div>
             <div class="firstName" id="nameCont">
                 <div class="name">First name</div>
-                <div class="value">{{details.firstName}}</div>
+                <input type="text" class="value" value="{{details.firstName}}" id="newName">
             </div>
             <div class="birthdayDate" id="bdayCont">
                 <div class="name">Birthday date</div>
-                <div class="value">{{details.birthdayDate}}</div>
+                <input type="date" class="value" value="{{details.birthdayDate}}" id="newBday">
             </div>
             <div class="location" id="locCont">
                 <div class="name">Located at</div>
-                <div class="value">{{details.location}}</div>
+                <input type="text" class="value" value="{{details.location}}" id="newLocation">
             </div>
             <div class="bio" id="bioCont">
                 <div class="name">Bio</div>
-                <div class="value">{{details.bio}}</div>
+                <textarea class="value" id="newBio">{{details.bio}}</textarea>
             </div>
-            {% if user.0.Login == logged.Login %}
-                <div class="makeChanges">
-                    <a href="{{path('userEditProfile', {'user':user.0.Login})}}">
-                        <button class="btn btn-submit">Make changes</button>
-                    </a>
-                </div>
-            {% endif %}
+            <div class="saveChanges">
+                <button class="btn btn-submit" id="saveChanges">Save changes</button>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{asset('js/edit.js')}}"></script>
 {% endblock %}
