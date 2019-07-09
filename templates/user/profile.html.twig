@@ -29,7 +29,7 @@
             </div>
             <div class="joined" id="joinCont">
                 <div class="name">Joined at</div>
-                <div class="value">{{user.0.joinedAt|date('Y-m-d H:i:s')}}</div>
+                <div class="value">{{user.0.joinedAt|date('d/m/Y H:i:s')}}</div>
             </div>
             <div class="firstName" id="nameCont">
                 <div class="name">First name</div>
@@ -37,7 +37,11 @@
             </div>
             <div class="birthdayDate" id="bdayCont">
                 <div class="name">Birthday date</div>
-                <div class="value">{{details.birthdayDate|date('Y-m-d')}}</div>
+                {% if details.birthdayDate is empty %}
+                    <div class="value"></div>
+                {% else %}
+                    <div class="value">{{details.birthdayDate|date('d/m/Y')}}</div>
+                {% endif %}
             </div>
             <div class="location" id="locCont">
                 <div class="name">Located at</div>

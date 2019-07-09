@@ -210,8 +210,15 @@ class UserController extends AbstractController
             ]);
         }
 
-        $details=$logged->getDetails();
-        dump($details);
+        $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
+
+        $details=$user[0]->getDetails();
+
+        $date=$details->getBirthdayDate();
+        if($date)
+        {
+            $date=$date->format('Y-m-d');
+        }
 
         $form=$this->createFormBuilder()
         ->add('Email',TextType::class, [
@@ -228,14 +235,13 @@ class UserController extends AbstractController
         ])
         ->add('Bday',DateType::class, [
             'attr'=>[
-                'class'=>'value',
-                'value'=>$details->getBirthdayDate()
+                'class'=>'value'
             ],
             'format'=>'dd/MM/yyyy',
             'days'=>range(1,31),
             'months'=>range(1,12),
             'years'=>range(date('Y')-110, date('Y')),
-            'data'=>new \DateTime()
+            'data'=>new \DateTime($date)
         ])
         ->add('Location',TextType::class, [
             'attr'=>[
@@ -245,9 +251,9 @@ class UserController extends AbstractController
         ])
         ->add('Bio',TextareaType::class, [
             'attr'=>[
-                'class'=>'value',
-                'value'=>$details->getBio()
-            ]
+                'class'=>'value'
+            ],
+            'data'=>$details->getBio()
         ])
         ->add('Save', SubmitType::class, [
             'attr'=>[

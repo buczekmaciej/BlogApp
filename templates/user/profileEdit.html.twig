@@ -29,7 +29,7 @@
             </div>
             <div class="joined" id="joinCont">
                 <div class="name">Joined at</div>
-                <div class="value">{{user.joinedAt|date('Y-m-d H:i:s')}}</div>
+                <div class="value">{{user.joinedAt|date('d/m/Y H:i:s')}}</div>
             </div>
             <div class="firstName" id="nameCont">
                 <div class="name">First name</div>
@@ -53,9 +53,4 @@
             {{form_end(form)}}
         </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{parent()}}
-    <script src="{{asset('js/edit.js')}}"></script>
 {% endblock %}
