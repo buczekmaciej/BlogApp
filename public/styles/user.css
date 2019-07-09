@@ -191,3 +191,9 @@ input,
 textarea {
   border: none;
 }
+
+select {
+  outline: none;
+  border: none;
+  background: transparent;
+}

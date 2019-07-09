@@ -10,6 +10,7 @@
             <h2>Section to be developed soon</h2>
         </div>
         <div class="userData" id="data">
+            {{form_start(form)}}
             <div class="login" id="loginCont">
                 <div class="name">Login</div>
                 <div class="value" id="login">{{user.Login}}</div>
@@ -24,7 +25,7 @@
             </div>
             <div class="email" id="mailCont">
                 <div class="name">E-mail</div>
-                <input type="text" class="value" value="{{user.Email}}" id="newMail">
+                {{form_widget(form.Email)}}
             </div>
             <div class="joined" id="joinCont">
                 <div class="name">Joined at</div>
@@ -32,23 +33,24 @@
             </div>
             <div class="firstName" id="nameCont">
                 <div class="name">First name</div>
-                <input type="text" class="value" value="{{details.firstName}}" id="newName">
+                {{form_widget(form.firstName)}}
             </div>
             <div class="birthdayDate" id="bdayCont">
                 <div class="name">Birthday date</div>
-                <input type="date" class="value" value="{{details.birthdayDate}}" id="newBday">
+                {{form_widget(form.Bday)}}
             </div>
             <div class="location" id="locCont">
                 <div class="name">Located at</div>
-                <input type="text" class="value" value="{{details.location}}" id="newLocation">
+                {{form_widget(form.Location)}}
             </div>
             <div class="bio" id="bioCont">
                 <div class="name">Bio</div>
-                <textarea class="value" id="newBio">{{details.bio}}</textarea>
+                {{form_widget(form.Bio)}}
             </div>
             <div class="saveChanges">
-                <button class="btn btn-submit" id="saveChanges">Save changes</button>
+                {{form_widget(form.Save)}}
             </div>
+            {{form_end(form)}}
         </div>
     </div>
 {% endblock %}

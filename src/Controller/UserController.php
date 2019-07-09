@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -199,7 +200,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{user}/profile", name="userEditProfile")
      */
-    public function userEditProfile($user, SessionInterface $session)
+    public function userEditProfile($user, SessionInterface $session, Request $request)
     {
         $logged=$session->get('user');
         if($user != $logged->getLogin())
@@ -210,20 +211,93 @@ class UserController extends AbstractController
         }
 
         $details=$logged->getDetails();
+        dump($details);
+
+        $form=$this->createFormBuilder()
+        ->add('Email',TextType::class, [
+            'attr'=>[
+                'class'=>'value',
+                'value'=>$logged->getEmail()
+            ]
+        ])
+        ->add('firstName',TextType::class, [
+            'attr'=>[
+                'class'=>'value',
+                'value'=>$details->getFirstName()
+            ]
+        ])
+        ->add('Bday',DateType::class, [
+            'attr'=>[
+                'class'=>'value',
+                'value'=>$details->getBirthdayDate()
+            ],
+            'format'=>'dd/MM/yyyy',
+            'days'=>range(1,31),
+            'months'=>range(1,12),
+            'years'=>range(date('Y')-110, date('Y')),
+            'data'=>new \DateTime()
+        ])
+        ->add('Location',TextType::class, [
+            'attr'=>[
+                'class'=>'value',
+                'value'=>$details->getLocation()
+            ]
+        ])
+        ->add('Bio',TextareaType::class, [
+            'attr'=>[
+                'class'=>'value',
+                'value'=>$details->getBio()
+            ]
+        ])
+        ->add('Save', SubmitType::class, [
+            'attr'=>[
+                'class'=>'btn btn-submit'
+            ]
+        ])
+        ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $data=$form->getData();
+
+            return $this->redirectToRoute('userUpdateData', [
+                'data'=>$data,
+                'user'=>$logged->getLogin()
+            ]);
+        }
 
         return $this->render('user/profileEdit.html.twig', [
             'name'=>$logged->getLogin(),
             'user'=>$logged,
-            'details'=>$details
+            'details'=>$details,
+            'form'=>$form->createView()
         ]);
     }
 
     /**
-     * @Route("/{user}/changes/save", name="userUpdateData", methods={"POST"})
+     * @Route("/{user}/changes/save", name="userUpdateData")
      */
-    public function userUpdateData($user)
+    public function userUpdateData($user, Request $request, EntityManagerInterface $em, SessionInterface $session)
     {
-        $this->addFlash('primary', '');
-        return $this->redirectToRoute('userProfile', []);
+        $logged=$session->get('user');
+        $detail=$logged->getDetails()->getId();
+        $detail=$this->getDoctrine()->getRepository(Details::class)->findBy(['id'=>$detail]);
+        $detail=$detail[0];
+
+        $data=$request->query->all();
+        
+        $logged->setEmail($data['data']['Email']);
+        $detail->setFirstName($data['data']['firstName']);
+        $detail->setBirthdayDate(new \DateTime($data['data']['Bday']['date']));
+        $detail->setLocation($data['data']['Location']);
+        $detail->setBio($data['data']['Bio']);
+
+        $em->flush();
+        
+            
+        return $this->redirectToRoute('userProfile', [
+            'user'=>$logged->getLogin()
+        ]);
     }
 }
