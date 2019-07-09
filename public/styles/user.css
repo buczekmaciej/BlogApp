@@ -197,3 +197,7 @@ select {
   border: none;
   background: transparent;
 }
+
+ul {
+  list-style-type: none;
+}

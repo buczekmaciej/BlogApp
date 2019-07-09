@@ -8,7 +8,16 @@
 {% block body %}
     <div class="userProfile" id="user">
         <div class="userMenu">
-            <h2>Section to be developed soon</h2>
+            <div class="sideMenu">
+                <ul>
+                    <li id="personal">
+                        <a class="btn" href="#data">Personal info</a>
+                    </li>
+                    <li id="feed">
+                        <a class="btn" href="#activity">Activity</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="userData" id="data">
             <div class="login" id="loginCont">
@@ -58,6 +67,9 @@
                     </a>
                 </div>
             {% endif %}
+        </div>
+        <div class="userActivity" id="activity">
+            
         </div>
     </div>
 {% endblock %}

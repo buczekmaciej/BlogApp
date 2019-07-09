@@ -58,7 +58,7 @@
                     </div>
                 {% else %}
                     {% for comment in comments %}
-                        <div class="comment">
+                        <div class="comment" id="comment-{{comment.id}}">
                             <a href="{{path('userProfile', {'user':comment.User.Login})}}">
                                 <div class="authorSection">
                                     <div class="glyph">

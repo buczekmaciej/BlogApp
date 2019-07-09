@@ -188,12 +188,18 @@ class UserController extends AbstractController
         $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
 
         $details=$user[0]->getDetails();
+
+
+        $posts=$user[0]->getArticle();
+        dump($posts);
+
         
         return $this->render('user/profile.html.twig', [
             'name'=>$session->getLogin(),
             'user'=>$user,
             'logged'=>$session,
-            'details'=>$details
+            'details'=>$details,
+            'posts'=>$posts
         ]);
     }
 
