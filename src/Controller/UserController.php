@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
+use App\Entity\Articles;
+use App\Entity\Comments;
 use App\Entity\Details;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -189,17 +191,17 @@ class UserController extends AbstractController
 
         $details=$user[0]->getDetails();
 
-
-        $posts=$user[0]->getArticle();
+        $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(['User'=>$user]);
+        $posts=$this->getDoctrine()->getRepository(Articles::class)->findBy(['user'=>$user]);
         dump($posts);
-
         
         return $this->render('user/profile.html.twig', [
             'name'=>$session->getLogin(),
             'user'=>$user,
             'logged'=>$session,
             'details'=>$details,
-            'posts'=>$posts
+            'posts'=>$posts,
+            'comments'=>$comments
         ]);
     }
 

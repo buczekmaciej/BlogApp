@@ -69,7 +69,46 @@
             {% endif %}
         </div>
         <div class="userActivity" id="activity">
-            
+            <div class="select">
+                <li id="articles">
+                    <a class="btn" href="#articles">Articles</a>
+                </li>
+                <li id="comments">
+                    <a class="btn" href="#comments">Comments</a>
+                </li>
+            </div>
+            <div class="articles" id="articlesCont">
+                {% for post in posts %}
+                    <a href="{{path('articleShow', {'slug':post.link})}}">
+                        <div class="contentElement">
+                            <h3>{{post.Title}}</h3>
+                            <h5>{{post.User.Login}}</h5>
+                            <p class="content">{{post.Content}}</p>
+                            <p class="date">{{post.createdAt|date('d/m/Y')}}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="comments" id="commentsCont">
+                {% for comment in comments %}
+                    <div class="contentElement">
+                        <h3>{{comment.Article.Title}}</h3>
+                        <h5>{{comment.User.Login}}
+                            answered
+                            {{comment.Article.user.Login}}
+                            in
+                            <a href="{{path('articleShow', {'slug':comment.Article.link})}}">post</a>
+                        </h5>
+                        <p class="content">{{comment.Content}}</p>
+                        <p class="date">{{comment.addedAt|date('d/m/Y')}}</p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{asset('js/profile.js')}}"></script>
 {% endblock %}

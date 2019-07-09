@@ -198,6 +198,31 @@ select {
   background: transparent;
 }
 
-ul {
+li {
   list-style-type: none;
+}
+.select li {
+  display: inline;
+}
+
+.userActivity {
+  width: 65%;
+  border: 0.5px solid gray;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px gray;
+  display: none;
+  flex-direction: column;
+  float: left;
+  color: #e74c3c;
+  font-size: 20px;
+}
+
+.articles {
+  display: flex;
+  flex-direction: column;
+}
+
+.comments {
+  display: none;
+  flex-direction: column;
 }
