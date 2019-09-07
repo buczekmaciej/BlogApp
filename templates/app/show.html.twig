@@ -33,7 +33,11 @@
                     <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
                 </div>
                 <div class="artLikes" id="likeSections">
-                    <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up" id="hand"></a>
+                    {% if liked == true %}
+                        <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up like" id="hand"></a>
+                    {% else %}
+                        <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up no-like" id="hand"></a>
+                    {% endif %}
                     <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
                 </div>
             </div>

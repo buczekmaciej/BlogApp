@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\ArticlesRepository;
+use App\Repository\UserRepository;
 use App\Entity\Articles;
 use App\Entity\Comments;
 use Doctrine\ORM\EntityManagerInterface;
@@ -115,22 +116,31 @@ class AppController extends AbstractController
     /**
      * @Route("/article/{slug}/like", name="likeArticle")
      */
-    public function likeArticle($slug, ArticlesRepository $aR, EntityManagerInterface $em, SessionInterface $session)
+    public function likeArticle($slug, ArticlesRepository $aR, UserRepository $uR, EntityManagerInterface $em, SessionInterface $session)
     {
         $article = $aR->findBy(['link'=>$slug]);
         if ($article) {
-            $user = $session->get('user');
-            if($user){
+            $login = $session->get('user')->getLogin();
+            if($login){
                 $article = $article[0];
 
                 $liked = false;
+                $user = $uR->findBy(['Login'=>$login])[0];
+
+                foreach($article->getLikes() as $like)
+                {
+                    if($user === $like)
+                    {
+                        $liked = true;
+                    }
+                }
 
                 if ($liked == false) {
                     $article->addLike($user);
                 } else {
                     $article->removeLike($user);
                 }
-                // TODO: Fix this
+
                 $em->flush();
                 return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
             }
@@ -145,15 +155,25 @@ class AppController extends AbstractController
     /**
      * @Route("/article/{slug}", name="articleShow")
      */
-    public function articleShow($slug,EntityManagerInterface $em, SessionInterface $session, ArticlesRepository $aR, Request $req)
+    public function articleShow($slug,EntityManagerInterface $em, UserRepository $uR, SessionInterface $session, ArticlesRepository $aR, Request $req)
     {
         $user=$session->get('user');
+        $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
 
         $post=$aR->findBy(['link'=>$slug]);
-        $id=$post[0]->getId();
         $post=$post[0];
+        $id=$post->getId();
         $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));
         
+        $liked = false;
+        foreach($post->getLikes() as $like)
+        {
+            if($user === $like)
+            {
+                $liked = true;
+            }
+        }
+
         $form=$this->createFormBuilder()
         ->add('Comment', TextType::class, [
             'attr'=>[
@@ -193,6 +213,7 @@ class AppController extends AbstractController
             'post'=>$post,
             'comments'=>$comments,
             'form'=>$form->createView(),
+            'liked'=>$liked
         ]);
     }
 
