@@ -193,7 +193,6 @@ class UserController extends AbstractController
 
         $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(['User'=>$user]);
         $posts=$this->getDoctrine()->getRepository(Articles::class)->findBy(['user'=>$user]);
-        dump($posts);
         
         return $this->render('user/profile.html.twig', [
             'name'=>$session->getLogin(),
@@ -208,7 +207,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{user}/profile", name="userEditProfile")
      */
-    public function userEditProfile($user, SessionInterface $session, Request $request)
+    public function userEditProfile($user, SessionInterface $session, Request $request, EntityManagerInterface $em)
     {
         $logged=$session->get('user');
         if($user != $logged->getLogin())
@@ -248,7 +247,7 @@ class UserController extends AbstractController
             'format'=>'dd/MM/yyyy',
             'days'=>range(1,31),
             'months'=>range(1,12),
-            'years'=>range(date('Y')-110, date('Y')),
+            'years'=>range(date('Y')-100, date('Y')),
             'data'=>new \DateTime($date)
         ])
         ->add('Location',TextType::class, [
@@ -275,8 +274,16 @@ class UserController extends AbstractController
         {
             $data=$form->getData();
 
-            return $this->redirectToRoute('userUpdateData', [
-                'data'=>$data,
+            dump($data['Bday']);
+            $logged->setEmail($data['Email']);
+            $details->setFirstName($data['firstName']);
+            $details->setBirthdayDate($data['Bday']);
+            $details->setLocation($data['Location']);
+            $details->setBio($data['Bio']);
+
+            $em->flush();
+            
+            return $this->redirectToRoute('userProfile', [
                 'user'=>$logged->getLogin()
             ]);
         }
@@ -286,32 +293,6 @@ class UserController extends AbstractController
             'user'=>$logged,
             'details'=>$details,
             'form'=>$form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/{user}/changes/save", name="userUpdateData")
-     */
-    public function userUpdateData($user, Request $request, EntityManagerInterface $em, SessionInterface $session)
-    {
-        $logged=$session->get('user');
-        $detail=$logged->getDetails()->getId();
-        $detail=$this->getDoctrine()->getRepository(Details::class)->findBy(['id'=>$detail]);
-        $detail=$detail[0];
-
-        $data=$request->query->all();
-        
-        $logged->setEmail($data['data']['Email']);
-        $detail->setFirstName($data['data']['firstName']);
-        $detail->setBirthdayDate(new \DateTime($data['data']['Bday']['date']));
-        $detail->setLocation($data['data']['Location']);
-        $detail->setBio($data['data']['Bio']);
-
-        $em->flush();
-        
-            
-        return $this->redirectToRoute('userProfile', [
-            'user'=>$logged->getLogin()
         ]);
     }
 }

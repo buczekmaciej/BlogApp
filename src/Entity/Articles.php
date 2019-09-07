@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,9 +45,14 @@ class Articles
     private $link;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
      */
     private $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,21 +119,28 @@ class Articles
         return $this;
     }
 
-    public function getLikes(): ?int
+    /**
+     * @return Collection|User[]
+     */
+    public function getLikes(): Collection
     {
         return $this->likes;
     }
 
-    public function setLikes(int $likes): self
+    public function addLike(User $user): self
     {
-        $this->likes = $likes;
+        if (!$this->likes->contains($user)) {
+            $this->likes[] = $user;
+        }
 
         return $this;
     }
 
-    public function incrementLikes(): self
+    public function removeLike(User $user): self
     {
-        $this->likes=$this->likes + 1;
+        if ($this->likes->contains($user)) {
+            $this->likes->removeElement($user);
+        }
 
         return $this;
     }

@@ -234,6 +234,9 @@ a:link {
   display: flex;
   align-items: center;
 }
+.postContainer .post .artExtra .artLikes span:first-of-type{
+  cursor: pointer;
+}
 .postContainer .post .artExtra .artLikes .like-o,
 .postContainer .post .artExtra .artLikes span {
   text-align: center;

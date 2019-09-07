@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class AppController extends AbstractController
@@ -29,11 +30,9 @@ class AppController extends AbstractController
             return $this->redirectToRoute('userLogin', []);
         }
         $posts=$aR->findBy(array(), array('createdAt'=>'DESC'));
-        $recent=$aR->findOneBy(array(),array('createdAt'=>'DESC'), 1);
 
         return $this->render('app/index.html.twig', [
             'name'=>$logged->getLogin(),
-            'recent'=>$recent,
             'posts'=>$posts
         ]);
     }
@@ -98,7 +97,6 @@ class AppController extends AbstractController
                 $article->setCreatedAt($now);
                 $article->setUser($user);
                 $article->setLink($slug);
-                $article->setLikes(0);
 
                 $em->merge($article);
                 $em->flush();
@@ -112,6 +110,36 @@ class AppController extends AbstractController
         return $this->render('app/new.html.twig', [
             'form'=>$form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/article/{slug}/like", name="likeArticle")
+     */
+    public function likeArticle($slug, ArticlesRepository $aR, EntityManagerInterface $em, SessionInterface $session)
+    {
+        $article = $aR->findBy(['link'=>$slug]);
+        if ($article) {
+            $user = $session->get('user');
+            if($user){
+                $article = $article[0];
+
+                $liked = false;
+
+                if ($liked == false) {
+                    $article->addLike($user);
+                } else {
+                    $article->removeLike($user);
+                }
+                // TODO: Fix this
+                $em->flush();
+                return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
+            }
+            else{
+                return $this->redirectToRoute('userLogin', []);
+            }
+        } else {
+            return $this->redirectToRoute('appHomepage', []);
+        }
     }
 
     /**
@@ -164,20 +192,8 @@ class AppController extends AbstractController
             'name'=>$user->getLogin(),
             'post'=>$post,
             'comments'=>$comments,
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/article/{slug}/like", name="likeArticle", methods={"POST"})
-     */
-    public function likeArticle($slug, EntityManagerInterface $em)
-    {
-        //$article=$this->getDoctrine()->getRepository(Article::class)->findBy(['link'=>$slug]);
-        //$article->incrementLikes();
-        //$em->flush();
-
-        return new JsonResponse(['likes'=>rand(5, 100)]);
     }
 
     /**
@@ -185,8 +201,6 @@ class AppController extends AbstractController
      */
     public function search($value, SessionInterface $session)
     {
-        // TODO: add users to search
-
         $user=$session->get('user');
 
         $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);
