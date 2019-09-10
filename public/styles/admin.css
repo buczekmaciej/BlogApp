@@ -32,3 +32,65 @@
 .nav .logOut {
   color: #fff;
 }
+
+.dash-greet {
+  text-align: center;
+}
+
+.post-org {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-org section {
+  width: 90%;
+  height: 80px;
+  margin: 1.3% auto;
+  display: flex;
+  box-shadow: 0 0 5px 5px lightgray;
+  padding: 10px;
+}
+.post-org h2 {
+  flex: 5;
+  font-size: 30px;
+  overflow: hidden;
+}
+.post-org i {
+  flex: 0.15;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.users-org a {
+  flex: 0.15;
+}
+
+.users-org {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.users-org section {
+  width: 75%;
+  height: 80px;
+  margin: 1.3% auto;
+  display: flex;
+  box-shadow: 0 0 5px 5px lightgray;
+  padding: 10px;
+}
+.users-org p {
+  flex: 5;
+  font-size: 30px;
+  overflow: hidden;
+}
+.users-org i {
+  flex: 0.15;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.users-org a {
+  flex: 0.15;
+}

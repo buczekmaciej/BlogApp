@@ -161,6 +161,11 @@ class AppController extends AbstractController
         $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
 
         $post=$aR->findBy(['link'=>$slug]);
+        if(!$post)
+        {
+            $this->addFlash('warning','No such post was found for this path');
+            return $this->redirectToRoute('appHomepage', []);
+        }
         $post=$post[0];
         $id=$post->getId();
         $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));

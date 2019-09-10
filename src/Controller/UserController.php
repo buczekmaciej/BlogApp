@@ -60,7 +60,7 @@ class UserController extends AbstractController
             
             if($exist)
             {
-                if(($exist->getPassword())===($data['Password']))
+                if(($exist->getPassword())===($data['Password']) && $exist->getIsDisabled() === false)
                 {
                     $session->set('user',$exist);
                     $this->addFlash(
@@ -69,6 +69,11 @@ class UserController extends AbstractController
                     );
 
                     return $this->redirectToRoute('appHomepage', []);
+                }
+                else
+                {
+                    $this->addFlash('danger', 'Password is wrong or account has been disabled');
+                    return $this->redirectToRoute('userLogin', []);
                 }
             }
             else
@@ -187,6 +192,10 @@ class UserController extends AbstractController
     public function userProfile($user, SessionInterface $session)
     {
         $session=$session->get('user');
+        if(!$session)
+        {
+            return $this->redirectToRoute('userLogin', []);
+        }
         $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
 
         $details=$user[0]->getDetails();

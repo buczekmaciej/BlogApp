@@ -1,0 +1,21 @@
+{% extends "admin_dashboard/dash.html.twig" %}
+
+{% block title %}Users manage{% endblock %}
+
+{% block body %}
+    <main class="users-org">
+        {% for user in users %}
+            <section class="{{user.id}}">
+                <p>{{user.Login}}</p>
+                <i class="fas fa-calendar-alt" title="{{user.joinedAt|date('M d, Y')}}"></i>
+                <i class="fas fa-birthday-cake" title="{{user.details.birthdayDate|date('M d, Y')}}"></i>
+                <i class="fas fa-map-marker-alt" title="{{user.details.location}}"></i>
+                {% if user.isDisabled == false %}
+                    <a href="{{path('disableUser',{'id':user.id})}}"><i class="fas fa-toggle-on"></i></a>
+                {% else %}
+                    <a href="{{path('enableUser',{'id':user.id})}}"><i class="fas fa-toggle-off"></i></a>
+                {% endif %}
+            </section>
+        {% endfor %}
+    </main>
+{% endblock %}

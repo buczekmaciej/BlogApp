@@ -1,7 +1,19 @@
-{% extends "base.html.twig" %}
+{% extends "admin_dashboard/dash.html.twig" %}
+
 {% block title %}Post management
 {% endblock %}
 
-{% block navbar %}
-    {% include "admin_dashboard/dash.html.twig" with {user: user, username: username} only %}
+{% block body %}
+    <main class="post-org">
+        {% for post in posts %}
+            <section id="{{post.id}}">
+                <h2>{{post.Title}}</h2>
+                <i class="fas fa-calendar-alt" title="{{post.createdAt|date('M d, Y H:i')}}"></i>
+                <i class="fas fa-user" title="{{post.user.Login}}"></i>
+                <i class="fas fa-link" title="/article/{{post.link}}"></i>
+                <i class="fas fa-heart" title="{{post.likes|length}}"></i>
+                <a href="{{path('removePost',{'id':post.id})}}"><i class="fas fa-trash-alt"></i></a>
+            </section>
+        {% endfor %}
+    </main>
 {% endblock %}

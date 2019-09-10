@@ -48,6 +48,11 @@ class User
      */
     private $details;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDisabled;
+
     public function __construct()
     {
         $this->Article = new ArrayCollection();
@@ -145,6 +150,18 @@ class User
     public function setDetails(?Details $details): self
     {
         $this->details = $details;
+
+        return $this;
+    }
+
+    public function getIsDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setIsDisabled(?bool $isDisabled): self
+    {
+        $this->isDisabled = $isDisabled;
 
         return $this;
     }
