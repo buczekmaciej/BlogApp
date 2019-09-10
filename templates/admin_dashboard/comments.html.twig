@@ -1,0 +1,17 @@
+{% extends "admin_dashboard/dash.html.twig" %}
+
+{% block title %}Comments manage{% endblock %}
+
+{% block body %}
+    <main class="comments-org">
+        {% for comment in comments %}
+            <section class="{{comment.id}}">
+                <p>{{comment.Content}}</p>
+                <i class="fas fa-calendar-alt" title="{{comment.addedAt|date('M d, Y')}}"></i>
+                <i class="fas fa-user" title="{{comment.User.Login}}"></i>
+                <i class="fas fa-newspaper" title="{{comment.Article.Title}}"></i>
+                <a href="{{path('removeComment',{'id':comment.id})}}"><i class="fas fa-trash-alt"></i></a>
+             </section>
+        {% endfor %}
+    </main>
+{% endblock %}

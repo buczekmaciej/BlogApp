@@ -94,3 +94,32 @@
 .users-org a {
   flex: 0.15;
 }
+
+.comments-org {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.comments-org section {
+  width: 75%;
+  height: 80px;
+  margin: 1.3% auto;
+  display: flex;
+  box-shadow: 0 0 5px 5px lightgray;
+  padding: 10px;
+}
+.comments-org p {
+  flex: 5;
+  font-size: 30px;
+  overflow: hidden;
+}
+.comments-org i {
+  flex: 0.15;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.comments-org a {
+  flex: 0.15;
+}

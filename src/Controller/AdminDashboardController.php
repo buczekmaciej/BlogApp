@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\ArticlesRepository;
 use App\Repository\UserRepository;
+use App\Repository\CommentsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AdminDashboardController extends AbstractController
@@ -44,12 +45,17 @@ class AdminDashboardController extends AbstractController
     /**
      * @Route("/admin/post/{id}/remove", name="removePost")
      */
-    public function removePost($id, ArticlesRepository $aR, EntityManagerInterface $em)
+    public function removePost($id, ArticlesRepository $aR, CommentsRepository $cR, EntityManagerInterface $em)
     {
         $post = $aR->findBy(['id'=>$id]);
 
         if($post)
         {
+            $comments = $cR->findBy(['Article'=>$post[0]->getId()]);
+            foreach($comments as $comment)
+            {
+                $em->remove($comment);
+            }
             $em->remove($post[0]);
             $em->flush();
             $this->addFlash('susccess','Post has been removed');
@@ -102,5 +108,32 @@ class AdminDashboardController extends AbstractController
         }
 
         return $this->redirectToRoute('manageUsers', []);
+    }
+
+    /**
+     * @Route("/admin/manage/comments", name="manageComments")
+     */
+    public function manageComments(CommentsRepository $cR)
+    {
+        $comments = $cR->findBy(array(), array('addedAt'=>'DESC'));
+
+        return $this->render('admin_dashboard/comments.html.twig', [
+            'comments'=>$comments
+        ]);
+    }
+
+    /**
+     * @Route("/admin/comment/{id}/remove", name="removeComment")
+     */
+    public function removeComment($id, CommentsRepository $cR, EntityManagerInterface $em)
+    {
+        $comment = $cR->findBy(['id'=>$id]);
+        if($comment)
+        {
+            $em->remove($comment[0]);
+            $em->flush();
+            $this->addFlash('success','Comment has been successfully removed');
+        }
+        return $this->redirectToRoute('manageComments', []);
     }
 }
