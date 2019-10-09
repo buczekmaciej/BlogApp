@@ -63,10 +63,6 @@ class UserController extends AbstractController
                 if(($exist->getPassword())===($data['Password']) && $exist->getIsDisabled() === false)
                 {
                     $session->set('user',$exist);
-                    $this->addFlash(
-                        'success',
-                        'You have been logged in! Welcome '.$data['Username']
-                    );
 
                     return $this->redirectToRoute('appHomepage', []);
                 }
@@ -152,8 +148,6 @@ class UserController extends AbstractController
                     $em->persist($user);
                     $em->flush();
 
-                    $this->addFlash('success', 'You were registered');
-
                     return $this->redirectToRoute('userLogin', []);
                 }
                 else
@@ -204,7 +198,6 @@ class UserController extends AbstractController
         $posts=$this->getDoctrine()->getRepository(Articles::class)->findBy(['user'=>$user]);
         
         return $this->render('user/profile.html.twig', [
-            'name'=>$session->getLogin(),
             'user'=>$user,
             'logged'=>$session,
             'details'=>$details,
@@ -298,7 +291,6 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/profileEdit.html.twig', [
-            'name'=>$logged->getLogin(),
             'user'=>$logged,
             'details'=>$details,
             'form'=>$form->createView()
