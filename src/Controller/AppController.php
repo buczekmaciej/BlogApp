@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\ArticlesRepository;
 use App\Repository\UserRepository;
+use App\Repository\CommentsRepository;
 use App\Entity\Articles;
 use App\Entity\Comments;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,17 +24,11 @@ class AppController extends AbstractController
     /**
      * @Route("/", name="appHomepage")
      */
-    public function homepage(SessionInterface $session, ArticlesRepository $aR)
+    public function homepage(ArticlesRepository $aR)
     {
-        $logged=$session->get('user');
-        if(!$logged)
-        {
-            return $this->redirectToRoute('userLogin', []);
-        }
-        $posts=$aR->findBy(array(), array('createdAt'=>'DESC'));
+        $posts=$aR->findBy(array(), array('createdAt'=>'DESC'), 5);
 
         return $this->render('app/index.html.twig', [
-            'name'=>$logged->getLogin(),
             'posts'=>$posts
         ]);
     }
@@ -42,7 +37,13 @@ class AppController extends AbstractController
      * @Route("/article/new", name="newArticle")
      */
     public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req)
-    {    
+    {
+        $logged = $session->get('user');
+        if(!$logged)
+        {
+            return $this->redirectToRoute('userLogin', []);
+        }
+
         $form=$this->createFormBuilder()
         ->add('Title', TextType::class, [
             'attr'=>[
@@ -118,66 +119,75 @@ class AppController extends AbstractController
      */
     public function likeArticle($slug, ArticlesRepository $aR, UserRepository $uR, EntityManagerInterface $em, SessionInterface $session)
     {
-        $article = $aR->findBy(['link'=>$slug]);
-        if ($article) {
-            $login = $session->get('user')->getLogin();
-            if($login){
-                $article = $article[0];
+        $logged = $session->get('user');
+        if ($logged) {
+            $article = $aR->findBy(['link'=>$slug]);
+            if ($article) {
+                $login = $session->get('user')->getLogin();
+                if($login){
+                    $article = $article[0];
 
-                $liked = false;
-                $user = $uR->findBy(['Login'=>$login])[0];
+                    $liked = false;
+                    $user = $uR->findBy(['Login'=>$login])[0];
 
-                foreach($article->getLikes() as $like)
-                {
-                    if($user === $like)
+                    foreach($article->getLikes() as $like)
                     {
-                        $liked = true;
+                        if($user === $like)
+                        {
+                            $liked = true;
+                        }
                     }
-                }
 
-                if ($liked == false) {
-                    $article->addLike($user);
-                } else {
-                    $article->removeLike($user);
-                }
+                    if ($liked == false) {
+                        $article->addLike($user);
+                    } else {
+                        $article->removeLike($user);
+                    }
 
-                $em->flush();
-                return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
-            }
-            else{
-                return $this->redirectToRoute('userLogin', []);
+                    $em->flush();
+                    return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
+                }
+                else{
+                    return $this->redirectToRoute('userLogin', []);
+                }
+            } else {
+                return $this->redirectToRoute('appHomepage', []);
             }
         } else {
-            return $this->redirectToRoute('appHomepage', []);
+           return $this->redirectToRoute('appHomepage', []);
         }
+        
     }
 
     /**
      * @Route("/article/{slug}", name="articleShow")
      */
-    public function articleShow($slug,EntityManagerInterface $em, UserRepository $uR, SessionInterface $session, ArticlesRepository $aR, Request $req)
+    public function articleShow($slug,EntityManagerInterface $em, UserRepository $uR, SessionInterface $session, ArticlesRepository $aR, Request $req, CommentsRepository $cR)
     {
         $user=$session->get('user');
-        $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
 
         $post=$aR->findBy(['link'=>$slug]);
         if(!$post)
         {
-            $this->addFlash('warning','No such post was found for this path');
-            return $this->redirectToRoute('appHomepage', []);
+            return $this->render('404.html.twig', []);
         }
-        $post=$post[0];
-        $id=$post->getId();
-        $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(array('Article'=>$id), array('addedAt'=>'DESC'));
+
         
         $liked = false;
-        foreach($post->getLikes() as $like)
-        {
-            if($user === $like)
+        if($user){
+            $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
+            foreach($post[0]->getLikes() as $like)
             {
-                $liked = true;
+                if($user === $like)
+                {
+                    $liked = true;
+                }
             }
         }
+
+        $id=$post[0]->getId();
+        $comments=$cR->findBy(array('Article'=>$id),array('addedAt'=>'DESC'));
+        
 
         $form=$this->createFormBuilder()
         ->add('Comment', TextType::class, [
@@ -198,24 +208,21 @@ class AppController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $content=$form->getData();
-            
-            $now=new \DateTime();
 
             $comment=new Comments();
             $comment->setContent($content['Comment']);
-            $comment->setAddedAt($now);
+            $comment->setAddedAt(new \DateTime());
             $comment->setUser($user);
-            $comment->setArticle($post);
+            $comment->setArticle($post[0]);
 
-            $em->merge($comment);
+            $em->persist($comment);
             $em->flush();
 
             return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
         }
 
         return $this->render('app/show.html.twig', [
-            'name'=>$user->getLogin(),
-            'post'=>$post,
+            'post'=>$post[0],
             'comments'=>$comments,
             'form'=>$form->createView(),
             'liked'=>$liked
@@ -232,7 +239,6 @@ class AppController extends AbstractController
         $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);
 
         return $this->render('app/search.html.twig', [
-            'name'=>$user->getLogin(),
             'result'=>$result
         ]);;
     }

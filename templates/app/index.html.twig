@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Eat much blog
+{% block title %}
+    Blog |
+    {% block addition %}
+        Homepage
+    {% endblock %}
 {% endblock %}
 
 {% block navbar %}
     <div class="navbar">
         <div class="homeLink">
             <a href="{{path('appHomepage')}}">
-                <img src="{{asset('images/logo.png')}}" alt="Logo">
+                Blog
             </a>
         </div>
         <div class="separator"></div>
@@ -20,11 +24,13 @@
             <div class="glypSrch" id="searchContainer">
                 <i class="glyphicon glyphicon-search" title="Find post"></i>
             </div>
-            <div class="glypUsr">
-                <a href="{{path('userProfile', {'user':name})}}">
-                    <i class="glyphicon glyphicon-user" title="{{name}}"></i>
-                </a>
-            </div>
+            {% if app.session.get('user') %}
+                <div class="glypUsr">
+                    <a href="{{path('userProfile', {'user':app.session.get('user').Login})}}">
+                        <i class="glyphicon glyphicon-user" title="{{app.session.get('user').Login}}"></i>
+                    </a>
+                </div>
+            {% endif %}
             <a href="{{path('userLogout')}}">
                 <button>
                     <i class="glyphicon glyphicon-log-out"></i>
@@ -37,25 +43,37 @@
 {% block body %}
     <div class="contentContainer">
         <div class="listPost">
-            {% for key,val in posts %}
-                <a href="{{path('articleShow', {'slug':val.link})}}">
+            {% for post in posts %}
+                {% set recent = false %}
+                {% if loop.first == true %}
+                    {% set recent = true %}
+                {% endif %}
+                <a href="{{path('articleShow', {'slug':post.link})}}" {% if recent == true %} class="recent" {% endif %}>
                     <div class="articleContainer">
-                        <div class="articleTitle">
-                            <h2>{{val.Title}}</h2>
-                        </div>
-                        <div class="articleCreated">
-                            <b>
-                                <i>Created at:
-                                    {{val.createdAt|date("Y-m-d")}}</i>
-                            </b>
-                        </div>
-                        <div class="articleAuthor">
-                            <b>Created by:
-                                {{val.user.Login}}</b>
-                        </div>
+                        {% if post.image is not null %}
+                            <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image">
+                        {% else %}
+                            <p class="glyphicon glyphicon-globe"></p>
+                        {% endif %}
+                        <p>{{post.Title}}</p>
+                        <p>
+                            <span class="author">
+                                Author:
+                                {{post.user.Login}}
+                            </span>
+                            <span class="date">
+                                {{post.createdAt|date("M d, Y")}}
+                            </span>
+                        </p>
                     </div>
                 </a>
             {% endfor %}
+            <a href="" class="show-all">
+                <button>Check all posts</button>
+            </a>
+        </div>
+        <div class="side">
+            asdwqe
         </div>
     </div>
 {% endblock %}

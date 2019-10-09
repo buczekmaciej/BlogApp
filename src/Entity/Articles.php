@@ -49,6 +49,11 @@ class Articles
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -141,6 +146,18 @@ class Articles
         if ($this->likes->contains($user)) {
             $this->likes->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

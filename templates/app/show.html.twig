@@ -33,12 +33,19 @@
                     <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
                 </div>
                 <div class="artLikes" id="likeSections">
-                    {% if liked == true %}
-                        <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up like" id="hand"></a>
+                    {% if app.session.get('user') %}
+                        {% if liked == true %}
+                            <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up like" id="hand"></a>
+                        {% else %}
+                            <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up no-like" id="hand"></a>
+                        {% endif %}
+                        <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
                     {% else %}
-                        <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up no-like" id="hand"></a>
+                        <p>
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                            <span>{{post.likes|length}}</span>
+                        </p>
                     {% endif %}
-                    <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
                 </div>
             </div>
             <div class="artContent">
@@ -49,12 +56,21 @@
             <div class="counter">
                 <h2>Comments ({{comments|length}})</h2>
             </div>
-            <div class="newComment">
-                {{form_start(form)}}
-                {{form_widget(form.Comment)}}
-                {{form_widget(form.Submit)}}
-                {{form_end(form)}}
-            </div>
+            {% if app.session.get('user') %}
+                <div class="newComment">
+                    {{form_start(form)}}
+                    {{form_widget(form.Comment)}}
+                    {{form_widget(form.Submit)}}
+                    {{form_end(form)}}
+                </div>
+            {% else %}
+                <div class="comm-log">
+                    <h2>You must be logged in to comment</h2>
+                    <a href="{{path('userLogin')}}">
+                        <button>Login</button>
+                    </a>
+                </div>
+            {% endif %}
             <div class="commentsList">
                 {% if comments == null %}
                     <div class="commentNone">

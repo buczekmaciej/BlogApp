@@ -1,0 +1,17 @@
+{% extends "app/index.html.twig" %}
+
+{% block title %}
+    404 | Not found
+{% endblock %}
+
+{% block body %}
+    <div class="postContainer">
+        <div class="error">
+            <h2 class="error-alert">Ooops... Looks like we don't have what you are looking for</h2>
+            <h2 class="error-code">404</h2>
+            <a href="{{path('appHomepage')}}">
+                <button>Homepage</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
