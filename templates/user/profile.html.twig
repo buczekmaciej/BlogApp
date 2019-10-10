@@ -1,8 +1,8 @@
 {% extends "app/index.html.twig" %}
 
 {% block title %}
-    {{name}}
-    - profile
+    Profile |
+    {{app.session.get('user').Login}}
 {% endblock %}
 
 {% block body %}
@@ -20,49 +20,9 @@
             </div>
         </div>
         <div class="userData" id="data">
-            <div class="login" id="loginCont">
-                <div class="name">Login</div>
-                <div class="value">{{user.0.Login}}</div>
-            </div>
-            <div class="password" id="passCont">
-                <div class="name">Password</div>
-                <div class="value">
-                    {% for i in range(1, user.0.Password|length) %}
-                        *
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="email" id="mailCont">
-                <div class="name">E-mail</div>
-                <div class="value">{{user.0.Email}}</div>
-            </div>
-            <div class="joined" id="joinCont">
-                <div class="name">Joined at</div>
-                <div class="value">{{user.0.joinedAt|date('d/m/Y H:i:s')}}</div>
-            </div>
-            <div class="firstName" id="nameCont">
-                <div class="name">First name</div>
-                <div class="value">{{details.firstName}}</div>
-            </div>
-            <div class="birthdayDate" id="bdayCont">
-                <div class="name">Birthday date</div>
-                {% if details.birthdayDate is empty %}
-                    <div class="value"></div>
-                {% else %}
-                    <div class="value">{{details.birthdayDate|date('d/m/Y')}}</div>
-                {% endif %}
-            </div>
-            <div class="location" id="locCont">
-                <div class="name">Located at</div>
-                <div class="value">{{details.location}}</div>
-            </div>
-            <div class="bio" id="bioCont">
-                <div class="name">Bio</div>
-                <div class="value">{{details.bio}}</div>
-            </div>
-            {% if user.0.Login == logged.Login %}
+            {% if user.Login == app.session.get('user').Login %}
                 <div class="makeChanges">
-                    <a href="{{path('userEditProfile', {'user':user.0.Login})}}">
+                    <a href="{{path('userEditProfile', {'user':app.session.get('user').Login})}}">
                         <button class="btn btn-submit">Make changes</button>
                     </a>
                 </div>
@@ -77,33 +37,8 @@
                     <a class="btn" href="#comments">Comments</a>
                 </li>
             </div>
-            <div class="articles" id="articlesCont">
-                {% for post in posts %}
-                    <a href="{{path('articleShow', {'slug':post.link})}}">
-                        <div class="contentElement">
-                            <h3>{{post.Title}}</h3>
-                            <h5>{{post.User.Login}}</h5>
-                            <p class="content">{{post.Content}}</p>
-                            <p class="date">{{post.createdAt|date('d/m/Y')}}</p>
-                        </div>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="comments" id="commentsCont">
-                {% for comment in comments %}
-                    <div class="contentElement">
-                        <h3>{{comment.Article.Title}}</h3>
-                        <h5>{{comment.User.Login}}
-                            answered
-                            {{comment.Article.user.Login}}
-                            in
-                            <a href="{{path('articleShow', {'slug':comment.Article.link})}}">post</a>
-                        </h5>
-                        <p class="content">{{comment.Content}}</p>
-                        <p class="date">{{comment.addedAt|date('d/m/Y')}}</p>
-                    </div>
-                {% endfor %}
-            </div>
+
+
         </div>
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "app/index.html.twig" %}
 
 {% block title %}
-    {{name}}'s profile edition
+    {{app.session.get('user').Login}}'s profile edition
 {% endblock %}
 
 {% block body %}

@@ -13,9 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
-use App\Entity\Articles;
-use App\Entity\Comments;
-use App\Entity\Details;
+use App\Repository\UserRepository;
+use App\Repository\CommentsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserController extends AbstractController
@@ -23,13 +22,14 @@ class UserController extends AbstractController
     /**
      * @Route("/user/login", name="userLogin")
      */
-    public function login(Request $req, SessionInterface $session)
+    public function login(Request $req, SessionInterface $session, UserRepository $uR)
     {
         $logged=$session->get('user');
         if($logged)
         {
             return $this->redirectToRoute('appHomepage');
         }
+
         $form=$this->createFormBuilder()
         ->add('Username', TextType::class, [
             'attr'=>[
@@ -56,13 +56,13 @@ class UserController extends AbstractController
         {
             $data=$form->getData();
 
-            $exist=$this->getDoctrine()->getRepository(User::class)->findOneBy(array('Login'=>$data['Username']),array());
+            $exist=$uR->findBy(['Login'=>$data['Username']]);
             
             if($exist)
             {
                 if(($exist->getPassword())===($data['Password']) && $exist->getIsDisabled() === false)
                 {
-                    $session->set('user',$exist);
+                    $session->set('user',$exist[0]);
 
                     return $this->redirectToRoute('appHomepage', []);
                 }
@@ -89,13 +89,14 @@ class UserController extends AbstractController
     /**
      * @Route("/user/register", name="userRegister")
      */
-    public function register(Request $req, EntityManagerInterface $em, SessionInterface $session)
+    public function register(Request $req, EntityManagerInterface $em, UserRepository $uR, SessionInterface $session)
     {
         $logged=$session->get('user');
         if($logged)
         {
             return $this->redirectToRoute('appHomepage');
         }
+
         $form=$this->createFormBuilder()
         ->add('Username', TextType::class, [
             'attr'=>[
@@ -105,8 +106,6 @@ class UserController extends AbstractController
         ])
         ->add('Password', RepeatedType::class, [
             'type'=>PasswordType::class,
-            'invalid_message'=>'Passwords must be the same',
-            'options'=>['attr'=>['class'=>'rinp']],
             'first_options'=>['attr'=>['placeholder'=>'Password']],
             'second_options'=>['attr'=>['placeholder'=>'Repeat password']]
         ])
@@ -129,10 +128,10 @@ class UserController extends AbstractController
         {
             $data=$form->getData();
 
-            $exist=$this->getDoctrine()->getRepository(User::class)->findOneBy(array('Login'=>$data['Username']),array());
+            $exist=$uR->findBy(['Login'=>$data['Username']]);
             if(!$exist)
             {
-                $taken=$this->getDoctrine()->getRepository(User::class)->findOneBy(array('Email'=>$data['Email']),array());
+                $taken=$uR->findBy(['Email'=>$data['Email']]);
                 if(!$taken)
                 {
                     $detail=new Details();
@@ -155,7 +154,7 @@ class UserController extends AbstractController
                     $this->addFlash('danger','E-mail is already taken');
                 }
             }
-            else if($data['Username']==='admin'||'Admin')
+            else if(strtoupper($data['Username']) === "ADMIN")
             {
                 $this->addFlash('danger','That is restricted');
             }
@@ -183,25 +182,23 @@ class UserController extends AbstractController
     /**
      * @Route("/{user}", name="userProfile")
      */
-    public function userProfile($user, SessionInterface $session)
+    public function userProfile($user, SessionInterface $session, UserRepository $uR, CommentsRepository $cR)
     {
-        $session=$session->get('user');
-        if(!$session)
+        $logged=$session->get('user');
+        if(!$logged)
         {
             return $this->redirectToRoute('userLogin', []);
         }
-        $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
+        if($user !== $logged->getLogin())
+        {
+            return $this->redirectToRoute('userProfile', ['user'=>$logged->getLogin()]);
+        }
 
-        $details=$user[0]->getDetails();
-
-        $comments=$this->getDoctrine()->getRepository(Comments::class)->findBy(['User'=>$user]);
-        $posts=$this->getDoctrine()->getRepository(Articles::class)->findBy(['user'=>$user]);
+        $user=$uR->findBy(['Login'=>$user])[0];
+        $comments=$cR->findBy(['User'=>$user]);
         
         return $this->render('user/profile.html.twig', [
             'user'=>$user,
-            'logged'=>$session,
-            'details'=>$details,
-            'posts'=>$posts,
             'comments'=>$comments
         ]);
     }
@@ -209,7 +206,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{user}/profile", name="userEditProfile")
      */
-    public function userEditProfile($user, SessionInterface $session, Request $request, EntityManagerInterface $em)
+    public function userEditProfile($user, SessionInterface $session, Request $request, EntityManagerInterface $em, UserRepository $uR)
     {
         $logged=$session->get('user');
         if($user != $logged->getLogin())
@@ -219,11 +216,9 @@ class UserController extends AbstractController
             ]);
         }
 
-        $user=$this->getDoctrine()->getRepository(User::class)->findBy(['Login'=>$user]);
+        $user=$uR->findBy(['Login'=>$user]);
 
-        $details=$user[0]->getDetails();
-
-        $date=$details->getBirthdayDate();
+        $date=$user[0]->getDetails()->getBirthdayDate();
         if($date)
         {
             $date=$date->format('Y-m-d');
@@ -239,7 +234,7 @@ class UserController extends AbstractController
         ->add('firstName',TextType::class, [
             'attr'=>[
                 'class'=>'value',
-                'value'=>$details->getFirstName()
+                'value'=>$user[0]->getDetails()->getFirstName()
             ]
         ])
         ->add('Bday',DateType::class, [
@@ -247,22 +242,20 @@ class UserController extends AbstractController
                 'class'=>'value'
             ],
             'format'=>'dd/MM/yyyy',
-            'days'=>range(1,31),
-            'months'=>range(1,12),
             'years'=>range(date('Y')-100, date('Y')),
             'data'=>new \DateTime($date)
         ])
         ->add('Location',TextType::class, [
             'attr'=>[
                 'class'=>'value',
-                'value'=>$details->getLocation()
+                'value'=>$user[0]->getDetails()->getLocation()
             ]
         ])
         ->add('Bio',TextareaType::class, [
             'attr'=>[
                 'class'=>'value'
             ],
-            'data'=>$details->getBio()
+            'data'=>$user[0]->getDetails()->getBio()
         ])
         ->add('Save', SubmitType::class, [
             'attr'=>[
@@ -272,11 +265,11 @@ class UserController extends AbstractController
         ->getForm();
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
             $data=$form->getData();
 
-            dump($data['Bday']);
             $logged->setEmail($data['Email']);
             $details->setFirstName($data['firstName']);
             $details->setBirthdayDate($data['Bday']);
@@ -291,8 +284,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/profileEdit.html.twig', [
-            'user'=>$logged,
-            'details'=>$details,
+            'user'=>$user[0],
             'form'=>$form->createView()
         ]);
     }

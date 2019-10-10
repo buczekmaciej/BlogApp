@@ -1,28 +1,43 @@
-{% extends "base.html.twig" %}
+{% extends "app/index.html.twig" %}
 
 {% set formater = 'You can check formater cheatsheet after click' %}
 
-{% block title %}Create new post
+{% block title %}
+    Create new post
 {% endblock %}
 
 {% block body %}
     <div class="creatorContainer">
         <div class="back">
             <a href="{{path('appHomepage')}}">
-                <p>
-                    <i class="glyphicon glyphicon-chevron-left"></i>
-                    <b>Homepage</b>
-                </p>
+                <i class="fas fa-angle-left"></i>
+                Homepage
             </a>
         </div>
         <div class="formContainer">
             {{form_start(form)}}
-            {{form_widget(form.Title)}}
-            <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
-                <i class="glyphicon glyphicon-question-sign" aria-label="{{formater}}"></i>
-            </a>
-            {{form_widget(form.Content)}}
-            {{form_widget(form.Create)}}
+            <div class="title-org">
+                <div class="label-side">
+                    {{form_label(form.Title)}}
+                    <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
+                        <i class="fas fa-question-circle" title="{{formater}}"></i>
+                    </a>
+                </div>
+                <div class="inp-side">
+                    {{form_widget(form.Title)}}
+                </div>
+            </div>
+            <div class="content-org">
+                <div class="label-side">
+                    {{form_label(form.Content)}}
+                </div>
+                <div class="inp-side">
+                    {{form_widget(form.Content)}}
+                </div>
+            </div>
+            <div class="submit-org">
+                {{form_widget(form.Create)}}
+            </div>
             {{form_end(form)}}
         </div>
     </div>

@@ -15,8 +15,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 
 class AppController extends AbstractController
@@ -36,7 +34,7 @@ class AppController extends AbstractController
     /**
      * @Route("/article/new", name="newArticle")
      */
-    public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req)
+    public function createArticle(SessionInterface $session, EntityManagerInterface $em, Request $req, ArticlesRepository $aR, UserRepository $uR)
     {
         $logged = $session->get('user');
         if(!$logged)
@@ -45,16 +43,14 @@ class AppController extends AbstractController
         }
 
         $form=$this->createFormBuilder()
-        ->add('Title', TextType::class, [
+        ->add('Title', TextareaType::class, [
             'attr'=>[
                 'class'=>'ninp',
-                'placeholder'=>'Title'
             ]
         ])
         ->add('Content', TextareaType::class, [
             'attr'=>[
                 'class'=>'narea',
-                'placeholder'=>'Post content'
             ]
         ])
         ->add('Create', SubmitType::class, [
@@ -71,9 +67,6 @@ class AppController extends AbstractController
             $data=$form->getData();
 
             $user=$session->get('user');
-
-            $title=$data['Title'];
-            $content=$data['Content'];
             
             $special=array('!','?','.',',','/','#','%','*','(',')','[',']','+','-','_','@','$','^','&','<','>','|',':',';','"',"'");
 
@@ -81,7 +74,7 @@ class AppController extends AbstractController
             $slug=str_replace(' ','-', $slug);
             $slug=mb_strtolower($slug);
 
-            $exist=$this->getDoctrine()->getRepository(Articles::class)->findBy(['link'=>$slug]);
+            $exist=$aR->findBy(['link'=>$slug]);
             if($exist)
             {
                 $this->addFlash(
@@ -91,16 +84,16 @@ class AppController extends AbstractController
             }
             else
             {
-                $now=new \DateTime();
+                $user = $uR->findBy(['id'=>$user->getId()]);
 
                 $article=new Articles();
-                $article->setTitle($title);
-                $article->setContent($content);
-                $article->setCreatedAt($now);
+                $article->setTitle($data['Title']);
+                $article->setContent($data['Content']);
+                $article->setCreatedAt(new \DateTime());
                 $article->setUser($user);
                 $article->setLink($slug);
 
-                $em->merge($article);
+                $em->persist($article);
                 $em->flush();
 
                 return $this->redirectToRoute('articleShow', [
@@ -180,9 +173,8 @@ class AppController extends AbstractController
                     }
                 }
             }
-
-            $id=$post[0]->getId();
-            $comments=$cR->findBy(array('Article'=>$id),array('addedAt'=>'DESC'));
+            
+            $comments = $cR->findBy(array('Article'=>$post[0]->getId()), array('addedAt'=>'DESC'));
             
 
             $form=$this->createFormBuilder()
@@ -234,13 +226,13 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/search/{value}", name="articleSearch", methods={"GET","POST"})
+     * @Route("/search/{value}", name="articleSearch")
      */
-    public function search($value, SessionInterface $session)
+    public function search($value, SessionInterface $session, ArticlesRepository $aR)
     {
         $user=$session->get('user');
 
-        $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);
+        $result=$aR->checkIfContain($value);
 
         return $this->render('app/search.html.twig', [
             'result'=>$result,
