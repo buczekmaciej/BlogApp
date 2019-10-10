@@ -7,6 +7,11 @@
     {% endblock %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{asset('styles/app.css')}}" rel="stylesheet"/>
+{% endblock %}
+
 {% block navbar %}
     <div class="navbar">
         <div class="homeLink">
@@ -16,26 +21,30 @@
         </div>
         <div class="separator"></div>
         <div class="rightNav" id="nav">
-            <div class="glypNew">
-                <a href="{{path('newArticle')}}" title="Create new article">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
             <div class="glypSrch" id="searchContainer">
                 <i class="fas fa-search" title="Find post"></i>
             </div>
             {% if app.session.get('user') %}
+                <div class="glypNew">
+                    <a href="{{path('newArticle')}}" title="Create new article">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
                 <div class="glypUsr">
                     <a href="{{path('userProfile', {'user':app.session.get('user').Login})}}">
                         <i class="fas fa-user" title="{{app.session.get('user').Login}}"></i>
                     </a>
                 </div>
+                <a href="{{path('userLogout')}}" class="logout">
+                    <button>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{path('userLogin')}}" class="login">
+                    <button>Login</button>
+                </a>
             {% endif %}
-            <a href="{{path('userLogout')}}">
-                <button>
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </a>
         </div>
     </div>
 {% endblock %}

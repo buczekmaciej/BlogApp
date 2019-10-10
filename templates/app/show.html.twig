@@ -1,100 +1,109 @@
 {% extends "app/index.html.twig" %}
 
 {% block title %}
-    {{post.Title}}
+    {% if post is not empty %}
+
+        {{post.Title}}
+    {% else %}
+        Error 404 | Not Found
+    {% endif %}
 {% endblock %}
 
 {% block body %}
     <div class="postContainer">
-        <div class="post">
-            <div class="path">
-                <p>
-                    <a href="{{path('appHomepage')}}">
-                        <b>Home</b>
-                    </a>
-                    <i class="glyphicon glyphicon-chevron-right"></i>
-                    <span title="Your current location">
-                        <i>
+        {% if post is not empty %}
+            <div class="post">
+                <div class="path">
+                    <p>
+                        <a href="{{path('appHomepage')}}">
+                            <b>Home</b>
+                        </a>
+                        <i class="fas fa-angle-right"></i>
+                        <span title="Your current location">
                             <b>{{post.Title}}</b>
-                        </i>
-                    </span>
-                </p>
-            </div>
-            <div class="artTitle">
-                <h2>
-                    <i>{{post.Title}}</i>
-                </h2>
-            </div>
-            <div class="artExtra">
-                <div class="artAuthor">
-                    <i>{{post.user.Login}}</i>
+                        </span>
+                    </p>
                 </div>
-                <div class="artDate">
-                    <i>{{post.createdAt.date|date('Y-m-d H:i')}}</i>
+                <div class="artTitle">
+                    <p>
+                        {{post.Title}}
+                    </p>
                 </div>
-                <div class="artLikes" id="likeSections">
-                    {% if app.session.get('user') %}
-                        {% if liked == true %}
-                            <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up like" id="hand"></a>
+                <div class="artExtra">
+                    <div class="artAuthor">
+                        {{post.user.Login}}
+                    </div>
+                    <div class="artDate">
+                        {{post.createdAt.date|date('M d, Y H:i')}}
+                    </div>
+                    <div class="artLikes" id="likeSections">
+                        {% if app.session.get('user') %}
+                            {% if liked == true %}
+                                <a href="{{path('likeArticle', {'slug': post.link})}}" id="hand">
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{path('likeArticle', {'slug': post.link})}}" id="hand">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                            {% endif %}
+                            <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
                         {% else %}
-                            <a href="{{path('likeArticle', {'slug': post.link})}}" class="glyphicon glyphicon-thumbs-up no-like" id="hand"></a>
+                            <p>
+                                <i class="far fa-heart"></i>
+                                <span>{{post.likes|length}}</span>
+                            </p>
                         {% endif %}
-                        <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
+                    </div>
+                </div>
+                <div class="artContent">
+                    <p>{{post.Content|markdown}}</p>
+                </div>
+            </div>
+            <div class="comments">
+                <div class="counter">
+                    <h2>Comments ({{comments|length}})</h2>
+                </div>
+                {% if app.session.get('user') %}
+                    <div class="newComment">
+                        {{form_start(form)}}
+                        {{form_widget(form.Comment)}}
+                        {{form_widget(form.Submit|raw)}}
+                        {{form_end(form)}}
+                    </div>
+                {% else %}
+                    <div class="comm-log">
+                        <p>You must be logged in to comment</p>
+                        <a href="{{path('userLogin')}}">
+                            <button>Login</button>
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="commentsList">
+                    {% if comments == null %}
+                        <div class="comment-none">
+                            <p>This article hasn't been commented yet</p>
+                        </div>
                     {% else %}
-                        <p>
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                            <span>{{post.likes|length}}</span>
-                        </p>
+                        {% for comment in comments %}
+                            <div class="comment" id="comment-{{comment.id}}">
+                                <div class="comment-top">
+                                    <a href="{{path('userProfile', {'user':comment.User.Login})}}">
+                                        <div class="authorSection">
+                                            <i class="fas fa-user"></i>
+                                            <div class="comAuthor">{{comment.User.Login}}</div>
+                                        </div>
+                                    </a>
+                                    <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
+                                </div>
+                                <div class="comContent">{{comment.Content}}</div>
+                            </div>
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>
-            <div class="artContent">
-                <p>{{post.Content|markdown}}</p>
-            </div>
-        </div>
-        <div class="comments">
-            <div class="counter">
-                <h2>Comments ({{comments|length}})</h2>
-            </div>
-            {% if app.session.get('user') %}
-                <div class="newComment">
-                    {{form_start(form)}}
-                    {{form_widget(form.Comment)}}
-                    {{form_widget(form.Submit)}}
-                    {{form_end(form)}}
-                </div>
-            {% else %}
-                <div class="comm-log">
-                    <h2>You must be logged in to comment</h2>
-                    <a href="{{path('userLogin')}}">
-                        <button>Login</button>
-                    </a>
-                </div>
-            {% endif %}
-            <div class="commentsList">
-                {% if comments == null %}
-                    <div class="commentNone">
-                        <p>This article hasn't been commented yet</p>
-                    </div>
-                {% else %}
-                    {% for comment in comments %}
-                        <div class="comment" id="comment-{{comment.id}}">
-                            <a href="{{path('userProfile', {'user':comment.User.Login})}}">
-                                <div class="authorSection">
-                                    <div class="glyph">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </div>
-                                    <div class="comAuthor">{{comment.User.Login}}</div>
-                                </div>
-                            </a>
-                            <div class="orgSection">
-                                <div class="comContent">{{comment.Content}}</div>
-                                <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
+        {% else %}
+            {% include "404.html.twig" %}
+        {% endif %}
     </div>
 {% endblock %}

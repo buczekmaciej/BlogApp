@@ -1,32 +1,40 @@
 {% extends "app/index.html.twig" %}
 
-{% block title %}Search result
+{% block title %}
+    {% if result is not empty %}
+        Search result for
+        {{query}}
+    {% else %}
+        Error 404 | Not Found
+    {% endif %}
 {% endblock %}
 
 {% block body %}
     <div class="contentContainer">
         <div class="listPost">
             {% if result is empty %}
-                <div class="exception">
-                    <h2>Sorry there is nothing like that</h2>
-                </div>
+                {% include "404.html.twig" %}
             {% else %}
-                {% for key,val in result %}
-                    <a href="{{path('articleShow', {'slug':val.link})}}">
+                {% for post in result %}
+                    <a href="{{path('articleShow', {'slug':post.link})}}">
                         <div class="articleContainer">
-                            <div class="articleTitle">
-                                <h2>{{val.Title}}</h2>
-                            </div>
-                            <div class="articleCreated">
-                                <b>
-                                    <i>Created at:
-                                        {{val.createdAt|date("Y-m-d")}}</i>
-                                </b>
-                            </div>
-                            <div class="articleAuthor">
-                                <b>Created by:
-                                    {{val.user.Login}}</b>
-                            </div>
+                            {% if post.image is not null %}
+                                <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image">
+                            {% else %}
+                                <p>
+                                    <i class="fas fa-globe-americas"></i>
+                                </p>
+                            {% endif %}
+                            <p>{{post.Title}}</p>
+                            <p>
+                                <span class="author">
+                                    Author:
+                                    {{post.user.Login}}
+                                </span>
+                                <span class="date">
+                                    {{post.createdAt|date("M d, Y")}}
+                                </span>
+                            </p>
                         </div>
                     </a>
                 {% endfor %}

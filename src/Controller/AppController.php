@@ -164,69 +164,73 @@ class AppController extends AbstractController
      */
     public function articleShow($slug,EntityManagerInterface $em, UserRepository $uR, SessionInterface $session, ArticlesRepository $aR, Request $req, CommentsRepository $cR)
     {
-        $user=$session->get('user');
-
         $post=$aR->findBy(['link'=>$slug]);
-        if(!$post)
-        {
-            return $this->render('404.html.twig', []);
-        }
 
-        
-        $liked = false;
-        if($user){
-            $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
-            foreach($post[0]->getLikes() as $like)
-            {
-                if($user === $like)
+        if ($post) {
+            $user=$session->get('user');
+
+            $liked = false;
+            if($user){
+                $user = $uR->findBy(['Login'=>$user->getLogin()])[0];
+                foreach($post[0]->getLikes() as $like)
                 {
-                    $liked = true;
+                    if($user === $like)
+                    {
+                        $liked = true;
+                    }
                 }
             }
-        }
 
-        $id=$post[0]->getId();
-        $comments=$cR->findBy(array('Article'=>$id),array('addedAt'=>'DESC'));
+            $id=$post[0]->getId();
+            $comments=$cR->findBy(array('Article'=>$id),array('addedAt'=>'DESC'));
+            
+
+            $form=$this->createFormBuilder()
+            ->add('Comment', TextType::class, [
+                'attr'=>[
+                    'class'=>'cinp',
+                    'placeholder'=>'Comment content'
+                ]
+            ])
+            ->add('Submit', SubmitType::class, [
+                'attr'=>[
+                    'class'=>'csub'
+                ],
+                'label'=>'Add comment'
+            ])
+            ->getForm();
+
+            $form->handleRequest($req);
+
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $content=$form->getData();
+
+                $comment=new Comments();
+                $comment->setContent($content['Comment']);
+                $comment->setAddedAt(new \DateTime());
+                $comment->setUser($user);
+                $comment->setArticle($post[0]);
+
+                $em->persist($comment);
+                $em->flush();
+
+                return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
+            }
+
+            return $this->render('app/show.html.twig', [
+                'post'=>$post[0],
+                'comments'=>$comments,
+                'form'=>$form->createView(),
+                'liked'=>$liked
+            ]);
+        } 
+        else {
+            return $this->render('app/show.html.twig', [
+                'post'=>$post
+            ]);
+        }
         
-
-        $form=$this->createFormBuilder()
-        ->add('Comment', TextType::class, [
-            'attr'=>[
-                'class'=>'cinp',
-                'placeholder'=>'Comment content'
-            ]
-        ])
-        ->add('Submit', SubmitType::class, [
-            'attr'=>[
-                'class'=>'csub'
-            ]
-        ])
-        ->getForm();
-
-        $form->handleRequest($req);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $content=$form->getData();
-
-            $comment=new Comments();
-            $comment->setContent($content['Comment']);
-            $comment->setAddedAt(new \DateTime());
-            $comment->setUser($user);
-            $comment->setArticle($post[0]);
-
-            $em->persist($comment);
-            $em->flush();
-
-            return $this->redirectToRoute('articleShow', ['slug'=>$slug]);
-        }
-
-        return $this->render('app/show.html.twig', [
-            'post'=>$post[0],
-            'comments'=>$comments,
-            'form'=>$form->createView(),
-            'liked'=>$liked
-        ]);
     }
 
     /**
@@ -239,7 +243,8 @@ class AppController extends AbstractController
         $result=$this->getDoctrine()->getRepository(Articles::class)->checkIfContain($value);
 
         return $this->render('app/search.html.twig', [
-            'result'=>$result
+            'result'=>$result,
+            'query'=>$value
         ]);;
     }
 }
