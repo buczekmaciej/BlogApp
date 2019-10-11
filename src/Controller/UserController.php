@@ -60,7 +60,7 @@ class UserController extends AbstractController
             
             if($exist)
             {
-                if(($exist->getPassword())===($data['Password']) && $exist->getIsDisabled() === false)
+                if(($exist[0]->getPassword())===($data['Password']) && $exist[0]->getIsDisabled() === false)
                 {
                     $session->set('user',$exist[0]);
 
@@ -270,11 +270,11 @@ class UserController extends AbstractController
         {
             $data=$form->getData();
 
-            $logged->setEmail($data['Email']);
-            $details->setFirstName($data['firstName']);
-            $details->setBirthdayDate($data['Bday']);
-            $details->setLocation($data['Location']);
-            $details->setBio($data['Bio']);
+            $user[0]->setEmail($data['Email']);
+            $user[0]->getDetails()->setFirstName($data['firstName']);
+            $user[0]->getDetails()->setBirthdayDate($data['Bday']);
+            $user[0]->getDetails()->setLocation($data['Location']);
+            $user[0]->getDetails()->setBio($data['Bio']);
 
             $em->flush();
             

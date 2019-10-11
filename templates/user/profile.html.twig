@@ -5,40 +5,83 @@
     {{app.session.get('user').Login}}
 {% endblock %}
 
+{% block stylesheets %}
+{{parent()}}
+    <link href="{{asset('styles/user.css')}}" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
     <div class="userProfile" id="user">
-        <div class="userMenu">
-            <div class="sideMenu">
-                <ul>
-                    <li id="personal">
-                        <a class="btn" href="#data">Personal info</a>
-                    </li>
-                    <li id="feed">
-                        <a class="btn" href="#activity">Activity</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="userData" id="data">
-            {% if user.Login == app.session.get('user').Login %}
-                <div class="makeChanges">
-                    <a href="{{path('userEditProfile', {'user':app.session.get('user').Login})}}">
-                        <button class="btn btn-submit">Make changes</button>
-                    </a>
+            <div class="userMenu">
+                <div class="user">
+                    <p class="prof">
+                        <i class="fas fa-user"></i>
+                    </p>
+                    <p class="name">{{user.Details.firstName}}</p>
+                    <p class="prof-link">@{{app.session.get('user').Login}}</p>
                 </div>
-            {% endif %}
-        </div>
-        <div class="userActivity" id="activity">
-            <div class="select">
-                <li id="articles">
-                    <a class="btn" href="#articles">Articles</a>
-                </li>
-                <li id="comments">
-                    <a class="btn" href="#comments">Comments</a>
-                </li>
+                <p class="personal">Personal info</p>
+                <p class="activity">Activity</p>
             </div>
+        <div class="userContent">
+            <div class="userData active" id="data">
+                <div>
+                    <div class="label-side">Login</div>
+                    <div class="value-side">{{user.Login}}</div>
+                </div>
+                <div>
+                    <div class="label-side">Password</div>
+                    <div class="value-side">
+                        {% for i in range(1, user.Password|length) %}
+                            *
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <div class="label-side">E-mail</div>
+                    <div class="value-side">{{user.Email}}</div>
+                </div>
+                <div>
+                    <div class="label-side">First name</div>
+                    <div class="value-side">{{user.Details.firstName}}</div>
+                </div>
+                <div>
+                    <div class="label-side">Location</div>
+                    <div class="value-side">{{user.Details.location}}</div>
+                </div>
+                <div>
+                    <div class="label-side">Birthday date</div>
+                    <div class="value-side">{{user.Details.birthdayDate|date('d / m / Y')}}</div>
+                </div>
+                <div>
+                    <div class="label-side">Join date</div>
+                    <div class="value-side">{{user.joinedAt|date('d / m / Y  H:i')}}</div>
+                </div>
+                <div>
+                    <div class="label-side">Banned</div>
+                    <div class="value-side">
+                        {% if user.isDisabled == false %}
+                            No
+                        {% else %}
+                            Yes
+                        {% endif %}
+                    </div>
+                </div>
 
-
+                {% if user.Login == app.session.get('user').Login %}
+                    <div class="changes">
+                        <a href="{{path('userEditProfile', {'user':app.session.get('user').Login})}}">
+                            <button class="btn btn-submit">Make changes</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="userActivity" id="activity">
+                <div class="select">
+                    <p class="articles">Articles</p>
+                    <p class="comments">Comments</p>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

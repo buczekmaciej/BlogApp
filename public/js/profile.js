@@ -1,39 +1,20 @@
-const personal = document.getElementById("personal");
-const activity = document.getElementById("feed");
-const articles = document.getElementById("articles");
-const comments = document.getElementById("comments");
+const personalLink = document.getElementsByClassName("personal")[0];
+const activityLink = document.getElementsByClassName("activity")[0];
 
-personal.addEventListener("click", e => {
-  usePersonal();
+const userData = document.getElementsByClassName("userData")[0];
+const activity = document.getElementsByClassName("userActivity")[0];
+
+personalLink.addEventListener("click", function() {
+  clearActive();
+  userData.classList.add("active");
 });
 
-activity.addEventListener("click", e => {
-  useActivity();
+activityLink.addEventListener("click", function() {
+  clearActive();
+  activity.classList.add("active");
 });
 
-articles.addEventListener("click", e => {
-  useArticles();
-});
-
-comments.addEventListener("click", e => {
-  useComments();
-});
-function usePersonal() {
-  document.getElementById("data").style.display = "flex";
-  document.getElementById("activity").style.display = "none";
-}
-
-function useActivity() {
-  document.getElementById("data").style.display = "none";
-  document.getElementById("activity").style.display = "flex";
-}
-
-function useArticles() {
-  document.getElementById("commentsCont").style.display = "none";
-  document.getElementById("articlesCont").style.display = "flex";
-}
-
-function useComments() {
-  document.getElementById("articlesCont").style.display = "none";
-  document.getElementById("commentsCont").style.display = "flex";
+function clearActive() {
+  const currActive = document.getElementsByClassName("active")[0];
+  currActive.classList.remove("active");
 }
