@@ -70,7 +70,7 @@ class AppController extends AbstractController
             
             $special=array('!','?','.',',','/','#','%','*','(',')','[',']','+','-','_','@','$','^','&','<','>','|',':',';','"',"'");
 
-            $slug=str_replace($special, "", $title);
+            $slug=str_replace($special, "", $data['Title']);
             $slug=str_replace(' ','-', $slug);
             $slug=mb_strtolower($slug);
 
@@ -84,10 +84,10 @@ class AppController extends AbstractController
             }
             else
             {
-                $user = $uR->findBy(['id'=>$user->getId()]);
+                $user = $uR->findBy(['id'=>$user->getId()])[0];
 
                 $article=new Articles();
-                $article->setTitle($data['Title']);
+                $article->setTitle(ucfirst($data['Title']));
                 $article->setContent($data['Content']);
                 $article->setCreatedAt(new \DateTime());
                 $article->setUser($user);

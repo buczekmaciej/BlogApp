@@ -248,10 +248,10 @@ a:link {
   font-size: 3vh;
   font-weight: bold;
 }
-.title-org a {
+.content-org a {
   color: rgb(185, 36, 36);
 }
-.title-org .label-side {
+.content-org .label-side {
   display: flex;
   justify-content: space-between;
 }

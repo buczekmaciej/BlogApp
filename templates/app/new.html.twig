@@ -19,9 +19,6 @@
             <div class="title-org">
                 <div class="label-side">
                     {{form_label(form.Title)}}
-                    <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
-                        <i class="fas fa-question-circle" title="{{formater}}"></i>
-                    </a>
                 </div>
                 <div class="inp-side">
                     {{form_widget(form.Title)}}
@@ -30,6 +27,9 @@
             <div class="content-org">
                 <div class="label-side">
                     {{form_label(form.Content)}}
+                    <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
+                        <i class="fas fa-question-circle" title="{{formater}}"></i>
+                    </a>
                 </div>
                 <div class="inp-side">
                     {{form_widget(form.Content)}}

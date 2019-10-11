@@ -189,10 +189,6 @@ class UserController extends AbstractController
         {
             return $this->redirectToRoute('userLogin', []);
         }
-        if($user !== $logged->getLogin())
-        {
-            return $this->redirectToRoute('userProfile', ['user'=>$logged->getLogin()]);
-        }
 
         $user=$uR->findBy(['Login'=>$user])[0];
         $comments=$cR->findBy(['User'=>$user]);
