@@ -60,22 +60,37 @@
                 <a href="{{path('articleShow', {'slug':post.link})}}" {% if recent == true %} class="recent" {% endif %}>
                     <div class="articleContainer">
                         {% if post.image is not null %}
-                            <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image">
+                            <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image" class="post-img">
                         {% else %}
                             <p>
                                 <i class="fas fa-globe-americas"></i>
                             </p>
                         {% endif %}
-                        <p>{{post.Title}}</p>
-                        <p>
-                            <span class="author">
-                                Author:
-                                {{post.user.Login}}
-                            </span>
-                            <span class="date">
-                                {{post.createdAt|date("M d, Y")}}
-                            </span>
-                        </p>
+                        {% if recent == true %}
+                            <div class="bottom-stick">
+                                <p>{{post.Title}}</p>
+                                <p>
+                                    <span class="author">
+                                        Author:
+                                        {{post.user.Login}}
+                                    </span>
+                                    <span class="date">
+                                        {{post.createdAt|date("M d, Y")}}
+                                    </span>
+                                </p>
+                            </div>
+                        {% else %}
+                            <p>{{post.Title}}</p>
+                            <p>
+                                <span class="author">
+                                    Author:
+                                    {{post.user.Login}}
+                                </span>
+                                <span class="date">
+                                    {{post.createdAt|date("M d, Y")}}
+                                </span>
+                            </p>
+                        {% endif %}
                     </div>
                 </a>
             {% endfor %}

@@ -14,7 +14,9 @@ use App\Entity\Comments;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\File;
 
 
 class AppController extends AbstractController
@@ -25,6 +27,13 @@ class AppController extends AbstractController
     public function homepage(ArticlesRepository $aR)
     {
         $posts=$aR->findBy(array(), array('createdAt'=>'DESC'), 5);
+
+        foreach($posts as $post)
+        {
+            if ($post->getImage()) {
+                $post->setImage(stream_get_contents($post->getImage()));
+            }
+        }
 
         return $this->render('app/index.html.twig', [
             'posts'=>$posts
@@ -53,6 +62,21 @@ class AppController extends AbstractController
                 'class'=>'narea',
             ]
         ])
+        ->add('IMG', FileType::class, [
+            'label'=>'Article image (JPG, JPEG, PNG)',
+            'required'=>false,
+            'constraints'=>[
+                new File([
+                    'maxSize'=>'2048k',
+                    'mimeTypes'=>[
+                        'image/jpg',
+                        'image/jpeg',
+                        'image/png'
+                    ],
+                    'mimeTypesMessage'=>'Select valid image(jpg, jpeg, png)'
+                ])
+            ]
+        ])
         ->add('Create', SubmitType::class, [
             'attr'=>[
                 'class'=>'nsub'
@@ -61,7 +85,7 @@ class AppController extends AbstractController
         ->getForm();
         
         $form->handleRequest($req);
-
+        
         if($form->isSubmitted() && $form->isValid())
         {
             $data=$form->getData();
@@ -84,9 +108,29 @@ class AppController extends AbstractController
             }
             else
             {
+                $article=new Articles();
+
+                if($data['IMG'])
+                {
+                    $date = new \DateTime();
+                    $imgName = $date->format('Ymd').'-'.uniqid().'.'.$data['IMG']->guessExtension();
+
+                    try {
+                        $data['IMG']->move(
+                            'images/postsImages',
+                            $imgName
+                        );
+
+                        $article->setImage($imgName);
+                    } 
+                    catch(FileException $e){
+                        $this->addFlash('danger', 'Something went wrong during sending image. Try again');
+                        return $this->redirectToRoute('newArticle', []);
+                    }
+                }
+
                 $user = $uR->findBy(['id'=>$user->getId()])[0];
 
-                $article=new Articles();
                 $article->setTitle(ucfirst($data['Title']));
                 $article->setContent($data['Content']);
                 $article->setCreatedAt(new \DateTime());

@@ -118,7 +118,7 @@ a:link {
 .contentContainer {
   width: 80%;
   height: 85vh;
-  margin: 1.5% auto;
+  margin: 1% auto;
   display: flex;
 }
 .side {
@@ -132,7 +132,7 @@ a:link {
   display: block;
   height: 12vh;
   width: 90%;
-  margin: 0.7% auto;
+  margin: 0.5% auto;
 }
 .listPost .articleContainer {
   width: 100%;
@@ -148,6 +148,9 @@ a:link {
 .articleContainer p:nth-child(1) {
   flex: 1;
 }
+a:not(.recent) .articleContainer img {
+  max-width: 7vw;
+}
 .articleContainer p:nth-child(1) {
   font-size: 5vh;
   padding: 2vh 0;
@@ -161,6 +164,7 @@ a:link {
   font-size: 2.8vh;
   font-weight: bold;
   color: rgb(31, 30, 30);
+  margin-left: 0.5vw;
 }
 .articleContainer p:nth-child(3) {
   display: flex;
@@ -178,15 +182,58 @@ a:link {
   margin: 1% auto;
 }
 .recent > .articleContainer {
-  margin: 0.5% auto;
   width: 100%;
   height: 100%;
-  padding: 1%;
+  padding: 0;
+  margin: 0;
   border: 0.5px solid gray;
   box-shadow: 0 0 2px 0.1px gray;
   background-color: #fff;
   color: black;
   display: flex;
+  position: relative;
+}
+.recent .articleContainer > img {
+  max-width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.recent .articleContainer p:nth-child(1) {
+  font-size: 15vh;
+  padding: 2vh 0;
+  text-align: center;
+  color: gray;
+}
+.recent .articleContainer .bottom-stick {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  background-color: #fff;
+  width: 100%;
+  height: 6vh;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+}
+.recent .bottom-stick p:nth-child(1) {
+  font-size: 3vh;
+  color: #000;
+  font-weight: bold;
+  flex: 5;
+  text-align: left;
+}
+.recent .bottom-stick p:nth-child(2) {
+  font-size: 2.5vh;
+  color: gray;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
 }
 
 .listPost .show-all {
@@ -245,7 +292,7 @@ a:link {
   flex: 1;
   border-right: 1px solid rgb(196, 195, 195);
   padding: 0.7vh 0.7vw;
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-weight: bold;
 }
 .content-org a {
@@ -259,8 +306,16 @@ a:link {
   font-size: 2.5vh;
 }
 .inp-side {
-  flex: 2;
+  flex: 3;
   padding: 1vh 0.5vw;
+}
+.inp-side input {
+  width: 100%;
+  height: 100%;
+  padding: 0.7vh;
+  cursor: pointer;
+  outline: none;
+  font-size: 2.5vh;
 }
 .inp-side textarea {
   width: 100%;
