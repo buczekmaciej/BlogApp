@@ -205,6 +205,9 @@ class AppController extends AbstractController
 
         if ($post) {
             $user=$session->get('user');
+            if($post[0]->getImage()){
+                $post[0]->setImage(stream_get_contents($post[0]->getImage()));
+            }
 
             $liked = false;
             if($user){

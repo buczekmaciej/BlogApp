@@ -32,7 +32,10 @@
         </div>
         <div>
             <div class="label-side">Bio</div>
-            <div class="value-side">{{form_widget(form.Bio)}}</div>
+            <div class="value-side">
+                {{form_widget(form.Bio)}}
+                <div class="sign-counter"></div>
+            </div>
         </div>
         <div class="saveChanges">
             {{form_widget(form.Save)}}
@@ -42,3 +45,8 @@
 {% endblock %}
 
 {% block profileDynamic %}{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{asset('js/counter.js')}}"></script>
+{% endblock %}

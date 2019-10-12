@@ -371,10 +371,17 @@ a:not(.recent) .articleContainer img {
   flex: 2;
   font-size: 2.5vh;
 }
+.artLikes {
+  text-align: center;
+}
 .fa-heart {
   color: red !important;
 }
-
+.image-link {
+  font-size: 2.5vh;
+  cursor: pointer;
+  color: blue;
+}
 .artContent {
   margin: 1% auto;
   font-size: 2.8vh;
@@ -540,4 +547,38 @@ a:not(.recent) .articleContainer img {
   color: #fff;
   background-color: rgb(185, 36, 36);
   box-shadow: none;
+}
+
+.show-img {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  z-index: 50;
+  background-color: rgba(61, 61, 61, 0.815);
+}
+.show-close {
+  font-size: 4vh;
+  float: right;
+  cursor: pointer;
+  width: 1.7%;
+  color: #fff;
+  margin-right: 0.5vw;
+  margin-top: 0.5vh;
+}
+.show-cont {
+  max-width: 90%;
+  max-height: 90%;
+  animation: imgAppear 0.7s;
+}
+
+@keyframes imgAppear {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }

@@ -243,7 +243,7 @@ class UserController extends AbstractController
         ])
         ->add('Bio',TextareaType::class, [
             'attr'=>[
-                'class'=>'value',
+                'class'=>'bio-value',
                 'maxlength'=>200
             ],
             'required'=>false,

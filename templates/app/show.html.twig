@@ -55,6 +55,11 @@
                             </p>
                         {% endif %}
                     </div>
+                    {% if post.image is not null %}
+                        <div class="image-link">
+                            <p data-id="{{post.image}}" class="link-img">Image</p>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="artContent">
                     <p>{{post.Content|markdown}}</p>
@@ -106,4 +111,9 @@
             {% include "404.html.twig" %}
         {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{asset('js/imgshow.js')}}"></script>
 {% endblock %}

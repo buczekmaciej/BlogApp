@@ -323,7 +323,7 @@
 }
 .userProfEdit > form > div:nth-child(5) {
   display: flex;
-  flex: 2.5;
+  flex: 2.8;
 }
 .userProfEdit .label-side {
   border: none;
@@ -351,13 +351,23 @@
 }
 .userProfEdit .value-side textarea {
   width: 50%;
-  height: 90%;
+  height: 95%;
   font-size: 2.5vh;
   padding: 0.5vh 0.5vw;
   resize: none;
 }
-.userProfEdit .value-side > div {
+.userProfEdit .value-side > .value {
   width: 50%;
+}
+.userProfEdit > form > div:nth-child(5) > .value-side {
+  position: relative;
+}
+.sign-counter {
+  position: absolute;
+  color: #000;
+  bottom: 1.8vh;
+  left: 20vw;
+  font-size: 1.8vh;
 }
 .userProfEdit .value-side select {
   width: 32.5%;
