@@ -241,7 +241,7 @@ a:link {
 .submit-org {
   flex: 0.5;
 }
-.label-side {
+.formContainer .label-side {
   flex: 1;
   border-right: 1px solid rgb(196, 195, 195);
   padding: 0.7vh 0.7vw;
@@ -255,7 +255,7 @@ a:link {
   display: flex;
   justify-content: space-between;
 }
-.label-side i {
+.formContainer .label-side i {
   font-size: 2.5vh;
 }
 .inp-side {

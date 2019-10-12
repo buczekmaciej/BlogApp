@@ -2,11 +2,11 @@
 
 {% block title %}
     Profile |
-    {{app.session.get('user').Login}}
+    {{app.request.attributes.get('_route_params').user}}
 {% endblock %}
 
 {% block stylesheets %}
-{{parent()}}
+    {{parent()}}
     <link href="{{asset('styles/user.css')}}" rel="stylesheet"/>
 {% endblock %}
 
@@ -20,105 +20,114 @@
                 <p class="name">{{user.Details.firstName}}</p>
                 <p class="prof-link">@{{user.Login}}</p>
             </div>
-            <p class="personal">Personal info</p>
-            <p class="activity">Activity</p>
+            {% block userMenu %}
+                <p class="personal">Personal info</p>
+                <p class="activity">Activity</p>
+            {% endblock %}
         </div>
-        <div class="userContent">
-            <div class="userData active" id="data">
-                <div>
-                    <div class="label-side">Login</div>
-                    <div class="value-side">{{user.Login}}</div>
-                </div>
-                {% if app.session.get('user').Login == app.request.attributes.get('_route_params').user %}
+        {% block userContent %}
+            <div class="userContent">
+                <div class="userData active" id="data">
                     <div>
-                        <div class="label-side">Password</div>
+                        <div class="label-side">Login</div>
+                        <div class="value-side">{{user.Login}}</div>
+                    </div>
+                    {% if app.session.get('user') %}
+                        {% if app.session.get('user').Login == app.request.attributes.get('_route_params').user %}
+                            <div>
+                                <div class="label-side">Password</div>
+                                <div class="value-side">
+                                    {% for i in range(1, user.Password|length) %}
+                                        *
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="label-side">E-mail</div>
+                                <div class="value-side">{{user.Email}}</div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div>
+                        <div class="label-side">First name</div>
+                        <div class="value-side">{{user.Details.firstName}}</div>
+                    </div>
+                    <div>
+                        <div class="label-side">Location</div>
+                        <div class="value-side">{{user.Details.location}}</div>
+                    </div>
+                    <div>
+                        <div class="label-side">Birthday date</div>
+                        <div class="value-side">{{user.Details.birthdayDate|date('d / m / Y')}}</div>
+                    </div>
+                    <div>
+                        <div class="label-side">Join date</div>
+                        <div class="value-side">{{user.joinedAt|date('d / m / Y  H:i')}}</div>
+                    </div>
+                    <div class="bio">
+                        <div class="label-side">Bio</div>
                         <div class="value-side">
-                            {% for i in range(1, user.Password|length) %}
-                                *
-                            {% endfor %}
+                            {{user.Details.bio}}
                         </div>
                     </div>
-                    <div>
-                        <div class="label-side">E-mail</div>
-                        <div class="value-side">{{user.Email}}</div>
+
+                    {% if app.session.get('user') %}
+                        {% if user.Login == app.session.get('user').Login %}
+                            <div class="changes">
+                                <a href="{{path('userEditProfile', {'user':app.session.get('user').Login})}}">
+                                    <button class="btn btn-submit">Make changes</button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="userActivity" id="activity">
+                    <div class="select">
+                        <p class="articles">Articles</p>
+                        <p class="comments">Comments</p>
                     </div>
-                {% endif %}
-                <div>
-                    <div class="label-side">First name</div>
-                    <div class="value-side">{{user.Details.firstName}}</div>
-                </div>
-                <div>
-                    <div class="label-side">Location</div>
-                    <div class="value-side">{{user.Details.location}}</div>
-                </div>
-                <div>
-                    <div class="label-side">Birthday date</div>
-                    <div class="value-side">{{user.Details.birthdayDate|date('d / m / Y')}}</div>
-                </div>
-                <div>
-                    <div class="label-side">Join date</div>
-                    <div class="value-side">{{user.joinedAt|date('d / m / Y  H:i')}}</div>
-                </div>
-                <div>
-                    <div class="label-side">Banned</div>
-                    <div class="value-side">
-                        {% if user.isDisabled == false %}
-                            No
+                    <div class="articles-cont disp">
+                        {% if user.Article is empty %}
+                            <p class="null-data">This user has not created any post so far</p>
                         {% else %}
-                            Yes
+                            {% for post in user.Article %}
+                                <a href="{{path('articleShow', {'slug':post.link})}}" target="_blank">
+                                    <div class="user-post">
+                                        <p class="post-title">{{post.Title}}</p>
+                                        <p class="post-postDate">{{post.createdAt|date('M d, Y')}}</p>
+                                        <p class="post-likes">{{post.likes|length}}
+                                            <i class="fas fa-heart"></i>
+                                        </p>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="comments-cont">
+                        {% if comments is empty %}
+                            <p class="null-data">This user has not commented anything so far</p>
+                        {% else %}
+                            {% for comment in comments %}
+                                <a href="{{path('articleShow', {'slug':comment.Article.link})}}" target="_blank">
+                                    <p class="comment-title">{{comment.Content}}</p>
+                                    <div class="comm-bottom">
+                                        <p class="comment-postDate">{{comment.addedAt|date('M d, Y')}}</p>
+                                        <p class="comment-ref">@
+                                            {{comment.Article.Title}}</p>
+                                    </div>
+                                </a>
+                            {% endfor %}
                         {% endif %}
                     </div>
                 </div>
-
-                {% if user.Login == app.session.get('user').Login %}
-                    <div class="changes">
-                        <a href="{{path('userEditProfile', {'user':app.session.get('user').Login})}}">
-                            <button class="btn btn-submit">Make changes</button>
-                        </a>
-                    </div>
-                {% endif %}
             </div>
-            <div class="userActivity" id="activity">
-                <div class="select">
-                    <p class="articles">Articles</p>
-                    <p class="comments">Comments</p>
-                </div>
-                <div class="articles-cont disp">
-                    {% if user.Article is empty %}
-                        <p class="null-data">This user has not created any post so far</p>
-                    {% else %}
-                        {% for post in user.Article %}
-                            <a href="{{path('articleShow', {'slug':post.link})}}" target="_blank">
-                                <div class="user-post">
-                                    <p class="post-title">{{post.Title}}</p>
-                                    <p class="post-postDate">{{post.createdAt|date('M d, Y')}}</p>
-                                    <p class="post-likes">{{post.likes|length}} <i class="fas fa-heart"></i></p>
-                                </div>
-                            </a>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="comments-cont">
-                    {% if comments is empty %}
-                        <p class="null-data">This user has not commented anything so far</p>
-                    {% else %}
-                        {% for comment in comments %}
-                            <a href="{{path('articleShow', {'slug':comment.Article.link})}}" target="_blank">
-                                <p class="comment-title">{{comment.Content}}</p>
-                                <div class="comm-bottom">
-                                    <p class="comment-postDate">{{comment.addedAt|date('M d, Y')}}</p>
-                                    <p class="comment-ref">@ {{comment.Article.Title}}</p>
-                                </div>
-                            </a>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        {% endblock %}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{parent()}}
-    <script src="{{asset('js/profile.js')}}"></script>
+    {% block profileDynamic %}
+        <script src="{{asset('js/profile.js')}}"></script>
+    {% endblock %}
 {% endblock %}

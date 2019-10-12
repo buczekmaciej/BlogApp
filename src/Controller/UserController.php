@@ -184,12 +184,6 @@ class UserController extends AbstractController
      */
     public function userProfile($user, SessionInterface $session, UserRepository $uR, CommentsRepository $cR)
     {
-        $logged=$session->get('user');
-        if(!$logged)
-        {
-            return $this->redirectToRoute('userLogin', []);
-        }
-
         $user=$uR->findBy(['Login'=>$user])[0];
         $comments=$cR->findBy(['User'=>$user]);
         
@@ -249,8 +243,10 @@ class UserController extends AbstractController
         ])
         ->add('Bio',TextareaType::class, [
             'attr'=>[
-                'class'=>'value'
+                'class'=>'value',
+                'maxlength'=>200
             ],
+            'required'=>false,
             'data'=>$user[0]->getDetails()->getBio()
         ])
         ->add('Save', SubmitType::class, [

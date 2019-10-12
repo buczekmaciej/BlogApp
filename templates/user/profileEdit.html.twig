@@ -1,57 +1,44 @@
-{% extends "app/index.html.twig" %}
+{% extends "user/profile.html.twig" %}
 
 {% block title %}
     {{app.session.get('user').Login}}'s profile edition
 {% endblock %}
 
-{% block body %}
-{% set user = app.session.get('user') %}
-    <div class="userProfile" id="user">
-        <div class="userMenu">
-            <h2>Section to be developed soon</h2>
+{% block userMenu %}
+    <a href="{{path('userProfile', {'user': app.request.attributes.get('_route_params').user})}}" class="backProf">
+        <i class="fas fa-angle-left"></i>
+        Back to profile
+    </a>
+{% endblock %}
+
+{% block userContent %}
+    <div class="userProfEdit">
+        {{form_start(form)}}
+        <div>
+            <div class="label-side">E-mail</div>
+            <div class="value-side">{{form_widget(form.Email)}}</div>
         </div>
-        <div class="userData" id="data">
-            {{form_start(form)}}
-            <div class="login" id="loginCont">
-                <div class="name">Login</div>
-                <div class="value" id="login">{{user.Login}}</div>
-            </div>
-            <div class="password" id="passCont">
-                <div class="name">Password</div>
-                <div class="value">
-                    {% for i in range(1, user.Password|length) %}
-                        *
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="email" id="mailCont">
-                <div class="name">E-mail</div>
-                {{form_widget(form.Email)}}
-            </div>
-            <div class="joined" id="joinCont">
-                <div class="name">Joined at</div>
-                <div class="value">{{user.joinedAt|date('d/m/Y H:i:s')}}</div>
-            </div>
-            <div class="firstName" id="nameCont">
-                <div class="name">First name</div>
-                {{form_widget(form.firstName)}}
-            </div>
-            <div class="birthdayDate" id="bdayCont">
-                <div class="name">Birthday date</div>
-                {{form_widget(form.Bday)}}
-            </div>
-            <div class="location" id="locCont">
-                <div class="name">Located at</div>
-                {{form_widget(form.Location)}}
-            </div>
-            <div class="bio" id="bioCont">
-                <div class="name">Bio</div>
-                {{form_widget(form.Bio)}}
-            </div>
-            <div class="saveChanges">
-                {{form_widget(form.Save)}}
-            </div>
-            {{form_end(form)}}
+        <div>
+            <div class="label-side">First name</div>
+            <div class="value-side">{{form_widget(form.firstName)}}</div>
         </div>
+        <div>
+            <div class="label-side">Birthday date</div>
+            <div class="value-side">{{form_widget(form.Bday)}}</div>
+        </div>
+        <div>
+            <div class="label-side">Located at</div>
+            <div class="value-side">{{form_widget(form.Location)}}</div>
+        </div>
+        <div>
+            <div class="label-side">Bio</div>
+            <div class="value-side">{{form_widget(form.Bio)}}</div>
+        </div>
+        <div class="saveChanges">
+            {{form_widget(form.Save)}}
+        </div>
+        {{form_end(form)}}
     </div>
 {% endblock %}
+
+{% block profileDynamic %}{% endblock %}
