@@ -144,20 +144,25 @@ a:link {
   color: black;
   display: flex;
 }
-.articleContainer img,
 .articleContainer p:nth-child(1) {
   flex: 1;
 }
 a:not(.recent) .articleContainer img {
-  max-width: 7vw;
+  max-width: 100%;
+  max-height: 100%;
 }
-.articleContainer p:nth-child(1) {
+a:not(.recent) .articleContainer i {
   font-size: 5vh;
-  padding: 2vh 0;
+}
+a:not(.recent) .articleContainer p:nth-child(1) {
+  font-size: 5vh;
   text-align: center;
   color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.articleContainer p:nth-child(2) {
+a:not(.recent) .articleContainer p:nth-child(2) {
   flex: 6;
   padding: 2.5vh 5px;
   overflow: hidden;
@@ -166,7 +171,7 @@ a:not(.recent) .articleContainer img {
   color: rgb(31, 30, 30);
   margin-left: 0.5vw;
 }
-.articleContainer p:nth-child(3) {
+a:not(.recent) .articleContainer p:nth-child(3) {
   display: flex;
   flex-direction: column;
   font-size: 2vh;
@@ -193,31 +198,33 @@ a:not(.recent) .articleContainer img {
   display: flex;
   position: relative;
 }
-.recent .articleContainer > img {
+.recent .articleContainer > p > img {
   max-width: 100%;
-  height: 100%;
+  max-height: 100%;
   position: relative;
   top: 0;
   left: 0;
   z-index: 1;
 }
-.recent .articleContainer p:nth-child(1) {
-  font-size: 15vh;
-  padding: 2vh 0;
+.recent .articleContainer > p:nth-child(1) {
+  font-size: 18vh;
   text-align: center;
   color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .recent .articleContainer .bottom-stick {
   position: absolute;
   bottom: 0;
   left: 0;
   z-index: 5;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.377);
   width: 100%;
   height: 6vh;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  padding: 0 1vw;
 }
 .recent .bottom-stick p:nth-child(1) {
   font-size: 3vh;
@@ -268,7 +275,6 @@ a:not(.recent) .articleContainer img {
   width: 85%;
   margin: 2% auto;
   height: auto;
-  border: 1px solid rgb(196, 195, 195);
 }
 .formContainer form {
   height: 75vh;
@@ -277,7 +283,9 @@ a:not(.recent) .articleContainer img {
 }
 .formContainer > form > div {
   display: flex;
-  border-bottom: 1px solid rgb(196, 195, 195);
+}
+.formContainer > form > div:last-of-type {
+  border-top: 1px solid rgb(196, 195, 195);
 }
 .title-org {
   flex: 0.7;
@@ -290,7 +298,6 @@ a:not(.recent) .articleContainer img {
 }
 .formContainer .label-side {
   flex: 1;
-  border-right: 1px solid rgb(196, 195, 195);
   padding: 0.7vh 0.7vw;
   font-size: 2.5vh;
   font-weight: bold;
@@ -316,6 +323,7 @@ a:not(.recent) .articleContainer img {
   cursor: pointer;
   outline: none;
   font-size: 2.5vh;
+  border: 1px solid gray;
 }
 .inp-side textarea {
   width: 100%;
@@ -569,8 +577,9 @@ a:not(.recent) .articleContainer img {
   margin-top: 0.5vh;
 }
 .show-cont {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: 5vh 5vw;
   animation: imgAppear 0.7s;
 }
 

@@ -59,13 +59,13 @@
                 {% endif %}
                 <a href="{{path('articleShow', {'slug':post.link})}}" {% if recent == true %} class="recent" {% endif %}>
                     <div class="articleContainer">
-                        {% if post.image is not null %}
-                            <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image" class="post-img">
-                        {% else %}
-                            <p>
+                        <p>
+                            {% if post.image is not null %}
+                                <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image" class="post-img">
+                            {% else %}
                                 <i class="fas fa-globe-americas"></i>
-                            </p>
-                        {% endif %}
+                            {% endif %}
+                        </p>
                         {% if recent == true %}
                             <div class="bottom-stick">
                                 <p>{{post.Title}}</p>
