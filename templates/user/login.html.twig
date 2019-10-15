@@ -10,14 +10,20 @@
 
 {% block body %}
     <div class="logContainer">
-        <div class="logForm">
-            <h2>Login</h2>
-            {{form_start(form)}}
+        <p>Login</p>
+        {{form_start(form)}}
+        <div class="username">
+            <i class="fas fa-user"></i>
             {{form_widget(form.Username)}}
-            {{form_widget(form.Password)}}
-            {{form_widget(form.Login)}}
-            {{form_end(form)}}
-            <a href="{{path('userRegister')}}">You have no account yet? Register now!</a>
         </div>
+        <div class="password">
+            <i class="fas fa-lock"></i>
+            {{form_widget(form.Password)}}
+        </div>
+        {{form_widget(form.Login)}}
+        {{form_end(form)}}
+        <p>
+            <a href="{{path('userRegister')}}">You have no account yet? Register now!</a>
+        </p>
     </div>
 {% endblock %}

@@ -1,53 +1,85 @@
+body {
+  background-color: rgb(235, 235, 235);
+}
+a {
+  text-decoration: none;
+}
 .logContainer {
-  width: 100%;
-  height: 100%;
+  height: 60vh;
+  width: 30vw;
+  margin: 10vh 35vw;
+  background-color: #fff;
+  box-shadow: 0 0 5px 1px rgb(211, 197, 197);
 }
-.regContainer {
-  width: 100%;
-  height: 100%;
+.logContainer > p:first-of-type {
+  height: 20%;
+  font-size: 5.5vh;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
 }
-
-.logContainer .logForm {
-  width: 33%;
-  height: auto;
-  margin-left: 33%;
-  margin-top: 10%;
+.logContainer > form {
+  height: 70%;
+  width: 100%;
+  padding: 0.7vh 0.7vw;
   display: flex;
   flex-direction: column;
-  border: 0.5px solid black;
-  box-shadow: 0 0 15px 3px gray;
-  background-color: rgb(207, 248, 214);
+  justify-content: space-evenly;
+  align-items: center;
 }
-.logContainer .logForm .logWidg {
-  flex: 1;
+.logContainer > form > div {
+  position: relative;
+  height: 25%;
+  width: 90%;
 }
-.logContainer .logForm h2 {
-  flex: 1;
-  margin: auto;
-  font-size: 35px;
+.logContainer > form > div > i {
+  position: absolute;
+  top: 25%;
+  left: 3%;
+  z-index: 25;
+  font-size: 5vh;
+  color: gray;
 }
-.logContainer .logForm input {
-  width: 84%;
-  height: 35px;
-  display: block;
-  margin: 8%;
+.logContainer > form > div > input {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
   border: none;
-  text-align: center;
-}
-.logContainer .logForm button {
-  margin: auto 10% auto 10%;
-  flex: 1;
-  width: 80%;
-  height: 35px;
   border-radius: 15px;
+  padding-left: 4.5vw;
+  outline: none;
+  font-size: 4vh;
+  background-color: rgb(189, 189, 189);
+}
+.logContainer > form > button {
+  width: 60%;
+  height: 15%;
+  border: 1px solid rgb(185, 36, 36);
+  color: rgb(185, 36, 36);
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 3.5vh;
+  border-radius: 8px;
+  transition: 0.4s ease;
+}
+.logContainer button:hover {
+  background-color: rgb(185, 36, 36);
   border: none;
-  background-color: rgb(129, 137, 241);
   color: #fff;
 }
-.logContainer .logForm a {
-  margin: auto;
-  flex: 1;
-  text-decoration: none;
+.logContainer > p:last-of-type {
+  width: 100%;
+  height: 13%;
+  background-color: rgb(204, 199, 199);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+}
+.logContainer a {
+  color: rgb(185, 36, 36);
 }
 
 .regContainer .regForm {
