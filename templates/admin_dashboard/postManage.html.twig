@@ -12,8 +12,15 @@
                 <i class="fas fa-user" title="{{post.user.Login}}"></i>
                 <i class="fas fa-link" title="/article/{{post.link}}"></i>
                 <i class="fas fa-heart" title="{{post.likes|length}}"></i>
-                <a href="{{path('removePost',{'id':post.id})}}"><i class="fas fa-trash-alt"></i></a>
+                <a href="{{path('removePost',{'id':post.id})}}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
             </section>
         {% endfor %}
     </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{asset('js/copy.js')}}"></script>
 {% endblock %}

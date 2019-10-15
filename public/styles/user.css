@@ -403,16 +403,20 @@ a {
   font-weight: normal;
   padding-left: 1.5vw;
   font-size: 3vh;
+  display: flex;
+  align-items: center;
 }
 .userProfEdit > form > div:nth-child(5) .label-side {
   align-items: flex-start;
-  margin-top: 1.3vh;
+  margin-top: 2vh;
 }
 .userProfEdit .value-side {
   flex: 3;
   margin-top: 1.5vh;
   padding-left: 1.5vw;
   color: rgb(87, 87, 87);
+  display: flex;
+  align-items: center;
 }
 .userProfEdit .value-side input {
   width: 50%;

@@ -176,7 +176,7 @@ class UserController extends AbstractController
     {
         $session->clear();
 
-        return $this->redirectToRoute('userLogin', []);
+        return $this->redirectToRoute('appHomepage', []);
     }
 
     /**

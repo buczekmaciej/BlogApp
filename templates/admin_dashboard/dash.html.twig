@@ -12,38 +12,26 @@
 {% block navbar %}
     <div class="nav">
         <a href="{{path('adminDashboard')}}"><img src="{{asset('images/aDash.png')}}" alt="dashLogo" title="Admin dashboard"/></a>
-        <div class="userManage">
-            <a href="{{path('manageUsers')}}">
-                <button title="Users">
-                    <i class="glyphicon glyphicon-user"></i>
-                </button>
-            </a>
-        </div>
-        <div class="postManage">
-            <a href="{{path('managePosts')}}">
-                <button title="Posts">
-                    <i class="glyphicon glyphicon-book"></i>
-                </button>
-            </a>
-        </div>
-        <div class="commentManage">
-            <a href="{{path('manageComments')}}">
-                <button title="Comments">
-                    <i class="glyphicon glyphicon-comment"></i>
-                </button>
-            </a>
-        </div>
-
-        <div class="logOut">
-            <p>Logged as
-                {{app.user.username}}(<a href="{{path('dashLogout')}}">Logout</a>)
-            </p>
-        </div>
+        <a href="{{path('manageUsers')}}">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="{{path('managePosts')}}">
+            <i class="fas fa-book"></i>
+        </a>
+        <a href="{{path('manageComments')}}">
+            <i class="fas fa-comment"></i>
+        </a>
+        <a href="{{path('dashLogout')}}">Logout</a>
     </div>
 {% endblock %}
 
 {% block body %}
     <main class="dash-greet">
-        <h1>Hello {{app.user.username}}</h1>
+        <h1>Hello
+            {{app.user.username}}
+        </h1>
+        <p>
+            Please pick action you want to do from navbar
+        </p>
     </main>
 {% endblock %}
