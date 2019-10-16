@@ -24,9 +24,11 @@ class AppController extends AbstractController
     /**
      * @Route("/", name="appHomepage")
      */
-    public function homepage(ArticlesRepository $aR)
+    public function homepage(ArticlesRepository $aR, CommentsRepository $cR)
     {
         $posts=$aR->findBy(array(), array('createdAt'=>'DESC'), 5);
+        $recentComments = $cR->findBy(array(), array('addedAt'=>'DESC'), 5);
+        // TODO: Show most liked articles
 
         foreach($posts as $post)
         {
@@ -36,7 +38,8 @@ class AppController extends AbstractController
         }
 
         return $this->render('app/index.html.twig', [
-            'posts'=>$posts
+            'posts'=>$posts,
+            'comms'=>$recentComments
         ]);
     }
 

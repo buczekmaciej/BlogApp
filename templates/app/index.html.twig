@@ -99,7 +99,33 @@
             </a>
         </div>
         <div class="side">
-            asdwqe
+            <div class="most-liked">
+                <p>Most liked articles</p>
+                {% for i in range(5,1) %}
+                    <a href="">
+                        <div class="liked-article">
+                            <p>Title</p>
+                            <p>User</p>
+                            <p>
+                                <i class="fas fa-heart"></i>
+                                {{i}}
+                            </p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="recent-comments">
+                <p>Recent comments</p>
+                {% for comment in comms %}
+                    <a href="{{path('articleShow', {'slug':comment.Article.link})}}">
+                        <div class="recent-comment">
+                            <p>{{comment.Content}}</p>
+                            <p>{{comment.User.Login}}</p>
+                            <p>@{{comment.Article.Title}}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
