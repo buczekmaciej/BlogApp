@@ -1,0 +1,35 @@
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+    Page -
+    {{app.request.get('page')}}
+{% endblock %}
+
+{% block body %}
+    <main class="pagination-org">
+        <section class="paginated-posts">
+            {% for element in pagination %}
+                <a href="{{path('articleShow', {'slug': element.link})}}">
+                    <div>
+                        <p>{{element.Title}}</p>
+                        <p>
+                            <i class="fas fa-user"></i>
+                            {{element.user.Login}}
+                        </p>
+                        <p>
+                            <i class="fas fa-calendar-alt"></i>
+                            {{element.createdAt|date('M d, Y')}}
+                        </p>
+                        <p>
+                            <i class="fas fa-heart"></i>
+                            {{element.likes|length}}
+                        </p>
+                    </div>
+                </a>
+            {% endfor %}
+        </section>
+        <section class="navigator">
+            {{knp_pagination_render(pagination)}}
+        </section>
+    </main>
+{% endblock %}

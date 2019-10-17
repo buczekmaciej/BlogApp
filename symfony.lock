@@ -96,11 +96,20 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "fzaninotto/faker": {
+        "version": "v1.8.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "knplabs/knp-components": {
+        "version": "v2.2.0"
+    },
     "knplabs/knp-markdown-bundle": {
         "version": "1.7.1"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v4.0.0"
     },
     "michelf/php-markdown": {
         "version": "1.8.0"
@@ -520,14 +529,8 @@
     "twbs/bootstrap": {
         "version": "v4.3.1"
     },
-    "twig/markdown-extension": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "709b663eeb863ec3011db883d795c1122d85be85"
-        }
+    "twig/markdown-extra": {
+        "version": "v2.12.1"
     },
     "twig/twig": {
         "version": "v2.11.3"

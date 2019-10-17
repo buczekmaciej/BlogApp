@@ -17,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\File;
+use Knp\Component\Pager\PaginatorInterface;
+use Faker\Factory;
 
 
 class AppController extends AbstractController
@@ -41,6 +43,17 @@ class AppController extends AbstractController
             'posts'=>$posts,
             'comms'=>$recentComments,
             'liked'=>$mostLiked
+        ]);
+    }
+
+    /**
+     * @Route("/articles", name="articlesPagination")
+     */
+    public function articlesPagination(PaginatorInterface $paginator, Request $request, ArticlesRepository $aR)
+    {
+        $articles = $aR->findAll();
+        return $this->render('app/pagination.html.twig', [
+            'pagination' => $paginator->paginate($articles, $request->query->getInt('page', 1), 10)
         ]);
     }
 
@@ -164,7 +177,7 @@ class AppController extends AbstractController
         if ($logged) {
             $article = $aR->findBy(['link'=>$slug]);
             if ($article) {
-                $login = $session->get('user')->getLogin();
+                $login = $logged->getLogin();
                 if($login){
                     $article = $article[0];
 
