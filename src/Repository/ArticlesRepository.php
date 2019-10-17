@@ -34,6 +34,19 @@ class ArticlesRepository extends ServiceEntityRepository
         ;
     }
 
+    public function mostLiked()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('COUNT(u) AS HIDDEN likes', 'a')
+            ->andWhere('a.likes IS NOT EMPTY')
+            ->leftJoin('a.likes', 'u')
+            ->orderBy('likes', 'DESC')
+            ->groupBy('a')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Articles
     {

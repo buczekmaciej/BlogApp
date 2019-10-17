@@ -28,7 +28,7 @@ class AppController extends AbstractController
     {
         $posts=$aR->findBy(array(), array('createdAt'=>'DESC'), 5);
         $recentComments = $cR->findBy(array(), array('addedAt'=>'DESC'), 5);
-        // TODO: Show most liked articles
+        $mostLiked = $aR->mostLiked();
 
         foreach($posts as $post)
         {
@@ -39,7 +39,8 @@ class AppController extends AbstractController
 
         return $this->render('app/index.html.twig', [
             'posts'=>$posts,
-            'comms'=>$recentComments
+            'comms'=>$recentComments,
+            'liked'=>$mostLiked
         ]);
     }
 
@@ -278,10 +279,8 @@ class AppController extends AbstractController
     /**
      * @Route("/search/{value}", name="articleSearch")
      */
-    public function search($value, SessionInterface $session, ArticlesRepository $aR)
+    public function search($value, ArticlesRepository $aR)
     {
-        $user=$session->get('user');
-
         $result=$aR->checkIfContain($value);
 
         return $this->render('app/search.html.twig', [
