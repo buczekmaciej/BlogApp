@@ -14,15 +14,15 @@
 			Sign in
 		</p>
 		<div class="inpBox">
-			<input type="text" id="username" name="username" value="{{ username }}"/>
+			<input type="text" id="username" name="username" value="{{ username }}" autofocus required/>
 			<label for="username">
-				Username:
+				Username
 			</label>
 		</div>
 		<div class="inpBox">
-			<input type="password" id="password" class="pass" name="password" value=""/>
+			<input type="password" id="password" class="pass" name="password" required/>
 			<label for="password">
-				Password:
+				Password
 			</label>
 			<span class="showBtn">
 				Show
@@ -33,7 +33,7 @@
 			Remember me
 		</label>
 		<input type="hidden" name="csrf" value="{{ csrf_token('authenticate') }}">
-		<button type="submit">
+		<button id="submit-login" type="submit" disabled>
 			Sign in
 		</button>
 		<a href="{{path('userRegister')}}">
