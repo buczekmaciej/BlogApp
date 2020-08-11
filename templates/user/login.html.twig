@@ -4,19 +4,26 @@
 	Login
 {% endblock %}
 
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+	<link href="/styles/login.css" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 	<form action="{{ path('userLogin') }}" method="POST">
-		<label for="username">
-			Username:
-		</label>
-		<input type="text" id="username" name="username" value="{{ username }}"/>
-		<div>
+		<p class="tag">
+			Sign in
+		</p>
+		<div class="inpBox">
+			<input type="text" id="username" name="username" value="{{ username }}"/>
+			<label for="username">
+				Username:
+			</label>
+		</div>
+		<div class="inpBox">
+			<input type="password" id="password" class="pass" name="password" value=""/>
 			<label for="password">
 				Password:
 			</label>
-			<input type="password" id="password" class="pass" name="password"/>
 			<span class="showBtn">
 				Show
 			</span>
@@ -30,10 +37,10 @@
 			Sign in
 		</button>
 		<a href="{{path('userRegister')}}">
-			Register
+			Become member now
 		</a>
 		{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			<div class="alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 		{% endif %}
 	</form>
 {% endblock %}

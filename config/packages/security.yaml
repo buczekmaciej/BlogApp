@@ -16,7 +16,7 @@ security:
       anonymous: true
       provider: app_user_provider
       logout:
-        path: userLogout
+        path: /u/logout
       guard:
         authenticators:
           - App\Security\LoginAuthenticator

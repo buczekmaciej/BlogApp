@@ -1,0 +1,130 @@
+body {
+  background-color: #0b5f73;
+}
+
+form {
+  height: 80vh;
+  width: 35%;
+  margin: 10vh auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f6f2;
+  padding: 3em 1.5em;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgb(0, 0, 0, 0.2);
+}
+
+.tag {
+  font-size: 2.5em;
+  font-weight: 800;
+  margin-bottom: 3vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.inpBox {
+  position: relative;
+  width: 100%;
+  height: 15%;
+  margin: 1.75vh 0;
+}
+
+.inpBox input {
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 10px;
+  font-size: 1rem;
+  letter-spacing: 0.062rem;
+  margin-bottom: 1.875rem;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.inpBox label {
+  position: absolute;
+  top: 0.75rem;
+  left: 10px;
+  padding: 0.625rem 0;
+  font-size: 1rem;
+  color: grey;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+.inpBox:last-of-type input {
+  padding-right: 64px;
+}
+.showBtn {
+  position: absolute;
+  right: 10px;
+  top: 22px;
+  font-size: 0.9em;
+  color: #1a73e8;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.inpBox input:focus ~ label,
+.inpBox input:valid ~ label,
+.inpBox input:not([value=""]) ~ label {
+  top: -0.5rem;
+  left: 10px;
+  color: #1a73e8;
+  font-size: 0.75rem;
+  background-color: #f9f6f2;
+  height: 10px;
+  padding: 0 5px;
+}
+
+.inpBox input:focus {
+  outline: none;
+  border: 2px solid #1a73e8;
+}
+
+button {
+  border: none;
+  outline: none;
+  color: #f9f6f2;
+  background-color: #1a73e8;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  border-radius: 0.312rem;
+  font-size: 1.2rem;
+  width: 64%;
+  margin: 1.5vh auto;
+}
+button:hover {
+  background-color: #287ae6;
+  box-shadow: 0 1px 1px 0 rgba(66, 133, 244, 0.45),
+    0 1px 3px 1px rgba(66, 133, 244, 0.3);
+}
+button:disabled {
+  background-color: #1a73e88f;
+}
+button:disabled:hover {
+  cursor: not-allowed;
+  background-color: #1a73e88f;
+  box-shadow: none;
+}
+
+form > label {
+  margin: 1.75vh 0;
+  cursor: pointer;
+  width: 33%;
+}
+
+form a {
+  margin: 1.5vh auto;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+.alert-danger {
+  max-width: 90%;
+  background-color: rgb(221, 0, 0);
+  color: #f9f6f2;
+  margin: 1.5vh auto;
+  padding: 1rem 2rem;
+}

@@ -4,6 +4,10 @@
 	Register
 {% endblock %}
 
+{% block stylesheets %}
+	<link href="/styles/register.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 	{{form_start(register)}}
 	{{form_row(register.username)}}
