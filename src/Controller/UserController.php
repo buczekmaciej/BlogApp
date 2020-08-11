@@ -1,283 +1,78 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Repository\CommentsRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Form\RegisterType;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user/login", name="userLogin")
+     * @Route("/u/login", name="userLogin")
      */
-    public function login(Request $req, SessionInterface $session, UserRepository $uR)
+    public function login(AuthenticationUtils $au)
     {
-        $logged=$session->get('user');
-        if($logged)
-        {
-            return $this->redirectToRoute('appHomepage');
-        }
-
-        $form=$this->createFormBuilder()
-        ->add('Username', TextType::class, [
-            'attr'=>[
-                'class'=>'linp',
-                'placeholder'=>'Username'
-            ]
-        ])
-        ->add('Password', PasswordType::class, [
-            'attr'=>[
-                'class'=>'linp',
-                'placeholder'=>'Password'
-            ]
-        ])
-        ->add('Login', SubmitType::class, [
-            'attr'=>[
-                'class'=>'lsub'
-            ]
-        ])
-        ->getForm();
-
-        $form->handleRequest($req);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $data=$form->getData();
-
-            $exist=$uR->findBy(['Login'=>$data['Username']]);
-            
-            if($exist)
-            {
-                if(($exist[0]->getPassword())===($data['Password']) && $exist[0]->getIsDisabled() === false)
-                {
-                    $session->set('user',$exist[0]);
-
-                    return $this->redirectToRoute('appHomepage', []);
-                }
-                else
-                {
-                    $this->addFlash('danger', 'Password is wrong or account has been disabled');
-                    return $this->redirectToRoute('userLogin', []);
-                }
-            }
-            else
-            {
-                $this->addFlash(
-                    'danger',
-                    'There is no such user'
-                );
-            }
-        }
+        $error = $au->getLastAuthenticationError();
+        $username = $au->getLastUsername();
 
         return $this->render('user/login.html.twig', [
-            'form'=>$form->createView()
+            'error' => $error,
+            'username' => $username
         ]);
     }
 
     /**
-     * @Route("/user/register", name="userRegister")
+     * @Route("/u/logout", name="userLogout")
      */
-    public function register(Request $req, EntityManagerInterface $em, UserRepository $uR, SessionInterface $session)
+    public function logout()
     {
-        $logged=$session->get('user');
-        if($logged)
-        {
-            return $this->redirectToRoute('appHomepage');
-        }
+        throw new \Exception("Your session has ended");
+    }
 
-        $form=$this->createFormBuilder()
-        ->add('Username', TextType::class, [
-            'attr'=>[
-                'class'=>'rinp',
-                'placeholder'=>'Username'
-            ]
-        ])
-        ->add('Password', RepeatedType::class, [
-            'type'=>PasswordType::class,
-            'first_options'=>['attr'=>['placeholder'=>'Password']],
-            'second_options'=>['attr'=>['placeholder'=>'Repeat password']]
-        ])
-        ->add('Email',TextType::class, [
-            'attr'=>[
-                'class'=>'rinp',
-                'placeholder'=>'E-mail'
-            ]
-        ])
-        ->add('Submit', SubmitType::class, [
-            'attr'=>[
-                'class'=>'rsub'
-            ]
-        ])
-        ->getForm();
+    /**
+     * @Route("/u/register", name="userRegister")
+     */
+    public function register(\Symfony\Component\HttpFoundation\Request $request, \App\Repository\UserRepository $ur, \Doctrine\ORM\EntityManagerInterface $em, \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $encoder)
+    {
+        $register = $this->createForm(RegisterType::class);
+        $register->handleRequest($request);
 
-        $form->handleRequest($req);
+        if ($register->isSubmitted() && $register->isValid()) {
+            $data = $register->getData();
+            $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $data=$form->getData();
-
-            $exist=$uR->findBy(['Login'=>$data['Username']]);
-            if(!$exist)
-            {
-                $taken=$uR->findBy(['Email'=>$data['Email']]);
-                if(!$taken)
-                {
-                    $detail=new Details();
-
-                    $user=new User();
-                    $user->setLogin($data['Username']);
-                    $user->setPassword($data['Password']);
-                    $user->setEmail($data['Email']);
-                    $user->setJoinedAt(new \DateTime());
-                    $user->setDetails($detail);
-
-
-                    $em->persist($user);
-                    $em->flush();
-
-                    return $this->redirectToRoute('userLogin', []);
-                }
-                else
-                {
-                    $this->addFlash('danger','E-mail is already taken');
-                }
+            if (!$email) {
+                $this->addFlash('danger', "Email is not valid");
+                return $this->redirectToRoute('userRegister', []);
             }
-            else if(strtoupper($data['Username']) === "ADMIN")
-            {
-                $this->addFlash('danger','That is restricted');
-            }
-            else
-            {
-                $this->addFlash('danger','User already exist');
+
+            $matched = $ur->checkMatch($data['username'], $data['email']);
+            if (!$matched) {
+                $details = new \App\Entity\Details();
+
+                $user = new \App\Entity\User();
+                $user->setUsername($data['username']);
+                $user->setPassword($encoder->encodePassword($user, $data['password']));
+                $user->setEmail($data['email']);
+                $user->setJoinedAt(new \DateTime());
+                $user->setIsDisabled(FALSE);
+                $user->setRoles(['ROLE_USER']);
+
+                $em->persist($details);
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('userLogin', []);
+            } else {
+                $this->addFlash('danger', "E-mail or username is already taken");
+                return $this->redirectToRoute('userRegister', []);
             }
         }
 
         return $this->render('user/register.html.twig', [
-            'form'=>$form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/user/logout", name="userLogout")
-     */
-    public function logout(SessionInterface $session)
-    {
-        $session->clear();
-
-        return $this->redirectToRoute('appHomepage', []);
-    }
-
-    /**
-     * @Route("/{user}", name="userProfile")
-     */
-    public function userProfile($user, SessionInterface $session, UserRepository $uR, CommentsRepository $cR)
-    {
-        $user=$uR->findBy(['Login'=>$user])[0];
-        $comments=$cR->findBy(['User'=>$user]);
-        
-        return $this->render('user/profile.html.twig', [
-            'user'=>$user,
-            'comments'=>$comments
-        ]);
-    }
-
-    /**
-     * @Route("/{user}/profile", name="userEditProfile")
-     */
-    public function userEditProfile($user, SessionInterface $session, Request $request, EntityManagerInterface $em, UserRepository $uR)
-    {
-        $logged=$session->get('user');
-        if($user != $logged->getLogin())
-        {
-            return $this->redirectToRoute('userEditProfile', [
-                'user'=>$logged->getLogin()
-            ]);
-        }
-
-        $user=$uR->findBy(['Login'=>$user]);
-
-        $date=$user[0]->getDetails()->getBirthdayDate();
-        if($date)
-        {
-            $date=$date->format('Y-m-d');
-        }
-
-        $form=$this->createFormBuilder()
-        ->add('Email',TextType::class, [
-            'attr'=>[
-                'class'=>'value',
-                'value'=>$logged->getEmail()
-            ]
-        ])
-        ->add('firstName',TextType::class, [
-            'attr'=>[
-                'class'=>'value',
-                'value'=>$user[0]->getDetails()->getFirstName()
-            ]
-        ])
-        ->add('Bday',DateType::class, [
-            'attr'=>[
-                'class'=>'value'
-            ],
-            'format'=>'dd/MM/yyyy',
-            'years'=>range(date('Y')-100, date('Y')),
-            'data'=>new \DateTime($date)
-        ])
-        ->add('Location',TextType::class, [
-            'attr'=>[
-                'class'=>'value',
-                'value'=>$user[0]->getDetails()->getLocation()
-            ]
-        ])
-        ->add('Bio',TextareaType::class, [
-            'attr'=>[
-                'class'=>'bio-value',
-                'maxlength'=>200
-            ],
-            'required'=>false,
-            'data'=>$user[0]->getDetails()->getBio()
-        ])
-        ->add('Save', SubmitType::class, [
-            'attr'=>[
-                'class'=>'btn btn-submit'
-            ]
-        ])
-        ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $data=$form->getData();
-
-            $user[0]->setEmail($data['Email']);
-            $user[0]->getDetails()->setFirstName($data['firstName']);
-            $user[0]->getDetails()->setBirthdayDate($data['Bday']);
-            $user[0]->getDetails()->setLocation($data['Location']);
-            $user[0]->getDetails()->setBio($data['Bio']);
-
-            $em->flush();
-            
-            return $this->redirectToRoute('userProfile', [
-                'user'=>$logged->getLogin()
-            ]);
-        }
-
-        return $this->render('user/profileEdit.html.twig', [
-            'user'=>$user[0],
-            'form'=>$form->createView()
+            'register' => $register->createView()
         ]);
     }
 }

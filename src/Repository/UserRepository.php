@@ -19,6 +19,17 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function checkMatch(string $name, string $mail)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.Username, u.Email, u.Password')
+            ->andWhere('u.Username = :name OR u.Email = :mail')
+            ->setParameter(':name', $name)
+            ->setParameter(':mail', $mail)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -19,9 +20,9 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, unique=true)
      */
-    private $Login;
+    private $Username;
 
     /**
      * @ORM\Column(type="string", length=20)
@@ -53,6 +54,11 @@ class User
      */
     private $isDisabled;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->Article = new ArrayCollection();
@@ -63,14 +69,14 @@ class User
         return $this->id;
     }
 
-    public function getLogin(): ?string
+    public function getUsername(): ?string
     {
-        return $this->Login;
+        return $this->Username;
     }
 
-    public function setLogin(string $Login): self
+    public function setUsername(string $Username): self
     {
-        $this->Login = $Login;
+        $this->Username = $Username;
 
         return $this;
     }
@@ -164,5 +170,27 @@ class User
         $this->isDisabled = $isDisabled;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = "ROLE_USER";
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getSalt()
+    {
+    }
+    public function eraseCredentials()
+    {
     }
 }

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class AppController extends AbstractController
 {
     /**
-     * @Route("/", name="appHomepage")
+     * @Route("/", name="homepage")
      */
     public function homepage(ArticlesRepository $aR, CommentsRepository $cR)
     {

@@ -1,10 +1,12 @@
 
 ###> symfony/framework-bundle ###
+/migrations
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/src/Migrations/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###

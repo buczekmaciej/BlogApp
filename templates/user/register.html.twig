@@ -1,32 +1,28 @@
-{% extends 'user/login.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Register
+{% block title %}
+	Register
 {% endblock %}
 
 {% block body %}
-    <div class="regContainer">
-        <p>Register</p>
-        {{form_start(form)}}
-        <div class="username">
-            <i class="fas fa-user"></i>
-            {{form_widget(form.Username)}}
-        </div>
-        <div class="password">
-            <i class="fas fa-lock"></i>
-            {{form_widget(form.Password.first)}}
-        </div>
-        <div class="password">
-            <i class="fas fa-lock"></i>
-            {{form_widget(form.Password.second)}}
-        </div>
-        <div class="mail">
-            <i class="fas fa-envelope"></i>
-            {{form_widget(form.Email)}}
-        </div>
-        {{form_widget(form.Submit)}}
-        {{form_end(form)}}
-        <p>
-            <a href="{{path('userLogin')}}">You have account already? Login now!</a>
-        </p>
-    </div>
+	{{form_start(register)}}
+	{{form_row(register.username)}}
+	<div>
+		{{form_label(register.password)}}
+		{{form_widget(register.password)}}
+		<span class="showBtn">
+			Show
+		</span>
+	</div>
+	{{form_row(register.email)}}
+	{{form_widget(register.submit)}}
+	<a href="{{path('userLogin')}}">
+		Login
+	</a>
+	{% include "alert.html.twig" %}
+	{{form_end(register)}}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/forms.js"></script>
 {% endblock %}

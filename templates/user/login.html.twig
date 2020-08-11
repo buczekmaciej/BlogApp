@@ -1,29 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login
+{% block title %}
+	Login
 {% endblock %}
 
-{% block stylesheets %}
-    {{parent()}}
-    <link href="{{asset('styles/user.css')}}" rel="stylesheet"/>
-{% endblock %}
+{% block stylesheets %}{% endblock %}
 
 {% block body %}
-    <div class="logContainer">
-        <p>Login</p>
-        {{form_start(form)}}
-        <div class="username">
-            <i class="fas fa-user"></i>
-            {{form_widget(form.Username)}}
-        </div>
-        <div class="password">
-            <i class="fas fa-lock"></i>
-            {{form_widget(form.Password)}}
-        </div>
-        {{form_widget(form.Login)}}
-        {{form_end(form)}}
-        <p>
-            <a href="{{path('userRegister')}}">You have no account yet? Register now!</a>
-        </p>
-    </div>
+	<form action="{{ path('userLogin') }}" method="POST">
+		<label for="username">
+			Username:
+		</label>
+		<input type="text" id="username" name="username" value="{{ username }}"/>
+		<div>
+			<label for="password">
+				Password:
+			</label>
+			<input type="password" id="password" class="pass" name="password"/>
+			<span class="showBtn">
+				Show
+			</span>
+		</div>
+		<label>
+			<input type="checkbox" name="_remember_me">
+			Remember me
+		</label>
+		<input type="hidden" name="csrf" value="{{ csrf_token('authenticate') }}">
+		<button type="submit">
+			Sign in
+		</button>
+		<a href="{{path('userRegister')}}">
+			Register
+		</a>
+		{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+	</form>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/forms.js"></script>
 {% endblock %}
