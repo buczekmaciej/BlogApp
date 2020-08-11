@@ -1,33 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8"/>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <title>
-            {% block title %}{% endblock %}
-        </title>
-        <style>
-            *
-            {margin:0;padding:0;box-sizing:border-box}
-        </style>
-        {% block stylesheets %}
-            <link href="{{asset('styles/alerts.css')}}" rel="stylesheet"/>
-        {% endblock %}
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% if app.request.hasPreviousSession %}
-            {% for label,messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{label}}">
-                        {{message}}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
-        {% block navbar %}{% endblock %}
         {% block body %}{% endblock %}
-        {% block javascripts %}
-            <script src="https://kit.fontawesome.com/75e13d0c4b.js" crossorigin="anonymous"></script>
-        {% endblock %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

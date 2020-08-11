@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Articles;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Articles|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ArticlesRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Articles::class);
     }
@@ -22,16 +22,15 @@ class ArticlesRepository extends ServiceEntityRepository
     // /**
     //  * @return Articles[] Returns an array of Articles objects
     //  */
-    
+
     public function checkIfContain($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.Title LIKE :val OR a.Content LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
+            ->setParameter('val', '%' . $value . '%')
             ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function mostLiked()
