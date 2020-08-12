@@ -16,27 +16,34 @@ class RegisterType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'attr' => [
-                    'class' => 'register-username'
+                    'class' => 'register-username',
+                    'value' => ''
                 ],
+                'required' => TRUE,
                 'label' => 'Username'
             ])
             ->add('password', PasswordType::class, [
                 'attr' => [
-                    'class' => 'register-password pass'
+                    'class' => 'register-password pass',
+                    'value' => ''
                 ],
+                'required' => TRUE,
                 'label' => 'Password'
             ])
             ->add('email', TextType::class, [
                 'attr' => [
-                    'class' => 'register-email'
+                    'class' => 'register-email',
+                    'value' => ''
                 ],
+                'required' => TRUE,
                 'label' => 'E-mail'
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'register-submit'
                 ],
-                'label' => 'Board in'
+                'label' => 'Board in',
+                'disabled' => TRUE
             ]);
     }
 

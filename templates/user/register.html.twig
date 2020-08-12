@@ -10,18 +10,27 @@
 
 {% block body %}
 	{{form_start(register)}}
-	{{form_row(register.username)}}
-	<div>
-		{{form_label(register.password)}}
+	<p class="tag">
+		Register
+	</p>
+	<div class="inpBox">
+		{{form_widget(register.username)}}
+		{{form_label(register.username)}}
+	</div>
+	<div class="inpBox">
 		{{form_widget(register.password)}}
+		{{form_label(register.password)}}
 		<span class="showBtn">
 			Show
 		</span>
 	</div>
-	{{form_row(register.email)}}
+	<div class="inpBox">
+		{{form_widget(register.email)}}
+		{{form_label(register.email)}}
+	</div>
 	{{form_widget(register.submit)}}
 	<a href="{{path('userLogin')}}">
-		Login
+		Already a member?
 	</a>
 	{% include "alert.html.twig" %}
 	{{form_end(register)}}
