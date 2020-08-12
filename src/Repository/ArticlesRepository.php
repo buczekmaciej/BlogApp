@@ -26,8 +26,9 @@ class ArticlesRepository extends ServiceEntityRepository
     public function checkIfContain($value)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.Title LIKE :val OR a.Content LIKE :val')
+            ->andWhere('a.Title LIKE :val OR a.Content LIKE :val OR a.createdAt LIKE :val OR c.Content LIKE :val OR c.addedAt LIKE :val')
             ->setParameter('val', '%' . $value . '%')
+            ->join("a.comments", "c")
             ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();

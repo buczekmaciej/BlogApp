@@ -45,7 +45,7 @@ class User implements UserInterface
     private $joinedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Details", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Details", cascade={"persist", "remove"}, fetch="EAGER")
      */
     private $details;
 

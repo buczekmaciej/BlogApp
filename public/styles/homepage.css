@@ -1,0 +1,61 @@
+.org {
+  width: 80%;
+  margin: 1.5rem auto 0;
+  display: flex;
+}
+
+.recent {
+  flex: 2;
+  margin-right: 0.5rem;
+}
+.post {
+  margin-bottom: 1.15rem;
+}
+.post-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.title {
+  width: 100%;
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.author-date {
+  width: 86%;
+  font-size: 0.9rem;
+  color: rgb(97, 97, 97);
+}
+.readmore {
+  width: 14%;
+  text-align: right;
+  font-weight: bold;
+}
+
+.liked {
+  flex: 1;
+}
+.section-head {
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #0b5f73;
+  color: #fff;
+  padding: 1rem 0;
+}
+.no-article {
+  width: 70%;
+  margin: 2rem auto 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.no-article span {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.no-article a {
+  font-weight: bold;
+  font-size: 1.1rem;
+}

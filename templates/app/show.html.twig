@@ -1,119 +1,120 @@
 {% extends "app/index.html.twig" %}
 
-{% block title %}
-    {% if post is not empty %}
-
-        {{post.Title}}
-    {% else %}
-        Error 404 | Not Found
-    {% endif %}
+{% block addition %}
+	Post - #{{article.id}}
 {% endblock %}
 
-{% block body %}
-    <div class="postContainer">
-        {% if post is not empty %}
-            <div class="post">
-                <div class="path">
-                    <p>
-                        <a href="{{path('appHomepage')}}">
-                            <b>Home</b>
-                        </a>
-                        <i class="fas fa-angle-right"></i>
-                        <span title="Your current location">
-                            <b>{{post.Title}}</b>
-                        </span>
-                    </p>
-                </div>
-                <div class="artTitle">
-                    <p>
-                        {{post.Title}}
-                    </p>
-                </div>
-                <div class="artExtra">
-                    <div class="artAuthor">
-                        {{post.user.Login}}
-                    </div>
-                    <div class="artDate">
-                        {{post.createdAt.date|date('M d, Y H:i')}}
-                    </div>
-                    <div class="artLikes" id="likeSections">
-                        {% if app.session.get('user') %}
-                            {% if liked == true %}
-                                <a href="{{path('likeArticle', {'slug': post.link})}}" id="hand">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            {% else %}
-                                <a href="{{path('likeArticle', {'slug': post.link})}}" id="hand">
-                                    <i class="far fa-heart"></i>
-                                </a>
-                            {% endif %}
-                            <span class="likesCounter" data-value="{{post.likes|length}}">{{post.likes|length}}</span>
-                        {% else %}
-                            <p>
-                                <i class="far fa-heart"></i>
-                                <span>{{post.likes|length}}</span>
-                            </p>
-                        {% endif %}
-                    </div>
-                    {% if post.image is not null %}
-                        <div class="image-link">
-                            <p data-id="{{post.image}}" class="link-img">Image</p>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="artContent">
-                    <p>{{post.Content|markdown}}</p>
-                </div>
-            </div>
-            <div class="comments">
-                <div class="counter">
-                    <h2>Comments ({{comments|length}})</h2>
-                </div>
-                {% if app.session.get('user') %}
-                    <div class="newComment">
-                        {{form_start(form)}}
-                        {{form_widget(form.Comment)}}
-                        {{form_widget(form.Submit|raw)}}
-                        {{form_end(form)}}
-                    </div>
-                {% else %}
-                    <div class="comm-log">
-                        <p>You must be logged in to comment</p>
-                        <a href="{{path('userLogin')}}">
-                            <button>Login</button>
-                        </a>
-                    </div>
-                {% endif %}
-                <div class="commentsList">
-                    {% if comments == null %}
-                        <div class="comment-none">
-                            <p>This article hasn't been commented yet</p>
-                        </div>
-                    {% else %}
-                        {% for comment in comments %}
-                            <div class="comment" id="comment-{{comment.id}}">
-                                <div class="comment-top">
-                                    <a href="{{path('userProfile', {'user':comment.User.Login})}}">
-                                        <div class="authorSection">
-                                            <i class="fas fa-user"></i>
-                                            <div class="comAuthor">{{comment.User.Login}}</div>
-                                        </div>
-                                    </a>
-                                    <div class="comDate">{{comment.addedAt|date('Y-m-d H:i')}}</div>
-                                </div>
-                                <div class="comContent">{{comment.Content}}</div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        {% else %}
-            {% include "404.html.twig" %}
-        {% endif %}
-    </div>
+{% block stylesheets %}
+	<link href="/styles/post.css" rel="stylesheet">
 {% endblock %}
 
-{% block javascripts %}
-    {{parent()}}
-    <script src="{{asset('js/imgshow.js')}}"></script>
+{% block content %}
+	<section class="article-org">
+		<div class="article-specs">
+			<p class="article-title">
+				{{article.Title}}
+			</p>
+			<a href="" class="author">
+				{% if article.user.details.image %}
+					<img src="{{'/images/userProfile/' ~ article.user.details.image}}">
+				{% else %}
+					<img src="/images/defaults/logo.svg">
+				{% endif %}
+				<span>
+					{{article.user.details.firstName}}
+				</span>
+			</a>
+			<p class="date">
+				{{article.createdAt|date('D, m d, Y H:i')}}
+			</p>
+			<div class="social-data">
+				<div class="likes-counter">
+					{% if app.user %}
+						{% if app.user in article.likes %}
+							<a href="">
+								<img src="/images/icons/liked.svg">
+							</a>
+						{% else %}
+							<a href="">
+								<img src="/images/icons/like.svg">
+							</a>
+						{% endif %}
+					{% else %}
+						<img src="/images/icons/liked.svg">
+					{% endif %}
+					<p>
+						{{article.likes|length}}
+					</p>
+				</div>
+				<div class="comments-counter">
+					<img src="/images/icons/comment.svg">
+					<p>
+						{{article.comments|length}}
+					</p>
+				</div>
+			</div>
+		</div>
+		<p class="article-content">
+			{{article.Content|raw}}
+		</p>
+		{% if article.image %}
+			<img src="{{'/images/postsImages/' ~ article.image}}" class="article-image">
+		{% else %}
+			<img src="/images/defaults/post.svg" class="article-image">
+		{% endif %}
+		<div class="comments">
+			<div class="own-comment">
+				{% if app.user %}
+					{{form_start(comment)}}
+					{{form_row(comment.comment)}}
+					{{form_widget(comment.submit)}}
+					{{form_end(comment)}}
+				{% else %}
+					<p class="not-logged">
+						You must be logged to comment
+					</p>
+				{% endif %}
+			</div>
+			<div class="other-comments">
+				{% for comment in article.comments %}
+					<div class="comment">
+						<div class="about">
+							<a href="" class="comment-author">
+								{% if comment.User.details.image %}
+									<img src="{{'/images/userProfile/' ~ comment.User.details.image}}">
+								{% else %}
+									<img src="/images/defaults/logo.svg">
+								{% endif %}
+								<span>
+									{{comment.User.details.firstName}}
+								</span>
+							</a>
+							<p class="comment-date">
+								{% if comment.addedAt|date('d-m-Y') == "now"|date('d-m-Y') %}
+									{{comment.addedAt|date('H:i')}}
+								{% else %}
+									{{comment.addedAt|date('D, m d')}}
+								{% endif %}
+							</p>
+						</div>
+						<p class="content">
+							{{comment.Content}}
+						</p>
+					</div>
+				{% else %}
+					<p class="no-comments">
+						Seems like this post wasn't commented yet.
+						{% if app.user %}
+							Go ahead and leave your comment!
+						{% else %}
+							<a href="{{path('userLogin')}}">
+								Login
+							</a>
+							and leave your comment
+						{% endif %}
+					</p>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
 {% endblock %}

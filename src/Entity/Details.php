@@ -36,6 +36,11 @@ class Details
      */
     private $bio;
 
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Details
     public function setBio(?string $bio): self
     {
         $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image ? stream_get_contents($this->image) : null;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

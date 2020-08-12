@@ -1,0 +1,69 @@
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+	Homepage
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="/styles/homepage.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<section class="org">
+		<div class="recent">
+			{% for post in posts %}
+				<div class="post">
+					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
+					<div class="post-content">
+						<p class="title">
+							{{post.Title}}
+						</p>
+						<p class="author-date">
+							{{post.createdAt|date("D, m d, Y")}}
+							by
+							<a href="">
+								<b>
+									{{post.user.details.firstName}}
+								</b>
+							</a>
+						</p>
+						<a href="{{path('displayArticle', {'link': post.link})}}" class="readmore">
+							Read more
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="liked">
+			<p class="section-head">
+				Most liked posts
+			</p>
+			{% for post in liked %}
+				<div class="liked-post">
+					<p class="title">
+						{{post.Title}}
+					</p>
+					<p class="author-date">
+						{{post.createdAt|date("D, m d, Y")}}
+						by
+						<a href="">
+							{{post.user.details.firstName}}
+						</a>
+					</p>
+					<a href="{{path('displayArticle', {'link': post.link})}}">
+						Read more
+					</a>
+				</div>
+			{% else %}
+				<p class="no-article">
+					<span>
+						Sorry but not a single article is in this section at the moment
+					</span>
+					<a href="{{path('articlesPagination')}}">
+						Go ahead and find article you may like
+					</a>
+				</p>
+			{% endfor %}
+		</div>
+	</section>
+{% endblock %}

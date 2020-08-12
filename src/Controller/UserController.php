@@ -58,6 +58,7 @@ class UserController extends AbstractController
                 $user->setEmail($data['email']);
                 $user->setJoinedAt(new \DateTime());
                 $user->setIsDisabled(FALSE);
+                $user->setDetails($details);
                 $user->setRoles(['ROLE_USER']);
 
                 $em->persist($details);
