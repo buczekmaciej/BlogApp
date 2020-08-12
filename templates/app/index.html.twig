@@ -18,7 +18,7 @@
 			<a href="{{path('homepage')}}" {% if app.request.attributes.get("_route") == "homepage" %} class="active" {% endif %}>
 				Home
 			</a>
-			<a href="{{path('articlesPagination')}}" {% if app.request.attributes.get("_route") == "articlesPagination" %} class="active" {% endif %}>
+			<a href="{{path('articlesPagination', {'page': 1})}}" {% if app.request.attributes.get("_route") == "articlesPagination" %} class="active" {% endif %}>
 				Articles
 			</a>
 			<a href="" {% if app.request.attributes.get("_route") == null %} class="active" {% endif %}>

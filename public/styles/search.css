@@ -1,0 +1,58 @@
+.search-org {
+  width: 80%;
+  margin: 1.5rem auto 0;
+}
+
+.org-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.post {
+  margin-bottom: 1.5rem;
+  width: 45%;
+}
+.post-content {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 5rem;
+}
+.post-title {
+  width: 100%;
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.author-date {
+  width: 81%;
+  font-size: 0.9rem;
+  color: rgb(97, 97, 97);
+}
+.readmore {
+  width: 19%;
+  text-align: right;
+  font-weight: bold;
+}
+
+.pagination {
+  margin: 2rem auto;
+  width: 40%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.pagination span {
+  background-color: #1a73e8;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+}
+.pagination a {
+  color: #fff;
+}

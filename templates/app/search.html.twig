@@ -1,44 +1,50 @@
 {% extends "app/index.html.twig" %}
 
-{% block title %}
-    {% if result is not empty %}
-        Search result for
-        {{query}}
-    {% else %}
-        Error 404 | Not Found
-    {% endif %}
+{% block addition %}
+	Search result for
+	{{app.request.attributes.get('query')}}
+	{% if pagination.getTotalItemCount > 8 %}
+		-
+		{{pagination.getCurrentPageNumber}}
+	{% endif %}
 {% endblock %}
 
-{% block body %}
-    <div class="contentContainer">
-        <div class="listPost">
-            {% if result is empty %}
-                {% include "404.html.twig" %}
-            {% else %}
-                {% for post in result %}
-                    <a href="{{path('articleShow', {'slug':post.link})}}">
-                        <div class="articleContainer">
-                            {% if post.image is not null %}
-                                <img src="{{asset('images/postsImages/' ~ post.image)}}" alt="Post image">
-                            {% else %}
-                                <p>
-                                    <i class="fas fa-globe-americas"></i>
-                                </p>
-                            {% endif %}
-                            <p>{{post.Title}}</p>
-                            <p>
-                                <span class="author">
-                                    Author:
-                                    {{post.user.Login}}
-                                </span>
-                                <span class="date">
-                                    {{post.createdAt|date("M d, Y")}}
-                                </span>
-                            </p>
-                        </div>
-                    </a>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
+{% block stylesheets %}
+	<link href="/styles/search.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<section class="search-org">
+		<p class="org-title">
+			Here's what we got for
+			<b>
+				{{app.request.attributes.get('query')}}
+			</b>
+		</p>
+		<div class="results">
+			{% for post in pagination %}
+				<div class="post">
+					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
+					<div class="post-content">
+						<p class="post-title">
+							{{post.Title}}
+						</p>
+						<p class="author-date">
+							{{post.createdAt|date("D, m d, Y")}}
+							by
+							<a href="">
+								<b>
+									{{post.user.details.firstName}}
+								</b>
+							</a>
+						</p>
+						<a href="{{path('displayArticle', {'link': post.link})}}" class="readmore">
+							Read more
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		{{knp_pagination_render(pagination)}}
+	</section>
 {% endblock %}

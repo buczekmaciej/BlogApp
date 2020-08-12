@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ArticlesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AppController extends AbstractController
 {
@@ -38,7 +39,7 @@ class AppController extends AbstractController
     public function articlesPagination(PaginatorInterface $paginator, Request $request)
     {
         return $this->render('app/pagination.html.twig', [
-            'pagination' => $paginator->paginate($this->ar->findAll(), $request->query->getInt('page', 1), 10)
+            'pagination' => $paginator->paginate($this->ar->findAll(), $request->query->getInt('page', 1), 8)
         ]);
     }
 
@@ -75,6 +76,7 @@ class AppController extends AbstractController
 
     /**
      * @Route("/article/{link}/like", name="likeArticle")
+     * @IsGranted("ROLE_USER")
      */
     public function likeArticle(string $link)
     {
@@ -95,6 +97,16 @@ class AppController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('displayArticle', ['link' => $link]);
+    }
+
+    /**
+     * @Route("/search/{query}", name="articleSearch")
+     */
+    public function articleSearch(string $query, PaginatorInterface $paginator, Request $request)
+    {
+        return $this->render('app/search.html.twig', [
+            'pagination' => $paginator->paginate($this->ar->checkIfContains($query), $request->query->getInt('page', 1), 8)
+        ]);
     }
 
     /**

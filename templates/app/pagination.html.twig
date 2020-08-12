@@ -1,35 +1,44 @@
 {% extends "app/index.html.twig" %}
 
 {% block addition %}
-    Page -
-    {{app.request.get('page')}}
+	Page -
+	{% if app.request.get('page') %}
+		{{app.request.get('page')}}
+	{% else %}
+		1
+	{% endif %}
 {% endblock %}
 
-{% block body %}
-    <main class="pagination-org">
-        <section class="paginated-posts">
-            {% for element in pagination %}
-                <a href="{{path('articleShow', {'slug': element.link})}}">
-                    <div>
-                        <p>{{element.Title}}</p>
-                        <p>
-                            <i class="fas fa-user"></i>
-                            {{element.user.Login}}
-                        </p>
-                        <p>
-                            <i class="fas fa-calendar-alt"></i>
-                            {{element.createdAt|date('M d, Y')}}
-                        </p>
-                        <p>
-                            <i class="fas fa-heart"></i>
-                            {{element.likes|length}}
-                        </p>
-                    </div>
-                </a>
-            {% endfor %}
-        </section>
-        <section class="navigator">
-            {{knp_pagination_render(pagination)}}
-        </section>
-    </main>
+{% block stylesheets %}
+	<link href="/styles/pagination.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="pagination-org">
+		<section class="paginated-posts">
+			{% for post in pagination %}
+				<div class="post">
+					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
+					<div class="post-content">
+						<p class="post-title">
+							{{post.Title}}
+						</p>
+						<p class="author-date">
+							{{post.createdAt|date("D, m d, Y")}}
+							by
+							<a href="">
+								<b>
+									{{post.user.details.firstName}}
+								</b>
+							</a>
+						</p>
+						<a href="{{path('displayArticle', {'link': post.link})}}" class="readmore">
+							Read more
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</section>
+		{{knp_pagination_render(pagination)}}
+	</main>
 {% endblock %}
