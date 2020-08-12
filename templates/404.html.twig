@@ -1,7 +1,28 @@
-<div class="error">
-    <p class="error-alert">Ooops... Looks like we don't have it</p>
-    <p class="error-code">404</p>
-    <a href="{{path('appHomepage')}}" class="back-link-home">
-        <button>Homepage</button>
-    </a>
-</div>
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+	404 - Not found
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="/styles/err404.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<div class="err404">
+		<span>
+			404
+		</span>
+		<span>
+			Nothing like this is avaliable
+		</span>
+		<div>
+			<a href="{{path('homepage')}}">
+				Go home
+			</a>
+			<a href="{{path('articlesPagination')}}">
+				Explore existing things
+			</a>
+		</div>
+	</div>
+{% endblock %}

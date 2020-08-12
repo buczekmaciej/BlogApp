@@ -27,7 +27,7 @@ class Comments
     private $addedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Articles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Articles", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Article;

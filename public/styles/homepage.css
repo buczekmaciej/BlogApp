@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
 }
-.title {
+.post-title {
   width: 100%;
   margin: 0.25rem 0 0.5rem;
   font-size: 1.2rem;
@@ -58,4 +58,29 @@
 .no-article a {
   font-weight: bold;
   font-size: 1.1rem;
+}
+.liked-post {
+  width: 95%;
+  margin: 1.2rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(195, 195, 195);
+  padding-bottom: 1rem;
+}
+.liked-post .title {
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.liked-post .author-date {
+  margin: 0.6rem 0;
+}
+.create-link {
+  background-color: #1a73e8;
+  color: #fff;
+  padding: 1rem 1.75rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  float: right;
 }

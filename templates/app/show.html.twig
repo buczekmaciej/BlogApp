@@ -31,11 +31,11 @@
 				<div class="likes-counter">
 					{% if app.user %}
 						{% if app.user in article.likes %}
-							<a href="">
+							<a href="{{path('likeArticle',{'link': article.link})}}">
 								<img src="/images/icons/liked.svg">
 							</a>
 						{% else %}
-							<a href="">
+							<a href="{{path('likeArticle',{'link': article.link})}}">
 								<img src="/images/icons/like.svg">
 							</a>
 						{% endif %}
@@ -76,7 +76,7 @@
 				{% endif %}
 			</div>
 			<div class="other-comments">
-				{% for comment in article.comments %}
+				{% for comment in article.comments|sort((a,b) => (b.addedAt <=> a.addedAt)) %}
 					<div class="comment">
 						<div class="about">
 							<a href="" class="comment-author">
@@ -117,4 +117,9 @@
 			</div>
 		</div>
 	</section>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script src="/js/forms.js"></script>
 {% endblock %}

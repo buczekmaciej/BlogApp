@@ -15,7 +15,7 @@
 				<div class="post">
 					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
 					<div class="post-content">
-						<p class="title">
+						<p class="post-title">
 							{{post.Title}}
 						</p>
 						<p class="author-date">
@@ -64,6 +64,11 @@
 					</a>
 				</p>
 			{% endfor %}
+			{% if app.user %}
+				<a href="" class="create-link">
+					Create article
+				</a>
+			{% endif %}
 		</div>
 	</section>
 {% endblock %}

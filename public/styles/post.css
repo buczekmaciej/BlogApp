@@ -121,6 +121,11 @@
   cursor: pointer;
   font-size: 1.1rem;
 }
+.own-comment button:disabled {
+  cursor: not-allowed;
+  background-color: #5996a5;
+}
+
 .not-logged {
   font-size: 1.5rem;
   font-weight: bold;

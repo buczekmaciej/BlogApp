@@ -7,13 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ArticlesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 class AppController extends AbstractController
 {
-    public function __construct(ArticlesRepository $ar)
+    public function __construct(ArticlesRepository $ar, EntityManagerInterface $em)
     {
         $this->ar = $ar;
+        $this->em = $em;
     }
 
     /**
@@ -49,16 +51,50 @@ class AppController extends AbstractController
 
         if (!$article) return $this->redirectToRoute('404error', []);
 
-        $comment = $this->createForm(CommentType::class);
-        $comment->handleRequest($request);
+        $form = $this->createForm(CommentType::class);
+        $form->handleRequest($request);
 
-        if ($comment->isSubmitted() && $comment->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = new \App\Entity\Comments();
+            $comment->setContent($form->getData()['comment']);
+            $comment->setAddedAt(new \DateTime());
+            $comment->setArticle($article);
+            $comment->setUser($this->getUser());
+
+            $this->em->persist($comment);
+            $this->em->flush();
+
+            return $this->redirectToRoute('displayArticle', ['link' => $link]);
         }
 
         return $this->render('app/show.html.twig', [
-            'comment' => $comment->createView(),
+            'comment' => $form->createView(),
             'article' => $article
         ]);
+    }
+
+    /**
+     * @Route("/article/{link}/like", name="likeArticle")
+     */
+    public function likeArticle(string $link)
+    {
+        $article = $this->ar->findOneBy(['link' => $link]);
+
+        if (!$article) return $this->redirectToRoute('404error', []);
+
+        $liked = false;
+
+        foreach ($article->getLikes() as $like) {
+            if ($this->getUser()->getId() == $like->getId()) {
+                $liked = true;
+                break;
+            }
+        }
+
+        $liked ? $article->removeLike($this->getUser()) : $article->addLike($this->getUser());
+        $this->em->flush();
+
+        return $this->redirectToRoute('displayArticle', ['link' => $link]);
     }
 
     /**
