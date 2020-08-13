@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,6 +158,37 @@ class AppController extends AbstractController
             'pagination' => $paginator->paginate($this->ar->checkIfContains($query), $request->query->getInt('page', 1), 8)
         ]);
     }
+
+
+    /**
+     * @Route("/profile", name="userProfile")
+     */
+    public function userProfile(Request $request)
+    {
+        $form = $this->createForm(ProfileType::class, null, ['user' => $this->getUser()]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/u/{id}", name="otherUser")
+     */
+    public function otherUser(int $id, \App\Repository\UserRepository $ur)
+    {
+        if ($id == $this->getUser()->getId()) return $this->redirectToRoute('userProfile', []);
+
+        return $this->render('user/other.html.twig', [
+            'user' => $ur->findOneBy(['id' => $id])
+        ]);
+    }
+
 
     /**
      * @Route("/404", name="404error")

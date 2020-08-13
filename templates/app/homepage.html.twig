@@ -22,7 +22,7 @@
 						<p class="author-date">
 							{{post.createdAt|date("D, m d, Y")}}
 							by
-							<a href="">
+							<a href="{{path('otherUser', {'id': post.user.id})}}">
 								<b>
 									{{post.user.details.firstName}}
 								</b>
@@ -47,7 +47,7 @@
 					<p class="author-date">
 						{{post.createdAt|date("D, m d, Y")}}
 						by
-						<a href="">
+						<a href="{{path('otherUser', {'id': post.user.id})}}">
 							<b>
 								{{post.user.details.firstName}}
 							</b>

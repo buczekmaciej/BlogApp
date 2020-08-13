@@ -1,7 +1,7 @@
 {% extends "app/index.html.twig" %}
 
 {% block addition %}
-	{{app.user.details.firstName}}'s profile
+	{{user.details.firstName}}'s profile
 {% endblock %}
 
 {% block stylesheets %}
@@ -12,38 +12,38 @@
 {% block content %}
 	<section class="profile-org">
 		<div class="profile-side">
-			<img {% if app.user.details.image %} src="/images/userProfile/{{app.user.details.image}}" {% else %} src="/images/defaults/logo.svg" {% endif %} class="profile-pic">
+			<img {% if user.details.image %} src="/images/userProfile/{{user.details.image}}" {% else %} src="/images/defaults/logo.svg" {% endif %} class="profile-pic">
 			<p class="who">
 				<span class="user-name">
-					{% if app.user.details.firstName %}
-						{{app.user.details.firstName}}
+					{% if user.details.firstName %}
+						{{user.details.firstName}}
 					{% else %}
 						Not provided
 					{% endif %}
 				</span>
 				<span class="username">
-					@{{app.user.Username}}
+					@{{user.Username}}
 				</span>
 			</p>
 			<p class="joined">
-				{{app.user.joinedAt|date("m d, Y")}}
+				{{user.joinedAt|date("m d, Y")}}
 			</p>
-			{% if app.user.details.birthdayDate %}
+			{% if user.details.birthdayDate %}
 				<p class="birthday">
-					{{app.user.details.birthdayDate|date('m d, Y')}}
-					{% set diff = date("now").diff(date(app.user.details.birthdayDate)) %}
+					{{user.details.birthdayDate|date('m d, Y')}}
+					{% set diff = date("now").diff(date(user.details.birthdayDate)) %}
 					({{diff.y}}
 					y/o)
 				</p>
 			{% endif %}
-			{% if app.user.details.location %}
+			{% if user.details.location %}
 				<p class="location">
-					{{app.user.details.location}}
+					{{user.details.location}}
 				</p>
 			{% endif %}
-			{% if app.user.details.bio %}
+			{% if user.details.bio %}
 				<p class="bio">
-					{{app.user.details.bio}}
+					{{user.details.bio}}
 				</p>
 			{% endif %}
 		</div>
@@ -55,12 +55,9 @@
 				<span class="comments">
 					Comments
 				</span>
-				<span class="data-edit">
-					Profile edit
-				</span>
 			</div>
 			<div class="posts-content active-content">
-				{% for post in app.user.Article|sort((a,b) => (b.createdAt <=> a.createdAt)) %}
+				{% for post in user.Article|sort((a,b) => (b.createdAt <=> a.createdAt)) %}
 					<div class="user-post">
 						<img {% if post.image %} src="/images/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
 						<div class="post-content">
@@ -82,7 +79,7 @@
 				{% endfor %}
 			</div>
 			<div class="comments-content">
-				{% for comment in app.user.comments|sort((a,b) => (b.addedAt <=> a.addedAt)) %}
+				{% for comment in user.comments|sort((a,b) => (b.addedAt <=> a.addedAt)) %}
 					<div class="user-comment">
 						<p class="comment-art-title">
 							{{comment.Article.Title}}
@@ -104,39 +101,9 @@
 					</div>
 				{% endfor %}
 			</div>
-			<div class="data-content">
-				{{form_start(form)}}
-				<div class="inpBox">
-					{{form_widget(form.password)}}
-					{{form_label(form.password)}}
-				</div>
-				<div class="inpBox">
-					{{form_widget(form.email)}}
-					{{form_label(form.email)}}
-				</div>
-				<div class="inpBox">
-					{{form_widget(form.name)}}
-					{{form_label(form.name)}}
-				</div>
-				<div class="inpBox">
-					{{form_widget(form.location)}}
-					{{form_label(form.location)}}
-				</div>
-				<div class="inpBox">
-					{{form_widget(form.bio)}}
-					{{form_label(form.bio)}}
-				</div>
-				<div class="inpBox">
-					{{form_widget(form.image)}}
-					{{form_label(form.image)}}
-				</div>
-				{{form_widget(form.submit)}}
-				{{form_end(form)}}
-			</div>
 		</div>
 	</section>
 {% endblock %}
-
 {% block javascripts %}
 	<script src="/js/profile.js"></script>
 {% endblock %}

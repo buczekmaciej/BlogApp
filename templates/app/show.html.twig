@@ -15,7 +15,7 @@
 			<p class="article-title">
 				{{article.Title}}
 			</p>
-			<a href="" class="author">
+			<a href="{{path('otherUser', {'id': article.user.id})}}" class="author">
 				{% if article.user.details.image %}
 					<img src="{{'/images/userProfile/' ~ article.user.details.image}}">
 				{% else %}
@@ -58,7 +58,7 @@
 		<p class="article-content">
 			{{article.Content|raw}}
 		</p>
-		<img {% if article.image %} src="{{asset('/images/postsImages/' ~ article.image)}}" {% else %} src="/images/defaults/post.svg" {% endif %} class="article-image">
+		<img {% if article.image %} src="/images/postsImages/{{article.image}}" {% else %} src="/images/defaults/post.svg" {% endif %} class="article-image">
 		<div class="comments">
 			<div class="own-comment">
 				{% if app.user %}
@@ -80,9 +80,9 @@
 				{% for comment in article.comments|sort((a,b) => (b.addedAt <=> a.addedAt)) %}
 					<div class="comment">
 						<div class="about">
-							<a href="" class="comment-author">
+							<a href="{{path('otherUser', {'id': comment.User.id})}}" class="comment-author">
 								{% if comment.User.details.image %}
-									<img src="{{'/images/userProfile/' ~ comment.User.details.image}}">
+									<img src="/images/userProfile/{{comment.User.details.image}}">
 								{% else %}
 									<img src="/images/defaults/logo.svg">
 								{% endif %}

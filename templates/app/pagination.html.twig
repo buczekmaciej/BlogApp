@@ -19,7 +19,7 @@
 		<section class="paginated-posts">
 			{% for post in pagination %}
 				<div class="post">
-					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
+					<img {% if post.image %} src="/images/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
 					<div class="post-content">
 						<p class="post-title">
 							{{post.Title}}
@@ -27,7 +27,7 @@
 						<p class="author-date">
 							{{post.createdAt|date("D, m d, Y")}}
 							by
-							<a href="">
+							<a href="{{path('otherUser', {'id': post.user.id})}}">
 								<b>
 									{{post.user.details.firstName}}
 								</b>

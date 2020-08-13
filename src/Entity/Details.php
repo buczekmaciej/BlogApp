@@ -37,7 +37,7 @@ class Details
     private $bio;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $image;
 
@@ -96,7 +96,7 @@ class Details
 
     public function getImage()
     {
-        return $this->image ? stream_get_contents($this->image) : null;
+        return $this->image;
     }
 
     public function setImage($image): self

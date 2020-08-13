@@ -59,9 +59,15 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="User")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->Article = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +174,37 @@ class User implements UserInterface
     public function setIsDisabled(?bool $isDisabled): self
     {
         $this->isDisabled = $isDisabled;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comments): self
+    {
+        if (!$this->comments->contains($comments)) {
+            $this->comments[] = $comments;
+            $comments->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comments): self
+    {
+        if ($this->comments->contains($comments)) {
+            $this->comments->removeElement($comments);
+            // set the owning side to null (unless already changed)
+            if ($comments->getUser() === $this) {
+                $comments->setUser(null);
+            }
+        }
 
         return $this;
     }
