@@ -5,6 +5,10 @@
 	{% block addition %}{% endblock %}
 {% endblock %}
 
+{% block stylesheets %}
+	<link href="/styles/user/index.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 	<nav class="nav-bar">
 		<img src="/images/defaults/logo.svg" class="logo">
@@ -21,10 +25,10 @@
 			<a href="{{path('articlesPagination', {'page': 1})}}" {% if app.request.attributes.get("_route") == "articlesPagination" %} class="active" {% endif %}>
 				Articles
 			</a>
-			<a href="" {% if app.request.attributes.get("_route") == null %} class="active" {% endif %}>
-				Profile
-			</a>
 			{% if is_granted("ROLE_USER") %}
+				<a href="" {% if app.request.attributes.get("_route") == null %} class="active" {% endif %}>
+					Profile
+				</a>
 				<a href="{{path('userLogout')}}">
 					Logout
 				</a>

@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="/styles/homepage.css" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/user/homepage.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -13,7 +14,7 @@
 		<div class="recent">
 			{% for post in posts %}
 				<div class="post">
-					<img {% if post.image %} src="/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
+					<img {% if post.image %} src="/images/postsImages/{{post.image}}" {% else %} src="/images/defaults/post.svg" {% endif %}>
 					<div class="post-content">
 						<p class="post-title">
 							{{post.Title}}
@@ -47,7 +48,9 @@
 						{{post.createdAt|date("D, m d, Y")}}
 						by
 						<a href="">
-							{{post.user.details.firstName}}
+							<b>
+								{{post.user.details.firstName}}
+							</b>
 						</a>
 					</p>
 					<a href="{{path('displayArticle', {'link': post.link})}}">
@@ -65,7 +68,7 @@
 				</p>
 			{% endfor %}
 			{% if app.user %}
-				<a href="" class="create-link">
+				<a href="{{path('createArticle')}}" class="create-link">
 					Create article
 				</a>
 			{% endif %}

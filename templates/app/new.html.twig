@@ -1,52 +1,33 @@
 {% extends "app/index.html.twig" %}
 
-{% set formater = 'You can check formater cheatsheet after click' %}
-
-{% block title %}
-    Create new post
+{% block addition %}
+	Create article
 {% endblock %}
 
-{% block body %}
-    <div class="creatorContainer">
-        <div class="back">
-            <a href="{{path('appHomepage')}}">
-                <i class="fas fa-angle-left"></i>
-                Homepage
-            </a>
-        </div>
-        <div class="formContainer">
-            {{form_start(form)}}
-            <div class="title-org">
-                <div class="label-side">
-                    {{form_label(form.Title)}}
-                </div>
-                <div class="inp-side">
-                    {{form_widget(form.Title)}}
-                </div>
-            </div>
-            <div class="content-org">
-                <div class="label-side">
-                    {{form_label(form.Content)}}
-                    <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' target='_blank'>
-                        <i class="fas fa-question-circle" title="{{formater}}"></i>
-                    </a>
-                </div>
-                <div class="inp-side">
-                    {{form_widget(form.Content)}}
-                </div>
-            </div>
-            <div class="image-org">
-                <div class="label-side">
-                    {{form_label(form.IMG)}}
-                </div>
-                <div class="inp-side">
-                    {{form_widget(form.IMG)}}
-                </div>
-            </div>
-            <div class="submit-org">
-                {{form_widget(form.Create)}}
-            </div>
-            {{form_end(form)}}
-        </div>
-    </div>
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/user/new.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(article)}}
+	<div class="inpBox">
+		{{form_widget(article.title)}}
+		{{form_label(article.title)}}
+	</div>
+	<div class="inpBox">
+		{{form_widget(article.content)}}
+		{{form_label(article.content)}}
+	</div>
+	<div class="inpBox">
+		{{form_widget(article.image)}}
+		{{form_label(article.image)}}
+	</div>
+	{{form_widget(article.submit)}}
+	{% include "alerts.html.twig" %}
+	{{form_end(article)}}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/forms.js"></script>
 {% endblock %}

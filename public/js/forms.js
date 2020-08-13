@@ -47,7 +47,7 @@ if (
   }
 }
 
-if (window.location.pathname.toLowerCase().indexOf("article") !== -1) {
+if (window.location.pathname.toLowerCase().indexOf("article/") !== -1) {
   let commentInp = document.getElementsByClassName("comment-input")[0];
   let commentBtn = document.getElementsByClassName("comment-submit")[0];
 
@@ -55,5 +55,19 @@ if (window.location.pathname.toLowerCase().indexOf("article") !== -1) {
 
   function checkContent() {
     commentBtn.disabled = commentInp.value ? false : true;
+  }
+}
+
+if (window.location.pathname == "/new-article") {
+  let title = document.getElementById("article_title");
+  let content = document.getElementById("article_content");
+
+  title.onkeyup = () => checkForm(title.value, content.value);
+  content.onkeyup = () => checkForm(title.value, content.value);
+
+  function checkForm(title, content) {
+    if (title && content)
+      document.getElementById("article_submit").disabled = false;
+    else document.getElementById("article_submit").disabled = true;
   }
 }

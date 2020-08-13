@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ArticleType;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +11,7 @@ use App\Repository\ArticlesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class AppController extends AbstractController
 {
@@ -97,6 +99,53 @@ class AppController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('displayArticle', ['link' => $link]);
+    }
+
+    /**
+     * @Route("/new-article", name="createArticle")
+     * @IsGranted("ROLE_USER")
+     */
+    public function createArticle(Request $request, \App\Services\SlugPrepare $sp)
+    {
+        $form = $this->createForm(ArticleType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $article = new \App\Entity\Articles();
+            $article->setTitle($data['title']);
+            $article->setContent($data['content']);
+            $article->setCreatedAt(new \DateTime());
+            $article->setUser($this->getUser());
+            $link = $sp->prepare($data['title']);
+            $article->setLink($link);
+
+            if ($data['image']) {
+                $newName = ($this->ar->getLastId() + 1) . '.' . $data['image']->guessExtension();
+
+                try {
+                    $data['image']->move(
+                        'images/postsImages/',
+                        $newName
+                    );
+
+                    $article->setImage($newName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', "Uploading failed. Error: {$e->getMessage()}");
+                    return $this->redirectToRoute('createArticle', []);
+                }
+            }
+
+            $this->em->persist($article);
+            $this->em->flush();
+
+            return $this->redirectToRoute('displayArticle', ['link' => $link]);
+        }
+
+        return $this->render('app/new.html.twig', [
+            'article' => $form->createView()
+        ]);
     }
 
     /**

@@ -68,6 +68,19 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        // Determine if redirected from other page or straight from nav-bar
+        $link = $request->headers->get('referer');
+        $elems = explode("?", $link);
+
+        // If from other page prepare link to redirect back
+        if (count($elems) == 2) {
+            $res = explode("&", $elems[1]);
+            $res = [explode("=", $res[0])[1], explode("=", $res[1])];
+            $res = [$res[0], $res[1][0], $res[1][1]];
+
+            return new RedirectResponse($this->router->generate($res[0], [$res[1] => $res[2]]));
+        }
+
         return new RedirectResponse($this->router->generate("homepage"));
     }
 

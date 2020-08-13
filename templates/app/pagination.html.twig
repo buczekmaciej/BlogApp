@@ -10,7 +10,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="/styles/pagination.css" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/user/pagination.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

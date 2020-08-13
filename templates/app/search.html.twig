@@ -10,7 +10,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="/styles/search.css" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/user/search.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

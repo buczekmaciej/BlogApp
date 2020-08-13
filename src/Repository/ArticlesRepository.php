@@ -47,6 +47,16 @@ class ArticlesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getLastId()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id')
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()['id'];
+    }
+
     /*
     public function findOneBySomeField($value): ?Articles
     {

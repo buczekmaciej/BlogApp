@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="/styles/post.css" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/user/post.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -57,11 +58,7 @@
 		<p class="article-content">
 			{{article.Content|raw}}
 		</p>
-		{% if article.image %}
-			<img src="{{'/images/postsImages/' ~ article.image}}" class="article-image">
-		{% else %}
-			<img src="/images/defaults/post.svg" class="article-image">
-		{% endif %}
+		<img {% if article.image %} src="{{asset('/images/postsImages/' ~ article.image)}}" {% else %} src="/images/defaults/post.svg" {% endif %} class="article-image">
 		<div class="comments">
 			<div class="own-comment">
 				{% if app.user %}
@@ -71,7 +68,11 @@
 					{{form_end(comment)}}
 				{% else %}
 					<p class="not-logged">
-						You must be logged to comment
+						You must be
+						<a href="{{path('userLogin', {'path': app.request.attributes.get('_route'), 'link': app.request.attributes.get('link')})}}">
+							logged
+						</a>
+						to comment
 					</p>
 				{% endif %}
 			</div>
