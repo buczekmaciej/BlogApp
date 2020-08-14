@@ -1,0 +1,81 @@
+.dash-org {
+  width: 48%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0.75rem auto;
+  border-radius: 16px;
+  padding: 1rem 0;
+}
+
+.user-box {
+  width: 100%;
+  display: flex;
+  margin: 0 auto 1rem;
+  align-items: center;
+  padding: 0 0.15rem;
+}
+.user-box img {
+  height: 4rem;
+  margin-right: 0.9rem;
+}
+.user-who {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.username {
+  font-size: 0.75rem;
+  color: rgb(97, 97, 97);
+}
+
+.dash-org > div:not(.user-box) {
+  width: 47%;
+  margin: 0.75rem 0;
+  padding: 0.25rem 0.15rem;
+}
+.elem-tag {
+  font-size: 0.8rem;
+  color: #1a73e8;
+}
+.elem-data {
+  margin-top: 0.5rem;
+  color: rgb(97, 97, 97);
+}
+
+.stats .elem-data {
+  display: flex;
+}
+.likes,
+.comments {
+  display: flex;
+  align-items: center;
+}
+.likes {
+  margin-right: 1.5rem;
+}
+.likes img,
+.comments img {
+  height: 2rem;
+  margin-right: 0.5rem;
+}
+
+.title,
+.date,
+.link {
+  margin: 0.75rem 0;
+}
+
+.title {
+  font-size: 1.3rem;
+}
+.date {
+  font-size: 0.9rem;
+}
+.link {
+  font-size: 1.25rem;
+}

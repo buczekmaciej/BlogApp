@@ -16,11 +16,7 @@
 				{{article.Title}}
 			</p>
 			<a href="{{path('otherUser', {'id': article.user.id})}}" class="author">
-				{% if article.user.details.image %}
-					<img src="{{'/images/userProfile/' ~ article.user.details.image}}">
-				{% else %}
-					<img src="/images/defaults/logo.svg">
-				{% endif %}
+				<img {% if article.user.details.image %} src="/images/userProfile/{{article.user.details.image}}" {% else %} src="/images/defaults/logo.svg" {% endif %}>
 				<span>
 					{{article.user.details.firstName}}
 				</span>
@@ -81,11 +77,7 @@
 					<div class="comment">
 						<div class="about">
 							<a href="{{path('otherUser', {'id': comment.User.id})}}" class="comment-author">
-								{% if comment.User.details.image %}
-									<img src="/images/userProfile/{{comment.User.details.image}}">
-								{% else %}
-									<img src="/images/defaults/logo.svg">
-								{% endif %}
+								<img {% if comment.User.details.image %} src="/images/userProfile/{{comment.User.details.image}}" {% else %} src="/images/defaults/logo.svg" {% endif %}>
 								<span>
 									{{comment.User.details.firstName}}
 								</span>

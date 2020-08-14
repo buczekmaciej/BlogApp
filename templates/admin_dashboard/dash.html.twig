@@ -1,37 +1,124 @@
-{% extends 'base.html.twig' %}
+{% extends "admin_dashboard/index.html.twig" %}
 
-{% block title %}Admin dashboard
+{% block addition %}
+	Dashboard
 {% endblock %}
 
 {% block stylesheets %}
-    {{parent()}}
-
-    <link href="{{asset('styles/admin.css')}}" rel="stylesheet"/>
+	{{parent()}}
+	<link href="/styles/admin/dash.css" rel="stylesheet">
 {% endblock %}
 
-{% block navbar %}
-    <div class="nav">
-        <a href="{{path('adminDashboard')}}"><img src="{{asset('images/aDash.png')}}" alt="dashLogo" title="Admin dashboard"/></a>
-        <a href="{{path('manageUsers')}}">
-            <i class="fas fa-user"></i>
-        </a>
-        <a href="{{path('managePosts')}}">
-            <i class="fas fa-book"></i>
-        </a>
-        <a href="{{path('manageComments')}}">
-            <i class="fas fa-comment"></i>
-        </a>
-        <a href="{{path('dashLogout')}}">Logout</a>
-    </div>
-{% endblock %}
-
-{% block body %}
-    <main class="dash-greet">
-        <h1>Hello
-            {{app.user.username}}
-        </h1>
-        <p>
-            Please pick action you want to do from navbar
-        </p>
-    </main>
+{% block content %}
+	<section class="dash-org">
+		<div class="user-box">
+			<img {% if app.user.details.image %} src="/images/userProfile/{{app.user.details.image}}" {% else %} src="/images/defaults/logo.svg" {% endif %}>
+			<p class="user-who">
+				<span class="user-name">
+					{% if app.user.details.firstName %}
+						{{app.user.details.firstName}}
+					{% else %}
+						Not provided
+					{% endif %}
+				</span>
+				<span class="username">
+					@{{app.user.Username}}
+				</span>
+			</p>
+		</div>
+		<div class="oldest">
+			<span class="elem-tag">
+				Oldest post
+			</span>
+			<p class="elem-data">
+				{{article.oldest|date("m d, Y H:i")}}
+			</p>
+		</div>
+		<div class="youngest">
+			<span class="elem-tag">
+				Youngest post</span>
+			<p class="elem-data">
+				{{article.youngest|date("m d, Y H:i")}}
+			</p>
+		</div>
+		<div class="stats">
+			<span class="elem-tag">
+				Total
+			</span>
+			<div class="elem-data">
+				<div class="likes">
+					<img src="/images/icons/liked.svg">
+					<p>
+						{{article.likes}}
+					</p>
+				</div>
+				<div class="comments">
+					<img src="/images/icons/comment.svg">
+					<p>
+						{{article.comments}}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="users">
+			<span class="elem-tag">
+				Users
+			</span>
+			<p class="elem-data">
+				{{article.users}}
+			</p>
+		</div>
+		<div class="liked">
+			<span class="elem-tag">
+				Most liked
+			</span>
+			<div class="elem-data">
+				<p class="title">
+					<b>
+						{{article.liked.Title}}
+					</b>
+				</p>
+				<p class="date">
+					{{article.liked.createdAt|date('m d,Y')}}
+					by
+					<a href="{{path('otherUser', {'id': article.liked.uid})}}">
+						<b>
+							{{article.liked.Username}}
+						</b>
+					</a>
+				</p>
+				<a href="{{path('displayArticle', {'link': article.liked.link})}}" target="_blank" class="link">
+					<b>
+						Check
+					</b>
+				</a>
+			</div>
+		</div>
+		<div class="commented">
+			<span class="elem-tag">
+				Most commented
+			</span>
+			<div class="elem-data">
+				<p class="title">
+					<b>
+						{{article.commented.Title}}
+					</b>
+				</p>
+				<p class="date">
+					{{article.commented.createdAt|date('m d,Y')}}
+					by
+					<a href="{{path('otherUser', {'id': article.commented.uid})}}">
+						<b>
+							{{article.commented.Username}}
+						</b>
+					</a>
+				</p>
+				<a href="{{path('displayArticle', {'link': article.commented.link})}}" target="_blank" class="link">
+					<b>
+						Check
+					</b>
+				</a>
+			</div>
+		</div>
+	</section>
 {% endblock %}

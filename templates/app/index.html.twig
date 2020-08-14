@@ -29,6 +29,11 @@
 				<a href="{{path('userProfile')}}" {% if app.request.attributes.get("_route") == "userProfile" %} class="active" {% endif %}>
 					Profile
 				</a>
+				{% if is_granted("ROLE_ADMIN") %}
+					<a href="{{path('adminDashboard')}}">
+						Dashboard
+					</a>
+				{% endif %}
 				<a href="{{path('userLogout')}}">
 					Logout
 				</a>

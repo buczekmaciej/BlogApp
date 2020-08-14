@@ -57,6 +57,58 @@ class ArticlesRepository extends ServiceEntityRepository
             ->getOneOrNullResult()['id'];
     }
 
+    public function adminDash()
+    {
+        $firstPost = $this->createQueryBuilder('a')
+            ->select('a.createdAt')
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()[0]['createdAt'];
+
+        $lastPost = $this->createQueryBuilder('a')
+            ->select('a.createdAt')
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()[0]['createdAt'];
+
+        $mostLiked = $this->createQueryBuilder('a')
+            ->select('COUNT(u) AS HIDDEN likes', 'a.id', 'a.Title', 'a.link', 'u.id AS uid', 'u.Username', 'a.createdAt')
+            ->andWhere('a.likes IS NOT EMPTY')
+            ->leftJoin('a.likes', 'u')
+            ->orderBy('likes', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()[0];
+
+        $likes = $this->createQueryBuilder('a')
+            ->select('COUNT(u) AS likes')
+            ->andWhere('a.likes IS NOT EMPTY')
+            ->leftJoin('a.likes', 'u')
+            ->getQuery()
+            ->getResult()[0]['likes'];
+
+        $mostCommented = $this->createQueryBuilder('a')
+            ->select('COUNT(c) AS HIDDEN comments', 'a.id', 'a.Title', 'a.link', 'u.id AS uid', 'u.Username', 'a.createdAt')
+            ->andWhere('a.comments IS NOT EMPTY')
+            ->leftJoin('a.comments', 'c')
+            ->leftJoin('c.User', 'u')
+            ->orderBy('comments', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()[0];
+
+        $comments = $this->createQueryBuilder('a')
+            ->select('COUNT(c) AS comments')
+            ->andWhere('a.comments IS NOT EMPTY')
+            ->leftJoin('a.comments', 'c')
+            ->getQuery()
+            ->getResult()[0]['comments'];
+
+        return ['oldest' => $firstPost, 'youngest' => $lastPost, 'liked' => $mostLiked, 'likes' => (int) $likes, 'commented' => $mostCommented, 'comments' => (int) $comments];
+    }
+
     /*
     public function findOneBySomeField($value): ?Articles
     {

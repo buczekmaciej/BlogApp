@@ -178,7 +178,7 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/u/{id}", name="otherUser")
+     * @Route("/user/{id}", name="otherUser")
      */
     public function otherUser(int $id, \App\Repository\UserRepository $ur)
     {
