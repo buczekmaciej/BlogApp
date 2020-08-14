@@ -1,0 +1,34 @@
+{% extends "admin_dashboard/index.html.twig" %}
+
+{% block addition %}
+	Posts edit - #{{app.request.attributes.get('id')}}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/article/edit.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(article)}}
+	<div class="inpBox">
+		{{form_widget(article.title, {'value': post.Title})}}
+		{{form_label(article.title)}}
+	</div>
+	<div class="inpBox">
+		{{form_widget(article.content, {'value': post.Content})}}
+		{{form_label(article.content)}}
+	</div>
+	<div class="inpBox">
+		{{form_widget(article.image)}}
+		{% if post.image %}
+			<span class="post-pinned">
+				{{post.image}}
+			</span>
+		{% endif %}
+		{{form_label(article.image)}}
+	</div>
+	{{form_widget(article.submit, {'disabled': FALSE})}}
+	{% include "alerts.html.twig" %}
+	{{form_end(article)}}
+{% endblock %}
