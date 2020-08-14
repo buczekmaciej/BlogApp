@@ -1,7 +1,112 @@
 {% extends "admin_dashboard/index.html.twig" %}
 
-{% block addition %}{% endblock %}
+{% block addition %}
+	Posts management
+{% endblock %}
 
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/posts.css" rel="stylesheet">
+{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+	<div class="img-disp">
+		<span class="close">
+			X
+		</span>
+		<img class="img-prev">
+	</div>
+	<table class="articles-table">
+		<tr>
+			<th>
+				ID
+			</th>
+			<th>
+				Title
+			</th>
+			<th>
+				Created at
+			</th>
+			<th>
+				Author
+			</th>
+			<th>
+				Link
+			</th>
+			<th>
+				Likes
+			</th>
+			<th>
+				Comments
+			</th>
+			<th>
+				Image
+			</th>
+			<th>
+				Action
+			</th>
+		</tr>
+		{% for article in articles %}
+			<tr {% if loop.index % 2 == 0 %} class="even" {% else %} class="odd" {% endif %}>
+				<td class="id-field">
+					<p>
+						{{article.id}}
+					</p>
+				</td>
+				<td class="title-field">
+					<p>
+						{% if article.Title|length > 50 %}
+							{{article.Title|slice(0, 50)}}...
+						{% else %}
+							{{article.Title}}
+						{% endif %}
+					</p>
+				</td>
+				<td class="created-at-field">
+					<p>
+						{{article.createdAt|date("M d,Y")}}
+					</p>
+				</td>
+				<td class="author-field">
+					<p>
+						{{article.user.Username}}
+					</p>
+				</td>
+				<td class="link-field">
+					<a href="{{path('displayArticle', {'link': article.link})}}" target="_blank">
+						<img src="/images/icons/link.svg" class="copy-link">
+					</a>
+				</td>
+				<td class="likes-field">
+					<p>
+						{{article.likes|length}}
+					</p>
+				</td>
+				<td class="comments-field">
+					<p>
+						{{article.comments|length}}
+					</p>
+				</td>
+				<td class="img-field">
+					{% if article.image %}
+						<img src="/images/icons/image.svg" class="post-img" data-img="{{article.image}}">
+					{% else %}
+						null
+					{% endif %}
+				</td>
+				<td class="action-field">
+					<a href="">
+						<img src="/images/icons/edit.svg">
+					</a>
+					<a href="">
+						<img src="/images/icons/delete.svg">
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/showImg.js"></script>
+{% endblock %}

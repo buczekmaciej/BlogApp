@@ -1,0 +1,101 @@
+.articles-table {
+  width: 95%;
+  margin: 1rem auto;
+}
+
+tr:first-of-type {
+  height: 3rem;
+  color: #0b5f73;
+  font-size: 0.9rem;
+  background-color: #dddddd;
+}
+tr:not(:first-of-type) {
+  font-size: 0.85rem;
+  max-height: 2rem;
+}
+td {
+  padding: 0.75rem;
+}
+
+.even {
+  background-color: #ececec;
+}
+
+.id-field {
+  width: 6%;
+  text-align: center;
+  max-height: 1rem;
+  color: #0b5f73;
+}
+.title-field {
+  width: 42%;
+  max-height: 2rem;
+  font-size: 1.1rem;
+}
+.created-at-field {
+  width: 10%;
+  text-align: center;
+  color: rgb(95, 95, 95);
+}
+.author-field {
+  width: 10%;
+  color: rgb(95, 95, 95);
+}
+.link-field {
+  width: 4%;
+  text-align: center;
+}
+.link-field a {
+  opacity: 0;
+  width: 75%;
+}
+tr:hover a {
+  opacity: 1;
+}
+
+.likes-field,
+.comments-field,
+.img-field {
+  width: 5%;
+  text-align: center;
+}
+.img-field img {
+  height: 2rem;
+  cursor: pointer;
+}
+
+.action-field {
+  width: 6%;
+}
+.action-field img {
+  width: 40%;
+}
+.action-field a {
+  opacity: 0;
+}
+
+.img-disp {
+  height: 100%;
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.596);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.img-prev {
+  max-width: 85%;
+  max-height: 85%;
+}

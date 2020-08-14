@@ -20,9 +20,6 @@
   align-items: center;
 }
 
-.active {
-  font-weight: bold;
-}
 .links a:nth-last-child() {
   background-color: #0b5f73;
   color: #f9f6f2;

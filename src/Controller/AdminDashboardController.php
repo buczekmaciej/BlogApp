@@ -33,4 +33,16 @@ class AdminDashboardController extends AbstractController
             'article' => $data
         ]);
     }
+
+    /**
+     * @Route("/admin/articles", name="adminArticles")
+     */
+    public function adminArticles()
+    {
+        //TODO: Filter
+        //TODO: Paths for actions
+        return $this->render('admin_dashboard/articles.html.twig', [
+            'articles' => $this->ar->findAll()
+        ]);
+    }
 }
