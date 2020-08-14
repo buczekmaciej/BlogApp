@@ -22,7 +22,7 @@ td {
 }
 
 .id-field {
-  width: 6%;
+  width: 5%;
   text-align: center;
   max-height: 1rem;
   color: #0b5f73;
@@ -33,12 +33,12 @@ td {
   font-size: 1.1rem;
 }
 .created-at-field {
-  width: 10%;
+  width: 8%;
   text-align: center;
   color: rgb(95, 95, 95);
 }
 .author-field {
-  width: 10%;
+  width: 8%;
   color: rgb(95, 95, 95);
 }
 .link-field {
@@ -59,6 +59,13 @@ tr:hover a {
   width: 5%;
   text-align: center;
 }
+.likes-field,
+.comments-field {
+  width: 8%;
+}
+.img-field {
+  width: 5%;
+}
 .img-field img {
   height: 2rem;
   cursor: pointer;
@@ -67,11 +74,16 @@ tr:hover a {
 .action-field {
   width: 6%;
 }
-.action-field img {
-  width: 40%;
-}
 .action-field a {
+  width: 40%;
   opacity: 0;
+}
+.action-field a:nth-child(1) {
+  float: left;
+}
+.action-field a:nth-child(2) {
+  float: right;
+  cursor: pointer;
 }
 
 .img-disp {
@@ -88,14 +100,14 @@ tr:hover a {
 }
 .close {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  top: 1rem;
+  right: 1.5rem;
   cursor: pointer;
   color: #fff;
   font-size: 1.25rem;
   font-weight: bold;
 }
 .img-prev {
-  max-width: 85%;
-  max-height: 85%;
+  max-width: 90%;
+  max-height: 90%;
 }

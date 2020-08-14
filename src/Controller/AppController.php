@@ -51,6 +51,7 @@ class AppController extends AbstractController
      */
     public function displayArticle(string $link, Request $request)
     {
+        //TODO: Add pagination for many comments
         $article = $this->ar->findOneBy(['link' => $link]);
 
         if (!$article) return $this->redirectToRoute('404error', []);
@@ -188,7 +189,6 @@ class AppController extends AbstractController
             'user' => $ur->findOneBy(['id' => $id])
         ]);
     }
-
 
     /**
      * @Route("/404", name="404error")

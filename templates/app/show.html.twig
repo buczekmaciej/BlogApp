@@ -22,7 +22,7 @@
 				</span>
 			</a>
 			<p class="date">
-				{{article.createdAt|date('D, m d, Y H:i')}}
+				{{article.createdAt|date('D, M d, Y H:i')}}
 			</p>
 			<div class="social-data">
 				<div class="likes-counter">
@@ -86,7 +86,7 @@
 								{% if comment.addedAt|date('d-m-Y') == "now"|date('d-m-Y') %}
 									{{comment.addedAt|date('H:i')}}
 								{% else %}
-									{{comment.addedAt|date('D, m d')}}
+									{{comment.addedAt|date('D, M d')}}
 								{% endif %}
 							</p>
 						</div>

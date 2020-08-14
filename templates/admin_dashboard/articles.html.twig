@@ -47,7 +47,7 @@
 			</th>
 		</tr>
 		{% for article in articles %}
-			<tr {% if loop.index % 2 == 0 %} class="even" {% else %} class="odd" {% endif %}>
+			<tr {% if loop.index % 2 == 0 %} class="article-row even" {% else %} class="article-row odd" {% endif %}>
 				<td class="id-field">
 					<p>
 						{{article.id}}
@@ -55,8 +55,8 @@
 				</td>
 				<td class="title-field">
 					<p>
-						{% if article.Title|length > 50 %}
-							{{article.Title|slice(0, 50)}}...
+						{% if article.Title|length > 55 %}
+							{{article.Title|slice(0, 55)}}...
 						{% else %}
 							{{article.Title}}
 						{% endif %}
@@ -79,12 +79,36 @@
 				</td>
 				<td class="likes-field">
 					<p>
-						{{article.likes|length}}
+						{% set likes = article.likes|length %}
+						{% if likes >= 0 and likes < 1000 %}
+							{{likes}}
+						{% endif %}
+						{% if likes > 999 and likes < 1000000 %}
+							{{(likes / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if likes > 1000000 and likes < 1000000000 %}
+							{{(likes / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if likes > 1000000000 and likes < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
 					</p>
 				</td>
 				<td class="comments-field">
 					<p>
-						{{article.comments|length}}
+						{% set comments = article.comments|length %}
+						{% if comments >= 0 and comments < 1000 %}
+							{{comments}}
+						{% endif %}
+						{% if comments > 999 and comments < 1000000 %}
+							{{(comments / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if comments > 1000000 and comments < 1000000000 %}
+							{{(comments / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if comments > 1000000000 and comments < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
 					</p>
 				</td>
 				<td class="img-field">
@@ -98,7 +122,7 @@
 					<a href="">
 						<img src="/images/icons/edit.svg">
 					</a>
-					<a href="">
+					<a data-id="{{article.id}}" class="remove-row">
 						<img src="/images/icons/delete.svg">
 					</a>
 				</td>
@@ -109,4 +133,5 @@
 
 {% block javascripts %}
 	<script src="/js/showImg.js"></script>
+	<script src="/js/delete.js"></script>
 {% endblock %}

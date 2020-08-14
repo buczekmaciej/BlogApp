@@ -25,7 +25,7 @@
 							{{post.Title}}
 						</p>
 						<p class="author-date">
-							{{post.createdAt|date("D, m d, Y")}}
+							{{post.createdAt|date("D, M d, Y")}}
 							by
 							<a href="{{path('otherUser', {'id': post.user.id})}}">
 								<b>

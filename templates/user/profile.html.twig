@@ -26,11 +26,11 @@
 				</span>
 			</p>
 			<p class="joined">
-				{{app.user.joinedAt|date("m d, Y")}}
+				{{app.user.joinedAt|date("M d, Y")}}
 			</p>
 			{% if app.user.details.birthdayDate %}
 				<p class="birthday">
-					{{app.user.details.birthdayDate|date('m d, Y')}}
+					{{app.user.details.birthdayDate|date('M d, Y')}}
 					{% set diff = date("now").diff(date(app.user.details.birthdayDate)) %}
 					({{diff.y}}
 					y/o)
@@ -68,7 +68,7 @@
 								{{post.Title}}
 							</p>
 							<p class="date">
-								{{post.createdAt|date("D, m d, Y")}}
+								{{post.createdAt|date("D, M d, Y")}}
 							</p>
 							<a href="{{path('displayArticle', {'link': post.link})}}" class="readmore">
 								Read more
@@ -91,7 +91,7 @@
 							{% if comment.addedAt|date('d-m-Y') == "now"|date('d-m-Y') %}
 								{{comment.addedAt|date('H:i')}}
 							{% else %}
-								{{comment.addedAt|date('D, m d')}}
+								{{comment.addedAt|date('D, M d')}}
 							{% endif %}
 						</p>
 						<p class="comment-content">
