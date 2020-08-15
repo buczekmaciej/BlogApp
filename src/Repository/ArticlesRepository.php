@@ -109,6 +109,31 @@ class ArticlesRepository extends ServiceEntityRepository
         return ['oldest' => $firstPost, 'youngest' => $lastPost, 'liked' => $mostLiked, 'likes' => (int) $likes, 'commented' => $mostCommented, 'comments' => (int) $comments];
     }
 
+    public function filterData($by, $way)
+    {
+        $qb = $this->createQueryBuilder('a');
+        if ($by == 'id') {
+            $qb->orderBy('a.id', $way);
+        }
+        if ($by == 'createdAt') {
+            $qb->orderBy('a.createdAt', $way);
+        }
+        if ($by == 'likes') {
+            $qb->select('COUNT(l) as HIDDEN likes, a')
+                ->leftJoin('a.likes', 'l')
+                ->orderBy('likes', $way)
+                ->groupBy('a');
+        }
+        if ($by == 'comments') {
+            $qb->select('COUNT(c) as HIDDEN comments, a')
+                ->leftJoin('a.comments', 'c')
+                ->orderBy('comments', $way)
+                ->groupBy('a');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Articles
     {

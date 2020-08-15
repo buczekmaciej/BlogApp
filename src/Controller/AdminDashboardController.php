@@ -6,7 +6,6 @@ use App\Form\ArticleType;
 use App\Repository\ArticlesRepository;
 use App\Repository\CommentsRepository;
 use App\Repository\UserRepository;
-use App\Services\convertNumbers;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\QueryException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,13 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminDashboardController extends AbstractController
 {
-    public function __construct(UserRepository $ur, ArticlesRepository $ar, CommentsRepository $cr, convertNumbers $conv, EntityManagerInterface $em)
+    public function __construct(UserRepository $ur, ArticlesRepository $ar, CommentsRepository $cr, EntityManagerInterface $em)
     {
         $this->ur = $ur;
         $this->ar = $ar;
         $this->cr = $cr;
         $this->em = $em;
-        $this->conv = $conv;
     }
 
     /**
@@ -34,9 +32,7 @@ class AdminDashboardController extends AbstractController
     public function dashboard()
     {
         $data = $this->ar->adminDash();
-        $data['users'] = $this->conv->convert($this->ur->getNoUsers());
-        $data['likes'] = $this->conv->convert($data['likes']);
-        $data['comments'] = $this->conv->convert($data['comments']);
+        $data['users'] = $this->ur->getNoUsers();
 
         return $this->render('admin_dashboard/dash.html.twig', [
             'article' => $data
@@ -48,12 +44,11 @@ class AdminDashboardController extends AbstractController
      */
     public function adminArticles(Request $request)
     {
-        //TODO: Filter
         $by = $request->query->get('by') ? $request->query->get('by') : 'id';
         $way = $request->query->get('way') ? $request->query->get('way') : 'ASC';
 
         return $this->render('admin_dashboard/article/articles.html.twig', [
-            'articles' => $this->ar->findBy([], [$by => $way])
+            'articles' => $this->ar->filterData($by, $way)
         ]);
     }
 

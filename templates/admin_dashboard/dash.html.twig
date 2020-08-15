@@ -49,13 +49,35 @@
 				<div class="likes">
 					<img src="/images/icons/liked.svg">
 					<p>
-						{{article.likes}}
+						{% if article.likes >= 0 and article.likes < 1000 %}
+							{{article.likes}}
+						{% endif %}
+						{% if article.likes > 999 and article.likes < 1000000 %}
+							{{(article.likes / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if article.likes > 1000000 and article.likes < 1000000000 %}
+							{{(article.likes / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if article.likes > 1000000000 and article.likes < 1000000000 %}
+							{{(article.likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
 					</p>
 				</div>
 				<div class="comments">
 					<img src="/images/icons/comment.svg">
 					<p>
-						{{article.comments}}
+						{% if article.comments >= 0 and article.comments < 1000 %}
+							{{article.comments}}
+						{% endif %}
+						{% if article.comments > 999 and article.comments < 1000000 %}
+							{{(article.comments / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if article.comments > 1000000 and article.comments < 1000000000 %}
+							{{(article.comments / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if article.comments > 1000000000 and article.comments < 1000000000 %}
+							{{(article.comments / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
 					</p>
 				</div>
 			</div>
@@ -65,7 +87,18 @@
 				Users
 			</span>
 			<p class="elem-data">
-				{{article.users}}
+				{% if article.users >= 0 and article.users < 1000 %}
+					{{article.users}}
+				{% endif %}
+				{% if article.users > 999 and article.users < 1000000 %}
+					{{(article.users / 1000)|round(1, 'floor')}}K
+				{% endif %}
+				{% if article.users > 1000000 and article.users < 1000000000 %}
+					{{(article.users / 1000000)|round(1, 'floor')}}M
+				{% endif %}
+				{% if article.users > 1000000000 and article.users < 1000000000 %}
+					{{(article.users / 1000000000)|round(1, 'floor')}}B
+				{% endif %}
 			</p>
 		</div>
 		<div class="liked">

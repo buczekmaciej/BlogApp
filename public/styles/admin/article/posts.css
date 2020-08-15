@@ -16,11 +16,20 @@ tr:not(:first-of-type) {
 td {
   padding: 0.75rem;
 }
+th {
+  cursor: default;
+}
+.filter-by {
+  cursor: pointer;
+}
 
 .even {
   background-color: #ececec;
 }
 
+.filter-way {
+  width: 15%;
+}
 .id-field {
   width: 5%;
   text-align: center;
