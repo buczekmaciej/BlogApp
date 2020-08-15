@@ -8,6 +8,7 @@ use App\Repository\CommentsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\QueryException;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -112,6 +113,86 @@ class AdminDashboardController extends AbstractController
             }
 
             $this->em->remove($post);
+            $this->em->flush();
+            return new Response();
+        } catch (QueryException $e) {
+            return new Response($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/admin/comments", name="adminComments")
+     */
+    public function adminComments(PaginatorInterface $pag, Request $request)
+    {
+        $by = $request->query->get('by') ? $request->query->get('by') : 'id';
+        $way = $request->query->get('way') ? $request->query->get('way') : 'ASC';
+
+        return $this->render('admin_dashboard/comment/comments.html.twig', [
+            'comments' => $pag->paginate($this->cr->filterData($by, $way), $request->query->getInt('page', 1), 15)
+        ]);
+    }
+
+    /**
+     * @Route("/admin/comment/{id}", name="adminCommentsRemove", methods={"POST"})
+     */
+    public function admCommentsRemove(int $id)
+    {
+        try {
+            $this->em->remove($this->cr->findOneBy(['id' => $id]));
+            $this->em->flush();
+            return new Response();
+        } catch (QueryException $e) {
+            return new Response($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/admin/users", name="adminUsers")
+     */
+    public function adminUsers(PaginatorInterface $pag, Request $request)
+    {
+        $by = $request->query->get('by') ? $request->query->get('by') : 'id';
+        $way = $request->query->get('way') ? $request->query->get('way') : 'ASC';
+
+        return $this->render('admin_dashboard/user/users.html.twig', [
+            'users' => $pag->paginate($this->ur->filterData($by, $way), $request->query->getInt('page', 1), 15)
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/{id}/delete", name="adminDeleteUser", methods={"POST"})
+     */
+    public function admDeleteUser(int $id)
+    {
+        try {
+            $this->em->remove($this->ur->findOneBy(['id' => $id]));
+            $this->em->flush();
+            return new Response();
+        } catch (QueryException $e) {
+            return new Response($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/admin/user/{id}/promote", name="adminPromote")
+     */
+    public function admPromote(int $id)
+    {
+        try {
+            $this->em->flush();
+            return new Response();
+        } catch (QueryException $e) {
+            return new Response($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/admin/user/{id}/demote", name="adminDemote")
+     */
+    public function admDemote(int $id)
+    {
+        try {
             $this->em->flush();
             return new Response();
         } catch (QueryException $e) {

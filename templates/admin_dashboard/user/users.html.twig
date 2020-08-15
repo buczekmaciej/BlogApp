@@ -1,7 +1,103 @@
 {% extends "admin_dashboard/index.html.twig" %}
 
-{% block addition %}{% endblock %}
+{% block addition %}
+	Users management
+{% endblock %}
 
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/user/users.css" rel="stylesheet">
+{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+	<table class="users-table">
+		<tr>
+			<th class="filter-by" data-by="id">
+				ID
+				{% if app.request.query.get('by') == 'id' %}
+					{% if app.request.query.get('way') == 'ASC' %}
+						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
+					{% else %}
+						<img src="/images/icons/down.svg" data-way="DESC" class="filter-way">
+					{% endif %}
+				{% endif %}
+				{% if app.request.query|length == 0 %}
+					<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
+				{% endif %}
+			</th>
+			<th>
+				Content
+			</th>
+			<th class="filter-by" data-by="addedAt">
+				Added at
+				{% if app.request.query.get('by') == 'addedAt' %}
+					{% if app.request.query.get('way') == 'ASC' %}
+						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
+					{% else %}
+						<img src="/images/icons/down.svg" data-way="DESC" class="filter-way">
+					{% endif %}
+				{% endif %}
+			</th>
+			<th class="filter-by" data-by="article">
+				Article
+				{% if app.request.query.get('by') == 'article' %}
+					{% if app.request.query.get('way') == 'ASC' %}
+						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
+					{% else %}
+						<img src="/images/icons/down.svg" data-way="DESC" class="filter-way">
+					{% endif %}
+				{% endif %}
+			</th>
+			<th>
+				User
+			</th>
+			<th>
+				Action
+			</th>
+		</tr>
+		{% for comment in comments %}
+			<tr {% if loop.index % 2 == 0 %} class="comment-row even" {% else %} class="comment-row odd" {% endif %}>
+				<td class="id-field">
+					<p>
+						{{comment.id}}
+					</p>
+				</td>
+				<td class="content-field">
+					<p>
+						{% if comment.Content|length > 75 %}
+							{{comment.Content|slice(0, 75)}}...
+						{% else %}
+							{{comment.Content}}
+						{% endif %}
+					</p>
+				</td>
+				<td class="added-at-field">
+					<p>
+						{{comment.addedAt|date("M d,Y")}}
+					</p>
+				</td>
+				<td class="article-field">
+					<a href="{{path('displayArticle', {'link': comment.Article.link})}}" target="_blank">
+						{{comment.Article.id}}
+					</a>
+				</td>
+				<td class="author-field">
+					<p>
+						{{comment.User.Username}}
+					</p>
+				</td>
+				<td class="action-field">
+					<a data-id="{{comment.id}}" class="remove-row">
+						<img src="/images/icons/delete.svg">
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+	{{knp_pagination_render(comments)}}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/delete.js"></script>
+	<script src="/js/filter.js"></script>
+{% endblock %}

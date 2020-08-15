@@ -1,0 +1,89 @@
+.comments-table {
+  width: 95%;
+  margin: 1rem auto;
+}
+
+tr:first-of-type {
+  height: 3rem;
+  color: #0b5f73;
+  font-size: 0.9rem;
+  background-color: #dddddd;
+}
+tr:not(:first-of-type) {
+  font-size: 0.85rem;
+  max-height: 1.5rem;
+}
+td {
+  padding: 0.75rem;
+}
+th {
+  cursor: default;
+}
+.filter-by {
+  cursor: pointer;
+}
+
+.even {
+  background-color: #ececec;
+}
+
+.filter-way {
+  width: 15%;
+}
+.id-field {
+  width: 5%;
+  text-align: center;
+  max-height: 1rem;
+  color: #0b5f73;
+}
+.content-field {
+  width: 65%;
+  max-height: 2rem;
+  font-size: 1.1rem;
+}
+.added-at-field {
+  width: 10%;
+  text-align: center;
+  color: rgb(95, 95, 95);
+}
+.author-field {
+  width: 5%;
+  color: rgb(95, 95, 95);
+}
+.article-field {
+  width: 5%;
+  text-align: center;
+}
+
+.action-field {
+  width: 4.5%;
+}
+.action-field a {
+  width: 60%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0 auto;
+}
+tr:hover a {
+  opacity: 1;
+}
+
+.pagination {
+  width: 50%;
+  margin: 0.5rem auto;
+  background-color: #1a73e8;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 16px;
+}
+.pagination a {
+  color: rgba(255, 255, 255, 0.507);
+}
+.first a,
+.previous a,
+.next a,
+.last a {
+  color: #fff;
+}

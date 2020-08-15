@@ -19,6 +19,23 @@ class CommentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Comments::class);
     }
 
+    public function filterData($by, $way)
+    {
+        $qb = $this->createQueryBuilder('c');
+        if ($by == 'id') {
+            $qb->orderBy('c.id', $way);
+        }
+        if ($by == 'addedAt') {
+            $qb->orderBy('c.addedAt', $way);
+        }
+        if ($by == 'article') {
+            $qb->leftJoin('c.Article', 'a')
+                ->orderBy('a.id', $way);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Comments[] Returns an array of Comments objects
     //  */
