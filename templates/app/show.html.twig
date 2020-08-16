@@ -73,7 +73,7 @@
 				{% endif %}
 			</div>
 			<div class="other-comments">
-				{% for comment in article.comments|sort((a,b) => (b.addedAt <=> a.addedAt)) %}
+				{% for comment in comments %}
 					<div class="comment">
 						<div class="about">
 							<a href="{{path('otherUser', {'id': comment.User.id})}}" class="comment-author">
@@ -108,6 +108,7 @@
 					</p>
 				{% endfor %}
 			</div>
+			{{knp_pagination_render(comments)}}
 		</div>
 	</section>
 {% endblock %}

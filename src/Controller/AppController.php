@@ -49,9 +49,8 @@ class AppController extends AbstractController
     /**
      * @Route("/article/{link}", name="displayArticle")
      */
-    public function displayArticle(string $link, Request $request)
+    public function displayArticle(string $link, Request $request, PaginatorInterface $pag)
     {
-        //TODO: Add pagination for many comments
         $article = $this->ar->findOneBy(['link' => $link]);
 
         if (!$article) return $this->redirectToRoute('404error', []);
@@ -71,10 +70,16 @@ class AppController extends AbstractController
 
             return $this->redirectToRoute('displayArticle', ['link' => $link]);
         }
+        $comms = [];
+        foreach ($article->getComments() as $c) $comms[] = $c;
+        usort($comms, function ($a, $b) {
+            return $b->getAddedAt() <=> $a->getAddedAt();
+        });
 
         return $this->render('app/show.html.twig', [
             'comment' => $form->createView(),
-            'article' => $article
+            'article' => $article,
+            'comments' => $pag->paginate($comms, $request->query->getInt('page', 1), 15)
         ]);
     }
 
