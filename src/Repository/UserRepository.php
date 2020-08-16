@@ -38,6 +38,28 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()[0]["Users"]);
     }
 
+    public function filterData($by, $way)
+    {
+        $qb = $this->createQueryBuilder('u');
+        if ($by == 'id') {
+            $qb->orderBy('u.id', $way);
+        }
+        if ($by == 'Username') {
+            $qb->orderBy('u.Username', $way);
+        }
+        if ($by == 'Email') {
+            $qb->orderBy('u.Email', $way);
+        }
+        if ($by == 'Articles') {
+            $qb->select('COUNT(a) as HIDDEN articles, u')
+                ->leftJoin('u.Article', 'a')
+                ->orderBy('articles', $way)
+                ->groupBy('u');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

@@ -180,10 +180,13 @@ class AdminDashboardController extends AbstractController
     public function admPromote(int $id)
     {
         try {
+            $user = $this->ur->findOneBy(['id' => $id]);
+            if (in_array("ROLE_ADMIN", $user->getRoles()) && !in_array("ROLE_SUPER_ADMIN", $user->getRoles())) $user->setRoles(["ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN"]);
+            if (!in_array("ROLE_ADMIN", $user->getRoles())) $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
             $this->em->flush();
-            return new Response();
+            return $this->redirectToRoute('adminUsers', []);;
         } catch (QueryException $e) {
-            return new Response($e->getMessage());
+            throw $e->getMessage();
         }
     }
 
@@ -193,8 +196,26 @@ class AdminDashboardController extends AbstractController
     public function admDemote(int $id)
     {
         try {
+            $user = $this->ur->findOneBy(['id' => $id]);
+            if (in_array("ROLE_ADMIN", $user->getRoles()) && count($user->getRoles()) == 2) $user->setRoles(["ROLE_USER"]);
+            if (in_array("ROLE_SUPER_ADMIN", $user->getRoles())) $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
             $this->em->flush();
-            return new Response();
+            return $this->redirectToRoute('adminUsers', []);;
+        } catch (QueryException $e) {
+            throw $e->getMessage();
+        }
+    }
+
+    /**
+     * @Route("/admin/user/{id}/disable", name="adminDisable")
+     */
+    public function admDisable(int $id)
+    {
+        try {
+            $user = $this->ur->findOneBy(['id' => $id]);
+            $user->setIsDisabled(!$user->getIsDisabled());
+            $this->em->flush();
+            return $this->redirectToRoute('adminUsers', []);
         } catch (QueryException $e) {
             return new Response($e->getMessage());
         }

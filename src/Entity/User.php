@@ -35,7 +35,7 @@ class User implements UserInterface
     private $Email;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Articles", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Articles", cascade={"remove"}, mappedBy="user")
      */
     private $Article;
 
@@ -52,7 +52,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isDisabled;
+    private $isDisabled = false;
 
     /**
      * @ORM\Column(type="json")
@@ -60,7 +60,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="User")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", cascade={"remove"}, mappedBy="User")
      */
     private $comments;
 

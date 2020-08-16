@@ -25,12 +25,9 @@
 					<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
 				{% endif %}
 			</th>
-			<th>
-				Content
-			</th>
-			<th class="filter-by" data-by="addedAt">
-				Added at
-				{% if app.request.query.get('by') == 'addedAt' %}
+			<th class="filter-by" data-by="Username">
+				Username
+				{% if app.request.query.get('by') == 'Username' %}
 					{% if app.request.query.get('way') == 'ASC' %}
 						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
 					{% else %}
@@ -38,9 +35,19 @@
 					{% endif %}
 				{% endif %}
 			</th>
-			<th class="filter-by" data-by="article">
-				Article
-				{% if app.request.query.get('by') == 'article' %}
+			<th class="filter-by" data-by="Email">
+				E-mail
+				{% if app.request.query.get('by') == 'Email' %}
+					{% if app.request.query.get('way') == 'ASC' %}
+						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
+					{% else %}
+						<img src="/images/icons/down.svg" data-way="DESC" class="filter-way">
+					{% endif %}
+				{% endif %}
+			</th>
+			<th class="filter-by" data-by="Articles">
+				Articles
+				{% if app.request.query.get('by') == 'Articles' %}
 					{% if app.request.query.get('way') == 'ASC' %}
 						<img src="/images/icons/up.svg" data-way="ASC" class="filter-way">
 					{% else %}
@@ -49,52 +56,79 @@
 				{% endif %}
 			</th>
 			<th>
-				User
+				Disabled
 			</th>
 			<th>
-				Action
+				Role
+			</th>
+			<th>
+				Actions
 			</th>
 		</tr>
-		{% for comment in comments %}
+		{% for user in users %}
 			<tr {% if loop.index % 2 == 0 %} class="comment-row even" {% else %} class="comment-row odd" {% endif %}>
 				<td class="id-field">
 					<p>
-						{{comment.id}}
+						{{user.id}}
 					</p>
 				</td>
-				<td class="content-field">
+				<td class="username-field">
 					<p>
-						{% if comment.Content|length > 75 %}
-							{{comment.Content|slice(0, 75)}}...
+						{{user.Username}}
+					</p>
+				</td>
+				<td class="email-field">
+					<p>
+						{{user.Email}}
+					</p>
+				</td>
+				<td class="articles-field">
+					<p>
+						{{user.Article|length}}
+					</p>
+				</td>
+				<td class="disabled-field">
+					<p>
+						{% if user.isDisabled == false %}
+							No
 						{% else %}
-							{{comment.Content}}
+							Yes
 						{% endif %}
 					</p>
 				</td>
-				<td class="added-at-field">
+				<td class="role-field">
 					<p>
-						{{comment.addedAt|date("M d,Y")}}
-					</p>
-				</td>
-				<td class="article-field">
-					<a href="{{path('displayArticle', {'link': comment.Article.link})}}" target="_blank">
-						{{comment.Article.id}}
-					</a>
-				</td>
-				<td class="author-field">
-					<p>
-						{{comment.User.Username}}
+						{{user.roles|last}}
 					</p>
 				</td>
 				<td class="action-field">
-					<a data-id="{{comment.id}}" class="remove-row">
+					{% if is_granted("ROLE_SUPER_ADMIN") %}
+						{% if "ROLE_SUPER_ADMIN" not in user.roles %}
+							<a href="{{path('adminPromote', {'id': user.id})}}">
+								<img src="/images/icons/up.svg">
+							</a>
+						{% endif %}
+						{% if user.roles|length > 1 %}
+							<a href="{{path('adminDemote', {'id': user.id})}}">
+								<img src="/images/icons/down.svg">
+							</a>
+						{% endif %}
+						<a href="{{path('adminDisable', {'id': user.id})}}">
+							{% if user.isDisabled == false %}
+								<img src="/images/icons/on.svg">
+							{% else %}
+								<img src="/images/icons/off.svg">
+							{% endif %}
+						</a>
+					{% endif %}
+					<a data-id="{{user.id}}" class="remove-row">
 						<img src="/images/icons/delete.svg">
 					</a>
 				</td>
 			</tr>
 		{% endfor %}
 	</table>
-	{{knp_pagination_render(comments)}}
+	{{knp_pagination_render(users)}}
 {% endblock %}
 
 {% block javascripts %}
