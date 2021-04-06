@@ -1,0 +1,170 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito&display=swap);
+
+:root {
+  --pink: 195, 55, 99;
+  --purple: 29, 38, 113;
+  --white: 243, 243, 243;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito";
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navigation-container {
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+
+  width: 100%;
+  padding: 1.75rem 0;
+  color: rgb(var(--white));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navigation-container a {
+  color: rgb(var(--white));
+}
+.navigation-container a.active {
+  position: relative;
+  font-weight: 600;
+}
+.navigation-container a.active::after {
+  content: "";
+  height: 3px;
+  width: 16px;
+  border-radius: 80px;
+  background-color: rgb(var(--white));
+  position: absolute;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navigation-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 8rem;
+  user-select: none;
+}
+.navigation-top .logo-label {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+.navigation-top .links a {
+  margin: 0 1rem;
+}
+.navigation-top .links a:first-of-type {
+  margin-left: 0;
+}
+.navigation-top .links a:last-of-type {
+  margin-right: 0;
+}
+
+.navigation-location {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navigation-location .location {
+  font-size: 4rem;
+}
+.navigation-location .path {
+  margin-top: 1.35rem;
+  display: flex;
+  align-items: center;
+}
+.navigation-location .diamond-icon {
+  height: 0.75rem;
+  margin: 0 0.75rem;
+}
+
+.description {
+  width: 55%;
+  text-align: center;
+  line-height: 1.75;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.content-container {
+  padding: 1.5rem 8rem;
+  display: flex;
+}
+
+.content-container > *:first-child {
+  flex: 3;
+  padding-right: 1rem;
+}
+
+.side-content {
+  flex: 1;
+}
+
+.side-content form {
+  width: 100%;
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+.search-input {
+  width: 100%;
+  height: 3rem;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(var(--white), 0.95);
+  padding: 0 3rem 0 0.5rem;
+  outline: transparent;
+}
+.search-submit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: transparent;
+}
+.search-submit svg {
+  transform: scale(1.35);
+}
+
+.categories-header,
+.tags-header {
+  margin-bottom: 0.5rem;
+}
+
+.side-content > div:first-of-type {
+  margin-bottom: 1rem;
+}
+
+.error-category,
+.error-tag {
+  font-size: 0.85rem;
+}

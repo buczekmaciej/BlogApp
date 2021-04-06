@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="/styles/_nav.css">
+{% endblock %}
+
+{% block body %}
+	<nav class="navigation-container">
+		<div class="navigation-top">
+			<span class="logo-label">Blog</span>
+			<div class="links">
+				<a href="{{ path('home') }}" {% if app.request.get("_route") == "home" %} class="active" {% endif %}>Home</a>
+				<a href="" {% if app.request.get("_route") in [] %} class="active" {% endif %}>Articles</a>
+				<a href="" {% if app.request.get("_route") in [] %} class="active" {% endif %}>Categories</a>
+				<a href="" {% if app.request.get("_route") in [] %} class="active" {% endif %}>Tags</a>
+				{% if app.user %}
+					<a href="" {% if app.request.get("_route") == "" %} class="active" {% endif %}>Profile</a>
+				{% endif %}
+				{% if app.user and "ROLE_ADMIN" in app.user.roles %}
+					<a href="">Dashboard</a>
+				{% endif %}
+			</div>
+			<a href="{{ path('login') }}" {% if app.request.get("_route") == "login" %} class="active" {% endif %}>Login</a>
+		</div>
+		{% if app.request.get("_route") not in ["login", "register"] %}
+			<div class="navigation-location">
+				<p class="location">{{ location|capitalize }}</p>
+				{% if path %}
+					<p class="path">
+						<a href="{{ path('home') }}">Home</a>
+						<svg class="diamond-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"></path>
+						</svg>
+						{% if app.request.get('_route') == "search" %}
+							<span>{{path|capitalize}}</span>
+						{% else %}
+							<a href="">{{ path|capitalize }}</a>
+						{% endif %}
+					</p>
+				{% elseif app.request.get("_route") == "home" %}
+					<p class="description">
+						Place where you can read many things in many different categories you are interested in and find new interesting things for you
+					</p>
+				{% endif %}
+			</div>
+		{% endif %}
+	</nav>
+
+	<main class="content-container">
+		{% block content %}{% endblock %}
+		<section class="side-content">
+			{% include "defaults/_search.html.twig" %}
+			{% include "defaults/_categories.html.twig" %}
+			{% include "defaults/_tags.html.twig" %}
+		</section>
+	</main>
+{% endblock %}

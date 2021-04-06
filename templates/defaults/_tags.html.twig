@@ -1,0 +1,11 @@
+<div class="tags-container">
+	<h3 class="tags-header">Popular tags</h3>
+	{% for tag in dataServices.getRandomTags() %}
+		{{ tag.name }}
+	{% else %}
+		<p class="error-tag">
+			<span>Ooops!</span>
+			<span>There are no tags to display</span>
+		</p>
+	{% endfor %}
+</div>

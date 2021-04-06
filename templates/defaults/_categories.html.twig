@@ -1,0 +1,11 @@
+<div class="categories-container">
+	<h3 class="categories-header">Popular categories</h3>
+	{% for category in dataServices.getMostPopularCategories() %}
+		{{ category.name }}
+	{% else %}
+		<p class="error-category">
+			<span>Ooops!</span>
+			<span>There are no categories to display</span>
+		</p>
+	{% endfor %}
+</div>
