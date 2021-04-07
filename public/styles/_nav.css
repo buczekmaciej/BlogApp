@@ -3,7 +3,7 @@
 :root {
   --pink: 195, 55, 99;
   --purple: 29, 38, 113;
-  --white: 243, 243, 243;
+  --white: 235, 235, 235;
 }
 
 * {
@@ -134,7 +134,7 @@ a {
   height: 3rem;
   border: none;
   border-radius: 8px;
-  background-color: rgba(var(--white), 0.95);
+  background-color: rgb(var(--white));
   padding: 0 3rem 0 0.5rem;
   outline: transparent;
 }
@@ -150,9 +150,11 @@ a {
   cursor: pointer;
   border: none;
   outline: transparent;
+  background-color: transparent;
 }
 .search-submit svg {
   transform: scale(1.35);
+  fill: rgb(var(--pink));
 }
 
 .categories-header,

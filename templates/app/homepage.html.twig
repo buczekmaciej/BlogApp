@@ -50,12 +50,12 @@
 					{{ article.comments|length > 0 ? article.comments|length : "No comments" }}
 				</p>
 			</div>
+			<a href="" class="view-all-btn">View all articles</a>
 		{% else %}
 			<p class="error-article">
 				<span>Ooops!</span>
-				<span>There was a problem while getting articles</span>
+				<span>There are no articles to display</span>
 			</p>
 		{% endfor %}
-		<a href="" class="view-all-btn">View all articles</a>
 	</section>
 {% endblock %}

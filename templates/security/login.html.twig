@@ -6,23 +6,28 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" href="/styles/user/login.css">
 {% endblock %}
 
 {% block content %}
 	<form method="post">
-		<label for="inputUsername">Username</label>
-		<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
-		<label for="inputPassword">Password</label>
-		<input type="password" name="password" id="inputPassword" class="form-control" required>
-
+		<h1 class="form-label">Welcome back!</h1>
+		<div class="form-box">
+			<label for="inputUsername">Username</label>
+			<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+		</div>
+		<div class="form-box">
+			<label for="inputPassword">Password</label>
+			<input type="password" name="password" id="inputPassword" class="form-control" required>
+		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-		<button class="btn btn-lg btn-primary" type="submit">
+		<a href="{{ path('register') }}" class="register-link">Are you new here?</a>
+		<button class="form-btn" type="submit">
 			Sign in
 		</button>
 
 		{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			<div class="alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 		{% endif %}
 	</form>
 {% endblock %}

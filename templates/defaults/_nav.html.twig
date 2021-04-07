@@ -20,7 +20,11 @@
 					<a href="">Dashboard</a>
 				{% endif %}
 			</div>
-			<a href="{{ path('login') }}" {% if app.request.get("_route") == "login" %} class="active" {% endif %}>Login</a>
+			{% if app.user %}
+				<a href="{{ path('logout') }}">Logout</a>
+			{% else %}
+				<a href="{{ path('login') }}" {% if app.request.get("_route") == "login" %} class="active" {% endif %}>Login</a>
+			{% endif %}
 		</div>
 		{% if app.request.get("_route") not in ["login", "register"] %}
 			<div class="navigation-location">
@@ -48,10 +52,12 @@
 
 	<main class="content-container">
 		{% block content %}{% endblock %}
-		<section class="side-content">
-			{% include "defaults/_search.html.twig" %}
-			{% include "defaults/_categories.html.twig" %}
-			{% include "defaults/_tags.html.twig" %}
-		</section>
+		{% if app.request.get('_route') not in ['login', 'register'] %}
+			<section class="side-content">
+				{% include "defaults/_search.html.twig" %}
+				{% include "defaults/_categories.html.twig" %}
+				{% include "defaults/_tags.html.twig" %}
+			</section>
+		{% endif %}
 	</main>
 {% endblock %}

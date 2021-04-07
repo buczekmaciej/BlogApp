@@ -1,0 +1,33 @@
+{% extends 'defaults/_nav.html.twig' %}
+
+{% block title %}
+	Register
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="/styles/user/register.css">
+{% endblock %}
+
+{% block content %}
+	{{ form_start(form) }}
+	<h1 class="form-label">Get aboard!</h1>
+	<div class="form-box">
+		{{ form_label(form.username) }}
+		{{ form_widget(form.username) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.password) }}
+		{{ form_widget(form.password) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.email) }}
+		{{ form_widget(form.email) }}
+	</div>
+	<a href="{{ path('login') }}" class="login-link">I have an account</a>
+	{{ form_widget(form.submit) }}
+	{% if error %}
+		<div class="alert-danger">{{ error }}</div>
+	{% endif %}
+	{{ form_end(form) }}
+{% endblock %}
