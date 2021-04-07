@@ -1,7 +1,7 @@
 <div class="categories-container">
 	<h3 class="categories-header">Popular categories</h3>
 	{% for category in dataServices.getMostPopularCategories() %}
-		{{ category.name }}
+		{{ category.name|capitalize }}
 	{% else %}
 		<p class="error-category">
 			<span>Ooops!</span>

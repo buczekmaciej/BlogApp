@@ -151,6 +151,7 @@ a {
   border: none;
   outline: transparent;
   background-color: transparent;
+  border-left: 1px dashed rgb(var(--pink));
 }
 .search-submit svg {
   transform: scale(1.35);
@@ -169,4 +170,38 @@ a {
 .error-category,
 .error-tag {
   font-size: 0.85rem;
+}
+
+.admin-create-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 0.75rem;
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  color: rgb(var(--white));
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  outline: transparent;
+  font-size: 1.1rem;
+}
+.admin-create-btn svg {
+  transform: scale(1.35);
+  margin-right: 0.25rem;
+}
+.admin-create-btn.disabled {
+  opacity: 0.75;
+  pointer-events: none;
+  position: relative;
 }

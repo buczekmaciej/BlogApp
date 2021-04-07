@@ -35,8 +35,14 @@ class DataServices
         $randomTags = [];
 
         if ($tags) {
-            for ($i = 0; $i < 8; $i++) {
-                $randomTags[] = $tags[$i];
+            if (sizeof($tags) < 8) {
+                for ($i = 0; $i < sizeof($tags); $i++) {
+                    $randomTags[] = $tags[$i];
+                }
+            } else {
+                for ($i = 0; $i < 8; $i++) {
+                    $randomTags[] = $tags[mt_rand(0, sizeof($tags) - 1)];
+                }
             }
         }
 
@@ -49,5 +55,22 @@ class DataServices
             'articles' => $this->articleRepository->getArticlesContainingString($query),
             'categories',
         ];
+    }
+
+    public function getGroupedTagsByFirstLetter(): ?array
+    {
+        $allTags = $this->tagsRepository->findBy([], ['name' => 'ASC']);
+        $sortedTags = [];
+        $currentFirstLetter = null;
+
+        foreach ($allTags as $tag) {
+            if ($currentFirstLetter !== strtolower(substr($tag->getName(), 0, 1))) {
+                $currentFirstLetter = strtolower(substr($tag->getName(), 0, 1));
+            }
+
+            $sortedTags[$currentFirstLetter][] = $tag;
+        }
+
+        return $sortedTags;
     }
 }

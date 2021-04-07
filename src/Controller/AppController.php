@@ -37,6 +37,7 @@ class AppController extends AbstractController
         return $this->render('app/search.html.twig', [
             'location' => "Results for {$request->query->get('q')}",
             'path' => 'Search',
+            'pathLink' => 'search',
             'data' => $this->dataServices->getSearchedData($request->query->get('q')),
         ]);
     }

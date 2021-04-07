@@ -1,0 +1,13 @@
+details {
+  margin: 0.75rem 0;
+}
+details:first-of-type {
+  margin-top: 0;
+}
+details:last-of-type {
+  margin-bottom: 0;
+}
+
+summary {
+  margin-bottom: 0.5rem;
+}
