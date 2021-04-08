@@ -48,6 +48,8 @@ a {
 .navigation-container a.active {
   position: relative;
   font-weight: 600;
+  cursor: default;
+  pointer-events: none;
 }
 .navigation-container a.active::after {
   content: "";

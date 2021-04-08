@@ -12,14 +12,26 @@
 {% block content %}
 	<section class="tags-list">
 		{% for letter, tagsList in tags %}
-			<details class="letter-container">
-				<summary>
+			<div class="letter-container">
+				<p class="tag-letter">
 					{{ letter|capitalize }}
-				</summary>
-				{% for tag in tagsList %}
-					<a href="" class="tag-box">{{ tag.name|capitalize }}</a>
-				{% endfor %}
-			</details>
+				</p>
+				<div class="letter-tags-container">
+					{% for tag in tagsList %}
+						<p class="tag-box">
+							<a href="">
+								{{ tag.name|capitalize }}
+							</a>
+							<a href="{{ path('tagEdit', {'id': tag.id}) }}">
+								<svg class="edit-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"></path>
+									<path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"></path>
+								</svg>
+							</a>
+						</p>
+					{% endfor %}
+				</div>
+			</div>
 		{% else %}
 			<p class="error-tag">
 				<span>Ooops!</span>
@@ -39,4 +51,8 @@
 			Create new tag
 		</a>
 	{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/scripts/tag.js"></script>
 {% endblock %}

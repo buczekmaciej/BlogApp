@@ -13,12 +13,17 @@ class TagType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $name = $options['tagName'] ?? "";
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Tag name',
+                'attr' => [
+                    'value' => $name,
+                ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Submit new tag',
+                'label' => $name == "" ? 'Submit new tag' : "Save tag changes",
                 'attr' => [
                     'class' => 'form-btn',
                 ],
@@ -31,6 +36,7 @@ class TagType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Tag::class,
         ]);
+        $resolver->setRequired("tagName");
     }
 
     public function getBlockPrefix()

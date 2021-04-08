@@ -12,7 +12,7 @@
 				<a href="{{ path('home') }}" {% if app.request.get("_route") == "home" %} class="active" {% endif %}>Home</a>
 				<a href="" {% if app.request.get("_route") in [] %} class="active" {% endif %}>Articles</a>
 				<a href="" {% if app.request.get("_route") in [] %} class="active" {% endif %}>Categories</a>
-				<a href="{{ path('tagList') }}" {% if app.request.get("_route") in ['tagList', 'tagCreate'] %} class="active" {% endif %}>Tags</a>
+				<a href="{{ path('tagList') }}" {% if app.request.get("_route") in ['tagList', 'tagCreate', 'tagEdit'] %} class="active" {% endif %}>Tags</a>
 				{% if app.user %}
 					<a href="" {% if app.request.get("_route") == "" %} class="active" {% endif %}>Profile</a>
 				{% endif %}
