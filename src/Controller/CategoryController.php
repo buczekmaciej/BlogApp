@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Services\DataServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,22 +37,94 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/api/categories/get")
+     * @Route("/get")
      */
     public function apiGetCategories(DataServices $dataServices)
     {
-        /* $categories = $dataServices->getGroupedByFirstLetter("categories");
+        $group = $dataServices->getGroupedByFirstLetter("categories");
 
-        if (sizeof($categories) == 0) {
-        return $this->json("There is nothing to show", 404);
+        if (sizeof($group) == 0) {
+            return $this->json("There is nothing to show", 404);
         }
 
         $outputCaregories = [];
 
-        foreach ($categories as $category) {
-        $outputCaregories[] = ['id' => $category->getId(), 'name' => $category->getName()];
-        } */
+        foreach ($group as $letter => $categories) {
+            foreach ($categories as $category) {
+                $outputCaregories[$letter][] = ['id' => $category->getId(), 'name' => $category->getName()];
+            }
+        }
 
-        return $this->json(['a' => [['id' => 1, 'name' => 'Art']], 'f' => [['id' => 2, 'name' => 'Food']]]);
+        return $this->json($outputCaregories);
+    }
+
+    /**
+     * @Route("/create", name="categoryCreate")
+     */
+    public function create(?string $error = null, Request $request): Response
+    {
+        $form = $this->createForm(CategoryType::class, null, ['categoryName' => null]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+
+            if (!$this->categoryRepository->findOneBy(['name' => $category->getName()])) {
+                $this->entityManager->persist($category);
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute('categoryList');
+            } else {
+                $error = "Such named category already exists";
+            }
+        }
+
+        return $this->render('category/create.html.twig', [
+            'location' => 'Create category',
+            'path' => 'Categories',
+            'pathLink' => 'categoryList',
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="categoryEdit")
+     */
+    public function edit(int $id, ?string $error = null, Request $request): Response
+    {
+        $oldData = $this->categoryRepository->findOneBy(['id' => $id]);
+
+        $form = $this->createForm(CategoryType::class, null, ['categoryName' => $oldData->getName()]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+
+            if ($oldData->getName() !== $category->getName()) {
+                if ($this->categoryRepository->findOneBy(['name' => $category->getName()])) {
+                    $error = "Such named category already exists";
+                }
+            }
+
+            if (!$error) {
+                $oldData->getTags()->clear();
+                foreach ($category->getTags() as $tag) {
+                    $oldData->addTag($tag);
+                }
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute('categoryList');
+            }
+        }
+
+        return $this->render('category/edit.html.twig', [
+            'location' => 'Edit category',
+            'path' => 'Categories',
+            'pathLink' => 'categoryList',
+            'form' => $form->createView(),
+            'error' => $error,
+            'oldTags' => $oldData->getTags(),
+        ]);
     }
 }

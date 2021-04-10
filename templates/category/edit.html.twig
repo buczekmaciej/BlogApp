@@ -9,7 +9,37 @@
 	<link rel="stylesheet" href="/styles/app/category/form.css">
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+	{{ form_start(form) }}
+	<div class="form-box">
+		{{ form_label(form.name) }}
+		{{ form_widget(form.name) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.tags) }}
+		<div class="tags-container">
+			{% for tag in form.tags %}
+				{% set checked = false %}
+				{% set index = loop.index %}
+				{% for t in oldTags %}
+					{% if t.name == form.children.tags.children[index].vars.label %}
+						{% set checked = true %}
+					{% endif %}
+				{% endfor %}
+				<div class="tag-box">
+					{{form_widget(tag, {'attr': {'checked': checked}})}}
+					{{form_label(tag)}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{{ form_widget(form.submit) }}
+	{{ form_widget(form._token) }}
+	{% if error %}
+		<div class="alert-danger">{{ error }}</div>
+	{% endif %}
+	{{ form_end(form, {'render_rest': false}) }}
+{% endblock %}
 
 {% block create %}
 	{% if app.user and "ROLE_ADMIN" in app.user.roles %}

@@ -29,13 +29,34 @@ class TagController extends AbstractController
     /**
      * @Route("/", name="tagList")
      */
-    function list(DataServices $dataServices): Response {
+    function list(): Response {
         return $this->render('tag/list.html.twig', [
             'location' => 'List of tags',
             'path' => 'Tags',
             'pathLink' => 'tagList',
-            'tags' => $dataServices->getGroupedByFirstLetter('tags'),
         ]);
+    }
+
+    /**
+     * @Route("/get")
+     */
+    public function apiGetTags(DataServices $dataServices)
+    {
+        $group = $dataServices->getGroupedByFirstLetter("tags");
+
+        if (sizeof($group) == 0) {
+            return $this->json("There is nothing to show", 404);
+        }
+
+        $outputTags = [];
+
+        foreach ($group as $letter => $tags) {
+            foreach ($tags as $tag) {
+                $outputTags[$letter][] = ['id' => $tag->getId(), 'name' => $tag->getName()];
+            }
+        }
+
+        return $this->json($outputTags);
     }
 
     /**

@@ -41,4 +41,16 @@ class AppController extends AbstractController
             'data' => $this->dataServices->getSearchedData($request->query->get('q')),
         ]);
     }
+
+    /**
+     * @Route("/isAdmin")
+     */
+    public function isAdminCheck(): Response
+    {
+        if (!$this->getUser()) {
+            return $this->json("Not logged");
+        }
+
+        return $this->json(in_array("ROLE_ADMIN", $this->getUser()->getRoles()));
+    }
 }

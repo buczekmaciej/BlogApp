@@ -1,53 +1,85 @@
-.tags-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.letter-container {
-  width: 100%;
-  margin: 1rem 0;
-  display: flex;
-  flex-direction: column;
-}
-.letter-container:first-of-type {
-  margin-top: 0;
-}
-.letter-container:last-of-type {
-  margin-bottom: 0;
-}
-
-.letter-tags-container {
-  display: none;
-  flex-wrap: wrap;
-}
-.letter-container.expandLetter .letter-tags-container {
-  display: flex;
-}
-
-.tag-letter {
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  padding: 0.35rem 0.5rem;
-}
-
-.tag-box {
-  background-color: rgba(var(--purple), 0.8);
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  padding: 0.4rem 0.75rem;
+.starts-with-box {
   user-select: none;
 }
-.tag-box a {
+.letter {
+  color: rgba(var(--dark), 0.5);
+  cursor: pointer;
+  margin: 0 0.35rem;
+}
+.letter:first-of-type {
+  margin-left: 0;
+}
+.letter:last-of-type {
+  margin-right: 0;
+}
+.active-letter {
+  color: rgb(var(--white));
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  cursor: default;
+  font-weight: 600;
+  padding: 0.15rem 0.35rem;
+  border-radius: 8px;
+}
+
+.tags-container {
+  padding: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tag-box {
+  padding: 0.5rem;
+  margin-right: 0.35rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(var(--purple), 0.75);
+  color: rgb(var(--white));
+  border-radius: 8px;
+  transition: 0.15s ease-in-out;
+}
+.tag-box:hover {
+  background-color: rgb(var(--purple));
+}
+.tag-box .tag-edit-link {
+  margin-left: 1rem;
+  padding-top: 0.35rem;
   color: rgb(var(--white));
 }
-.tag-box a:last-of-type {
-  margin-left: 0.35rem;
-  padding-top: 0.35rem;
-}
-.tag-box a svg {
-  fill: rgb(var(--white));
+.tag-edit-link svg {
   transform: scale(0.8);
+}
+
+.loading-icon {
+  animation: 1.5s infinite ease-in-out spin;
+  margin: 10rem auto 0;
+  display: block;
+}
+.loading-text {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0) scale(2.5);
+  }
+  50% {
+    transform: rotate(360deg) scale(2.5);
+  }
+  100% {
+    transform: rotate(0) scale(2.5);
+  }
 }

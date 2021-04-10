@@ -21,7 +21,7 @@
 				{% endif %}
 			</div>
 			{% if app.user %}
-				<a href="{{ path('logout') }}">Logout</a>
+				<a href="{{ path('logout') }}" class="logout-link">Logout</a>
 			{% else %}
 				<a href="{{ path('login') }}" {% if app.request.get("_route") == "login" %} class="active" {% endif %}>Login</a>
 			{% endif %}
@@ -60,4 +60,8 @@
 			</section>
 		{% endif %}
 	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/scripts/_nav.js"></script>
 {% endblock %}

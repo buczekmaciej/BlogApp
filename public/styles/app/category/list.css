@@ -33,6 +33,32 @@
 
 .categories-container {
   padding: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.category-box {
+  padding: 0.5rem;
+  margin-right: 0.35rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(var(--purple), 0.75);
+  border-radius: 8px;
+  transition: 0.15s ease-in-out;
+}
+.category-box:hover {
+  background-color: rgb(var(--purple));
+}
+.category-box > a {
+  color: rgb(var(--white));
+}
+.category-box .category-edit-link {
+  margin-left: 1rem;
+  padding-top: 0.35rem;
+}
+.category-edit-link svg {
+  transform: scale(0.8);
 }
 
 .loading-icon {
