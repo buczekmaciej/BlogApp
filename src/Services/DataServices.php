@@ -5,15 +5,18 @@ namespace App\Services;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
+use Symfony\Component\Security\Core\Security;
 
 class DataServices
 {
+    private $security;
     private $articleRepository;
     private $categoriesRepository;
     private $tagsRepository;
 
-    public function __construct(ArticleRepository $articleRepository, CategoryRepository $categoriesRepository, TagRepository $tagsRepository)
+    public function __construct(Security $security, ArticleRepository $articleRepository, CategoryRepository $categoriesRepository, TagRepository $tagsRepository)
     {
+        $this->security = $security;
         $this->articleRepository = $articleRepository;
         $this->categoriesRepository = $categoriesRepository;
         $this->tagsRepository = $tagsRepository;
@@ -57,20 +60,24 @@ class DataServices
         ];
     }
 
-    public function getGroupedTagsByFirstLetter(): ?array
+    public function getGroupedByFirstLetter(string $option): ?array
     {
-        $allTags = $this->tagsRepository->findBy([], ['name' => 'ASC']);
-        $sortedTags = [];
-        $currentFirstLetter = null;
-
-        foreach ($allTags as $tag) {
-            if ($currentFirstLetter !== strtolower(substr($tag->getName(), 0, 1))) {
-                $currentFirstLetter = strtolower(substr($tag->getName(), 0, 1));
-            }
-
-            $sortedTags[$currentFirstLetter][] = $tag;
+        if (!in_array($option, ['tags', 'categories'])) {
+            return null;
         }
 
-        return $sortedTags;
+        $allData = $option == "tags" ? $this->tagsRepository->findBy([], ['name' => 'ASC']) : $this->categoriesRepository->findBy([], ['name' => 'ASC']);
+        $groupedOutput = [];
+        $currentFirstLetter = null;
+
+        foreach ($allData as $object) {
+            if ($currentFirstLetter !== strtolower(substr($object->getName(), 0, 1))) {
+                $currentFirstLetter = strtolower(substr($object->getName(), 0, 1));
+            }
+
+            $groupedOutput[$currentFirstLetter][] = $object;
+        }
+
+        return $groupedOutput;
     }
 }

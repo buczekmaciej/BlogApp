@@ -1,0 +1,77 @@
+.form-box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 50%;
+}
+.form-box label {
+  margin-bottom: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+.form-box input {
+  height: 3rem;
+  outline: transparent;
+  border: 1px solid rgba(var(--pink), 0.3);
+  border-radius: 8px;
+  padding: 0 0.35rem;
+}
+.form-box input:focus {
+  border: 1px solid rgba(var(--pink), 1);
+}
+.register-link {
+  color: rgb(var(--purple));
+  margin-bottom: 0.75rem;
+}
+.form-btn {
+  position: relative;
+  padding: 0.75rem 1.35rem;
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  color: rgb(var(--white));
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  outline: transparent;
+}
+
+.form-btn:hover::after {
+  content: "";
+  width: 75%;
+  height: 100%;
+  position: absolute;
+  left: 12.5%;
+  top: 0;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  z-index: -1;
+}
+
+.alert-danger {
+  margin-top: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  background-color: rgba(var(--pink), 0.1);
+  border: 1px solid rgb(var(--pink));
+}

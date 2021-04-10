@@ -4,6 +4,7 @@
   --pink: 195, 55, 99;
   --purple: 29, 38, 113;
   --white: 235, 235, 235;
+  --dark: 10, 10, 10;
 }
 
 * {
@@ -15,6 +16,7 @@
 body {
   font-family: "Nunito";
   width: 100%;
+  color: rgb(var(--dark));
 }
 
 a {
@@ -33,7 +35,6 @@ a {
     rgb(var(--pink)),
     rgb(var(--purple))
   );
-
   width: 100%;
   padding: 1.75rem 0;
   color: rgb(var(--white));
@@ -163,6 +164,21 @@ a {
 .categories-header,
 .tags-header {
   margin-bottom: 0.5rem;
+}
+
+.nav-tag-box {
+  background-color: rgba(var(--purple), 0.8);
+  color: rgb(var(--white));
+  border-radius: 24px;
+  margin: 0.25rem;
+  padding: 0.4rem 0.75rem;
+  user-select: none;
+}
+.nav-tag-box:first-of-type {
+  margin-left: 0;
+}
+.nav-tag-box:last-of-type {
+  margin-right: 0;
 }
 
 .side-content > div:first-of-type {

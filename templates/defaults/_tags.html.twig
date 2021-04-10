@@ -1,7 +1,9 @@
 <div class="tags-container">
 	<h3 class="tags-header">Popular tags</h3>
 	{% for tag in dataServices.getRandomTags() %}
-		{{ tag.name|capitalize }}
+		<a href="" class="nav-tag-box">
+			{{ tag.name|capitalize }}
+		</a>
 	{% else %}
 		<p class="error-tag">
 			<span>Ooops!</span>

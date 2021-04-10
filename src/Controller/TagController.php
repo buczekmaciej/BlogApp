@@ -34,7 +34,7 @@ class TagController extends AbstractController
             'location' => 'List of tags',
             'path' => 'Tags',
             'pathLink' => 'tagList',
-            'tags' => $dataServices->getGroupedTagsByFirstLetter(),
+            'tags' => $dataServices->getGroupedByFirstLetter('tags'),
         ]);
     }
 
