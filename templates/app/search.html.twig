@@ -1,9 +1,5 @@
 {% extends 'defaults/_nav.html.twig' %}
 
-{% block title %}
-	Results for "{{ app.request.query.get("q") }}"
-{% endblock %}
-
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="/styles/app/search.css">

@@ -161,8 +161,7 @@ a {
   fill: rgb(var(--pink));
 }
 
-.categories-header,
-.tags-header {
+.categories-header {
   margin-bottom: 0.5rem;
 }
 

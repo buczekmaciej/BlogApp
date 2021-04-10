@@ -1,17 +1,16 @@
-{% extends 'defaults/_nav.html.twig' %}
+{% extends "defaults/_nav.html.twig" %}
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="/styles/app/homepage.css">
+	<link rel="stylesheet" href="/styles/app/article/list.css">
 {% endblock %}
 
 {% block content %}
-	<section class="articles-container">
-		<h2 class="articles-header">Recent articles</h2>
-		{% for article in recentArticles %}
+	<section class="articles-list">
+		{% for article in articles %}
 			<div class="article-container">
 				{% if article.images|length > 0 %}
-					<img src="{{ article.images.0 }}" alt="" class="article-img">
+					<img src="{{ '/uploads/' ~ article.images.0 }}" alt="" class="article-img">
 				{% else %}
 					<div class="article-img"></div>
 				{% endif %}
@@ -46,7 +45,7 @@
 					{{ article.comments|length > 0 ? article.comments|length : "No comments" }}
 				</p>
 			</div>
-			<a href="" class="view-all-btn">View all articles</a>
+			{{ knp_pagination_render(articles) }}
 		{% else %}
 			<p class="error-article">
 				<span>Ooops!</span>
@@ -54,4 +53,16 @@
 			</p>
 		{% endfor %}
 	</section>
+{% endblock %}
+
+{% block create %}
+	{% if app.user and "ROLE_ADMIN" in app.user.roles %}
+		<a href="{{ path('articleCreate') }}" class="admin-create-btn">
+			<svg class="plus-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"></path>
+				<path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"></path>
+			</svg>
+			Create new article
+		</a>
+	{% endif %}
 {% endblock %}
