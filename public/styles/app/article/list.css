@@ -1,0 +1,72 @@
+.article-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+.article-img {
+  background-color: rgb(var(--purple));
+  width: 100%;
+}
+.date-box {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: rgb(var(--purple));
+  background: -webkit-linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  background: linear-gradient(
+    to bottom left,
+    rgb(var(--pink)),
+    rgb(var(--purple))
+  );
+  color: rgb(var(--white));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.date-box span:first-of-type {
+  font-size: 2rem;
+}
+.date-box span:last-of-type {
+  font-size: 1.35rem;
+}
+.article-title {
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 0.35rem 0;
+}
+.short-desc {
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+.article-read-more {
+  display: flex;
+  align-items: center;
+  color: rgb(var(--purple));
+  font-weight: 600;
+}
+.article-read-more .arrow-right {
+  margin-left: 0.5rem;
+  stroke-width: 2;
+}
+.article-likes {
+  margin-left: auto;
+  margin-right: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+.article-comments {
+  display: flex;
+  align-items: center;
+}
+.like-icon,
+.comment-icon {
+  margin-right: 0.5rem;
+}
