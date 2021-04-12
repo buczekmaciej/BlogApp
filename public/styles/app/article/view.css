@@ -58,8 +58,8 @@
 .comments:hover {
   background-color: rgb(var(--purple));
 }
-.like-icon,
-.comment-icon {
+.likes .like-icon,
+.comments .comment-icon {
   margin-right: 0.5rem;
   fill: rgb(var(--white));
 }
@@ -97,6 +97,7 @@
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   cursor: pointer;
+  outline: transparent;
 }
 
 .image-show-container {
@@ -123,4 +124,28 @@
 .image-show-container img {
   height: 90%;
   width: 90%;
+}
+
+.comments-container {
+  padding: 0.5rem 0;
+}
+
+.comment-box {
+  display: flex;
+  align-items: center;
+}
+.comment-content {
+  flex: 5;
+}
+.author-date {
+  color: rgba(var(--dark), 0.6);
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+.author-date a {
+  color: rgb(var(--purple));
+  font-weight: 600;
+}
+.comment-box .like-icon {
+  fill: rgb(var(--purple));
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,11 +21,13 @@ class ArticleController extends AbstractController
 {
     private $entityManager;
     private $articleRespository;
+    private $commentRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, ArticleRepository $articleRepository)
+    public function __construct(EntityManagerInterface $entityManager, ArticleRepository $articleRepository, CommentRepository $commentRepository)
     {
         $this->entityManager = $entityManager;
         $this->articleRespository = $articleRepository;
+        $this->commentRepository = $commentRepository;
     }
 
     /**
@@ -174,7 +177,7 @@ class ArticleController extends AbstractController
      */
     public function like(int $id): Response
     {
-        if(!$this->getUser()) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('articleView', ['id' => $id]);
         }
 
@@ -195,25 +198,49 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/comment/create", name="commentCreate")
+     * @Route("/{id}/comment/create", name="commentCreate")
      */
-    public function commentCreate(Request $request): Response
+    public function commentCreate(int $id, Request $request): Response
     {
         try {
-            $articleId = $request->query->get("returnId");
             $data = $request->request;
             $comment = new \App\Entity\Comment;
-            $comment->setArticle($this->articleRespository->findOneBy(['id' => $articleId]));
+            $comment->setArticle($this->articleRespository->findOneBy(['id' => $id]));
             $comment->setAuthor($this->getUser());
             $comment->setPostedAt(new \DateTime);
-            $comment->setContent($data['comment']);
+            $comment->setContent($data->get('comment'));
 
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('articleView', ['id' => $articleId]);
+            return $this->redirectToRoute('articleView', ['id' => $id]);
         } catch (Exception $e) {
             throw new Exception("Server wasn't able to add your comment. Please try again.", 500);
         }
+    }
+
+    /**
+     * @Route("/comment/{id}/like", name="commentLike")
+     */
+    public function commentLike(int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('articleView', ['id' => $id]);
+        }
+
+        $comment = $this->commentRepository->findOneBy(['id' => $id]);
+        $liked = false;
+
+        foreach ($comment->getLikes() as $likingUser) {
+            if ($likingUser->getUsername() === $this->getUser()->getUsername()) {
+                $liked = true;
+                break;
+            }
+        }
+
+        $liked ? $comment->removeLike($this->getUser()) : $comment->addLike($this->getUser());
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('articleView', ['id' => $comment->getArticle()->getId()]);
     }
 }
