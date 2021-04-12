@@ -8,10 +8,25 @@
 {% block content %}
 	{{ form_start(form) }}
 	<div class="form-box">
-		{{ form_label(form.name) }}
-		{{ form_widget(form.name) }}
+		{{ form_label(form.title) }}
+		{{ form_widget(form.title) }}
 	</div>
-	{{ form_widget(form.submit) }}
+	<div class="form-box">
+		{{ form_label(form.content) }}
+		{{ form_widget(form.content) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.images) }}
+		{{ form_widget(form.images) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.category) }}
+		<select id="{{ form.category.vars.id }}" name="{{ form.category.vars.full_name }}" required="required">
+			{% for opt in form.category.vars.choices %}
+				<option value="{{ opt.value }}">{{ opt.label }}</option>
+			{% endfor %}
+		</select>
+	</div>
 	{% if error %}
 		<div class="alert-danger">{{ error }}</div>
 	{% endif %}

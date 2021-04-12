@@ -68,7 +68,6 @@ class ArticleType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
-                'placeholder' => "Select a category...",
                 'data' => $oldArticle ? $oldArticle->getCategory()->getName() : null,
             ])
             ->add('submit', SubmitType::class, [

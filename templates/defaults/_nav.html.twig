@@ -14,7 +14,7 @@
 			<span class="logo-label">Blog</span>
 			<div class="links">
 				<a href="{{ path('home') }}" {% if app.request.get("_route") == "home" %} class="active" {% endif %}>Home</a>
-				<a href="{{ path('articleList') }}" {% if app.request.get("_route") in ['articleList', 'articleCreate', 'articleEdit'] %} class="active" {% endif %}>Articles</a>
+				<a href="{{ path('articleList') }}" {% if app.request.get("_route") in ['articleList', 'articleCreate', 'articleEdit', 'articleView'] %} class="active" {% endif %}>Articles</a>
 				<a href="{{ path('categoryList') }}" {% if app.request.get("_route") in ['categoryList', 'categoryCreate', 'categoryEdit'] %} class="active" {% endif %}>Categories</a>
 				<a href="{{ path('tagList') }}" {% if app.request.get("_route") in ['tagList', 'tagCreate', 'tagEdit'] %} class="active" {% endif %}>Tags</a>
 				{% if app.user %}
