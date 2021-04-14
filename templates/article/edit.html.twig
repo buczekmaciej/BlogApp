@@ -20,20 +20,35 @@
 		{{ form_widget(form.images) }}
 	</div>
 	<div class="form-box">
+		{{ form_label(form.uploaded) }}
+		<div class="images-container">
+			{% for img in form.uploaded %}
+				<div class="img-box">
+					<label for="article_uploaded_{{ loop.index0 }}">
+						<img src="/uploads/{{ img.vars.value }}" alt="Uploaded {{ loop.index0 }}" class="edit-uploaded-image">
+					</label>
+					{{form_widget(img, {'attr': {'checked': true}})}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-box">
 		{{ form_label(form.category) }}
 		<select id="{{ form.category.vars.id }}" name="{{ form.category.vars.full_name }}" required="required">
 			{% for opt in form.category.vars.choices %}
-				<option value="{{ opt.value }}">{{ opt.label }}</option>
+				<option value="{{ opt.value }}" {% if oldCategory.name|capitalize == opt.label|capitalize %} selected {% endif %}>{{ opt.label }}</option>
 			{% endfor %}
 		</select>
 	</div>
+	{{ form_widget(form._token) }}
+	{{ form_widget(form.submit) }}
 	{% if error %}
 		<div class="alert-danger">{{ error }}</div>
 	{% endif %}
-	{{ form_end(form) }}
+	{{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 
-{% block create %}
+{% block sideBtn %}
 	{% if app.user and "ROLE_ADMIN" in app.user.roles %}
 		<a href="{{ path('articleCreate') }}" class="admin-create-btn">
 			<svg class="plus-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">

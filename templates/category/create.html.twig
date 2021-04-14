@@ -29,7 +29,7 @@
 	{{ form_end(form) }}
 {% endblock %}
 
-{% block create %}
+{% block sideBtn %}
 	{% if app.user and "ROLE_ADMIN" in app.user.roles %}
 		<div class="admin-create-btn disabled">
 			<svg class="plus-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">

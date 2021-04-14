@@ -6,6 +6,7 @@ use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Services\DataServices;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,6 +126,52 @@ class CategoryController extends AbstractController
             'form' => $form->createView(),
             'error' => $error,
             'oldTags' => $oldData->getTags(),
+        ]);
+    }
+
+    /**
+     * @Route("/{name}", name="categoryView")
+     */
+    public function view(string $name, PaginatorInterface $paginator, Request $request): Response
+    {
+        $category = $this->categoryRepository->findOneBy(['name' => $name]);
+        $articlesFromCategory = $category->getArticles();
+        $authorsCreatingInCategory = [];
+
+        foreach ($articlesFromCategory as $article) {
+            $authorsCreatingInCategory[] = $article->getAuthor();
+        }
+
+        $authorsCreatingInCategory = array_unique($authorsCreatingInCategory, SORT_REGULAR);
+
+        return $this->render('category/view.html.twig', [
+            'location' => $name,
+            'path' => 'Categories',
+            'pathLink' => 'categoryList',
+            'articles' => $paginator->paginate($articlesFromCategory, $request->query->getInt("page", 1), 15),
+            'authors' => $authorsCreatingInCategory,
+        ]);
+    }
+
+    /**
+     * @Route("/{name}/authors", name="categoryAuthors")
+     */
+    public function authors(string $name): Response
+    {
+        $articlesFromCategory = $this->categoryRepository->findOneBy(['name' => $name])->getArticles();
+        $authorsCreatingInCategory = [];
+
+        foreach ($articlesFromCategory as $article) {
+            $authorsCreatingInCategory[] = $article->getAuthor();
+        }
+
+        $authorsCreatingInCategory = array_unique($authorsCreatingInCategory, SORT_REGULAR);
+
+        return $this->render('category/authors.html.twig', [
+            'location' => $name . " authors",
+            'path' => 'Categories',
+            'pathLink' => 'categoryList',
+            'authors' => $authorsCreatingInCategory,
         ]);
     }
 }

@@ -31,7 +31,7 @@ class CategoryType extends AbstractType
                 'expanded' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $name === "" ? 'Create category' : "Edit category",
+                'label' => $name === "" ? 'Create category' : "Save category changes",
                 'attr' => [
                     'class' => 'form-btn',
                 ],

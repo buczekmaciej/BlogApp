@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,9 +86,12 @@ class ArticleController extends AbstractController
 
                     $this->entityManager->flush();
 
-                    return $this->redirectToRoute('articleList');
+                    return $this->redirectToRoute('articleView', ['id' => $article->getId()]);
                 }
+            } else {
+                $error = "Such article already exists";
             }
+
         }
 
         return $this->render('article/create.html.twig', [
@@ -99,9 +104,9 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="articleEdite")
+     * @Route("/{id}/edit", name="articleEdit")
      */
-    public function edit(int $id, ?string $error = null, Request $request): Response
+    public function edit(int $id, ?string $error = null, Request $request, ParameterBagInterface $parameterBag): Response
     {
         $form = $this->createForm(ArticleType::class, null, ['id' => $id]);
         $form->handleRequest($request);
@@ -110,45 +115,62 @@ class ArticleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
+            $uploadedImages = $form->get('uploaded')->getData();
+            $imgs = [];
 
-            $article->setAuthor($this->getUser());
-            $article->setPostedAt(new \DateTime);
-            $files = $article->getImages();
-            $article->setImages([]);
-
-            if (!$this->articleRespository->checkExistance($article->getTitle(), $article->getContent())) {
-                $this->entityManager->persist($article);
-                $this->entityManager->flush();
-
-                if (sizeof($files) > 0) {
-                    $temp = [];
-
-                    foreach ($files as $ind => $file) {
-                        try {
-                            $name = $article->getId() . "_" . $ind . "." . $file->guessExtension();
-                            $file->move(
-                                "uploads/",
-                                $name
-                            );
-                            $temp[] = $name;
-                        } catch (UploadException $e) {
-                            throw new UploadException("Couldn't upload file", 500);
-                        }
-                    }
-
-                    $article->setImages($temp);
-                    unset($temp);
-                    unset($files);
-
-                    $this->entityManager->flush();
-
-                    return $this->redirectToRoute('articleList');
+            if ($article->getTitle() !== $oldArticle->getTitle() && $article->getContent() !== $oldArticle->getContent()) {
+                if ($this->articleRespository->checkExistance($article->getTitle(), $article->getContent())) {
+                    $error = "Such article already exists";
                 }
             }
+
+            $oldArticle->setPostedAt(new \DateTime);
+            $oldArticle->setTitle($article->getTitle());
+            $oldArticle->setContent($article->getContent());
+            $oldArticle->setCategory($article->getCategory());
+
+            if ($uploadedImages) {
+                foreach ($uploadedImages as $img) {
+                    $imgs[] = $img;
+                }
+
+                if (sizeof($oldArticle->getImages()) !== sizeof($imgs)) {
+                    $diffs = array_diff($oldArticle->getImages(), $imgs);
+                    $path = $parameterBag->get('kernel.project_dir') . '/public/uploads/';
+                    $fileSystem = new Filesystem;
+
+                    foreach ($diffs as $removed) {
+                        $fileSystem->remove($path . $removed);
+                    }
+                }
+            }
+
+            if (sizeof($article->getImages()) > 0) {
+                $highestIndex = (int) explode("_", explode(".", end($imgs))[0])[1];
+                foreach ($article->getImages() as $ind => $img) {
+                    try {
+                        $name = $oldArticle->getId() . "_" . ($highestIndex + $ind + 1) . "." . $img->guessExtension();
+                        $img->move(
+                            "uploads/",
+                            $name
+                        );
+
+                        $imgs[] = $name;
+                    } catch (UploadException $e) {
+                        throw new UploadException("Couldn't upload file", 500);
+                    }
+                }
+            }
+
+            $oldArticle->setImages($imgs);
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('articleView', ['id' => $id]);
         }
 
-        return $this->render('article/create.html.twig', [
-            'location' => 'Create article',
+        return $this->render('article/edit.html.twig', [
+            'location' => 'Edit article',
             'path' => 'Articles',
             'pathLink' => 'articleList',
             'form' => $form->createView(),

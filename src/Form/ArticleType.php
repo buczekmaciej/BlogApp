@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Repository\ArticleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,9 +39,7 @@ class ArticleType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Article content',
-                'attr' => [
-                    'value' => $oldArticle ? $oldArticle->getContent() : "",
-                ],
+                'data' => $oldArticle ? $oldArticle->getContent() : "",
             ])
             ->add('images', FileType::class, [
                 'label' => "Article images",
@@ -62,16 +61,26 @@ class ArticleType extends AbstractType
                         ]),
                     ]),
                 ],
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'data' => $oldArticle ? $oldArticle->getCategory()->getName() : null,
-            ])
+                'required' => false,
+            ]);
+        if ($options['id'] && sizeof($oldArticle->getImages()) > 0) {
+            $builder->add('uploaded', ChoiceType::class, [
+                'label' => 'Uploaded images',
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $oldArticle->getImages(),
+                'mapped' => false,
+            ]);
+        }
+        $builder->add('category', EntityType::class, [
+            'class' => Category::class,
+            'choice_label' => 'name',
+            'multiple' => false,
+            'expanded' => false,
+            'data' => $oldArticle ? $oldArticle->getCategory() : null,
+        ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['id'] ? 'Edit article' : 'Create article',
+                'label' => $options['id'] ? 'Save article changes' : 'Create article',
                 'attr' => [
                     'class' => 'form-btn',
                 ],

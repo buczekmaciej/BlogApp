@@ -1,7 +1,10 @@
 <div class="categories-container">
 	<h3 class="categories-header">Popular categories</h3>
 	{% for category in dataServices.getMostPopularCategories() %}
-		{{ category.name|capitalize }}
+		<a href="{{ path('categoryView', {'name': category.name}) }}">
+			{{ category.name|capitalize }}
+			({{ category.articles }})
+		</a>
 	{% else %}
 		<p class="error-category">
 			<span>Ooops!</span>

@@ -41,7 +41,7 @@ function createCategories() {
   inner += `<div class="categories-container">`;
   for (let [letter, row] of Object.entries(data[currentLetter])) {
     inner += `<div class="category-box">
-    <a href="" class="category-name">${
+    <a href="${window.location.href + row.name}" class="category-name">${
       row.name[0].toUpperCase() + row.name.slice(1)
     }</a>`;
 

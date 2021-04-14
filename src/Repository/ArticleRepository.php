@@ -30,7 +30,7 @@ class ArticleRepository extends ServiceEntityRepository
         return array_unique($articlesContaining, SORT_REGULAR);
     }
 
-    public function checkExistance(string $content, string $title)
+    public function checkExistance(string $title, string $content)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.title = :title OR a.content = :content')

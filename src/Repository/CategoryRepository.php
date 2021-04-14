@@ -22,7 +22,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function getMostPopularCategories()
     {
         return $this->createQueryBuilder('c')
-            ->select('COUNT(a) as HIDDEN articles')
+            ->select('COUNT(a) as articles, c.name')
             ->orderBy('articles', 'DESC')
             ->leftJoin('c.articles', 'a')
             ->setMaxResults(5)

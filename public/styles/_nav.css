@@ -189,7 +189,8 @@ a {
   font-size: 0.85rem;
 }
 
-.admin-create-btn {
+.admin-create-btn,
+.article-edit-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,6 +217,9 @@ a {
 .admin-create-btn svg {
   transform: scale(1.35);
   margin-right: 0.25rem;
+}
+.article-edit-btn svg {
+  margin-right: 0.5rem;
 }
 .admin-create-btn.disabled {
   opacity: 0.75;

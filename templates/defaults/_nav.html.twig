@@ -57,7 +57,7 @@
 	<main class="content-container">
 		{% block content %}{% endblock %}
 		{% if app.request.get('_route') not in ['login', 'register'] %}
-			<section class="side-content"> {% block create %}{% endblock %}
+			<section class="side-content"> {% block sideBtn %}{% endblock %}
 				{% include "defaults/_search.html.twig" %}
 				{% include "defaults/_categories.html.twig" %}
 			</section>

@@ -4,7 +4,7 @@
   margin-bottom: 1rem;
   width: 100%;
 }
-.form-box label {
+.form-box > label {
   margin-bottom: 0.35rem;
   font-size: 1.35rem;
   font-weight: 600;
@@ -21,8 +21,8 @@
   cursor: pointer;
 }
 .form-box textarea {
-  min-height: 10rem;
-  max-height: 16rem;
+  min-height: 12rem;
+  max-height: 32rem;
   resize: vertical;
   outline: transparent;
   border: 1px solid rgba(var(--pink), 0.3);
@@ -91,4 +91,37 @@
   padding: 1rem 0.5rem;
   background-color: rgba(var(--pink), 0.1);
   border: 1px solid rgb(var(--pink));
+}
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+.img-box {
+  position: relative;
+  max-height: 6rem;
+  margin: 0.5rem;
+}
+.img-box:first-of-type {
+  margin-left: 0;
+}
+.img-box:last-of-type {
+  margin-right: 0;
+}
+.img-box input {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  height: 16px;
+  width: 16px;
+}
+.img-box label {
+  display: block;
+  cursor: pointer;
+}
+.img-box img {
+  border-radius: 8px;
+  max-height: 6rem;
 }
