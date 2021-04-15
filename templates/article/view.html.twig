@@ -68,7 +68,7 @@
 						</div>
 						{% if app.user %}
 							<a href="{{ path('commentLike', {'id': comment.id}) }}">
-								<svg class="like-icon {{ app.user in article.likes ? 'liked' : 'not-liked' }}" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+								<svg class="like-icon {{ app.user in comment.likes ? 'liked' : 'not-liked' }}" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
 									{% if app.user in comment.likes %}
 										<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" clip-rule="evenodd"></path>
 									{% else %}

@@ -18,7 +18,7 @@
 				<a href="{{ path('categoryList') }}" {% if app.request.get("_route") in ['categoryList', 'categoryCreate', 'categoryEdit'] %} class="active" {% endif %}>Categories</a>
 				<a href="{{ path('tagList') }}" {% if app.request.get("_route") in ['tagList', 'tagCreate', 'tagEdit'] %} class="active" {% endif %}>Tags</a>
 				{% if app.user %}
-					<a href="" {% if app.request.get("_route") in ['userProfile', 'userProfileEdit'] %} class="active" {% endif %}>Profile</a>
+					<a href="{{ path('userProfile') }}" {% if app.request.get("_route") in ['userProfile', 'userProfileEdit'] %} class="active" {% endif %}>Profile</a>
 				{% endif %}
 				{% if app.user and "ROLE_ADMIN" in app.user.roles %}
 					<a href="">Dashboard</a>

@@ -12,10 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="profile")
+     * @Route("/", name="userProfile")
      */
     public function profile(): Response
     {
-        return $this->render('user/profile.html.twig', []);
+        return $this->render('user/profile.html.twig', [
+            'location' => $this->getUser()->getUsername() . "'s profile",
+            'path' => 'Profile',
+            'pathLink' => 'userProfile',
+        ]);
     }
 }

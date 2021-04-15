@@ -1,20 +1,92 @@
-{% extends 'base.html.twig' %}
+{% extends 'defaults/_nav.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="/styles/user/profile.css">
+	<link rel="stylesheet" href="/styles/app/article/list.css">
+{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+	<section class="user-profile">
+		{% set user = app.user %}
+		<div class="user-data-container">
+			{% set data = {'role': user.roles|last|split("_")[1]|lower|capitalize, 'e-mail': user.email} %}
+			{% for key, row in data %}
+				<div class="data-box">
+					<p class="data-label">{{ key|capitalize }}</p>
+					<p class="data-value">{{ row }}</p>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="profile-select-items">
+			{% if user.articles|length > 0 %}
+				<span data-section="articles">Articles</span>
+			{% endif %}
+			{% if user.comments|length > 0 %}
+				<span data-section="comments">Comments</span>
+			{% endif %}
+			<span data-section="preferences">Preferences</span>
+		</div>
+		{% if user.articles|length > 0 %}
+			<div class="articles">
+				{% for article in user.articles %}
+					{% include "article/_article.html.twig" with {'article': article} %}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if user.comments|length > 0 %}
+			<div class="comments">
+				{% for comment in user.comments %}
+					<div class="comment-box">
+						<div class="comment-content">
+							<p class="comment">{{ comment.content }}</p>
+							<p class="author-date">
+								<span>{{ comment.postedAt|date(comment.postedAt|date("d M Y") == "now"|date("d M Y") ? "H:i" : "M d, Y") }}</span>
+								<a href="{{ path('articleView', {'id': comment.article.id}) }}">Open article</a>
+							</p>
+						</div>
+						{% if app.user %}
+							<a href="{{ path('commentLike', {'id': comment.id}) }}">
+								<svg class="like-icon {{ app.user in comment.likes ? 'liked' : 'not-liked' }}" stroke="currentColor" fill="currentColor" stroke-width="0" viewbox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+									{% if app.user in comment.likes %}
+										<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" clip-rule="evenodd"></path>
+									{% else %}
+										<path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 01.176-.17C12.72-3.042 23.333 4.867 8 15z" clip-rule="evenodd"></path>
+									{% endif %}
+								</svg>
+							</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		<div class="preferences">
+			<div class="categories">
+				{% if user.preference.categories|length > 0 or user.preference.authors|length > 0 %}
+					{% if user.preference.categories|length > 0 %}
+						<h2 class="subsection-label">Favourite categories</h2>
+						{% for category in user.preference.categories %}
+							<a href="{{ path('categoryView', {'name': category.name}) }}">
+								{{ category.name|capitalize }}
+								({{ category.articles }})
+							</a>
+						{% endfor %}
+					{% endif %}
+					{% if user.preference.authors|length > 0 %}
+						<h2 class="subsection-label">Favourite authors</h2>
+						{% for author in user.preference.authors %}
+							<a href="" class="author-box">{{ author.username }}</a>
+						{% endfor %}
+					{% endif %}
+				{% else %}
+					<p class="error-data">Oops! Nothing to show here</p>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Maciek/Desktop/BlogApp/src/Controller/UserController.php'|file_link(0) }}">src/Controller/UserController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Maciek/Desktop/BlogApp/templates/user/index.html.twig'|file_link(0) }}">templates/user/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block javascripts %}
+	{{ parent() }}
+	<script src="/scripts/profile.js"></script>
 {% endblock %}

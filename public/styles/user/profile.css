@@ -1,0 +1,67 @@
+.user-data-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem 0;
+}
+.data-box {
+  width: 49.5%;
+}
+.data-label {
+  text-transform: uppercase;
+  color: rgba(var(--dark), 0.7);
+  font-size: 0.8rem;
+}
+.data-value {
+  margin-top: 0.15rem;
+  font-size: 1.15rem;
+}
+
+.profile-select-items {
+  margin-bottom: 0.35rem;
+}
+.profile-select-items > span {
+  margin: 0 0.35rem;
+  color: rgba(var(--dark), 0.6);
+  cursor: pointer;
+}
+.profile-select-items > span:first-of-type {
+  margin-left: 0;
+}
+.profile-select-items > span:last-of-type {
+  margin-right: 0;
+}
+.profile-select-items > span.active-data {
+  color: rgb(var(--dark));
+  font-weight: 600;
+  cursor: default;
+}
+
+.profile-select-items ~ div {
+  display: none;
+  margin-top: 0.75rem;
+}
+div.active-data-list {
+  display: flex;
+}
+
+.comment-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.comment-content {
+  flex: 5;
+}
+.author-date {
+  color: rgba(var(--dark), 0.6);
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+.author-date a {
+  color: rgb(var(--purple));
+  font-weight: 600;
+}
+.comment-box .like-icon {
+  fill: rgb(var(--purple));
+}
