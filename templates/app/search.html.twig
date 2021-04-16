@@ -3,8 +3,36 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="/styles/app/search.css">
+	<link rel="stylesheet" href="/styles/app/article/list.css">
 {% endblock %}
 
 {% block content %}
-	<section class="search-container"></section>
+	<section class="search-container">
+		{% if data.authors|length > 0 %}
+			<h2 class="subsection-label">Matching authors</h2>
+			<div class="subsection-container author-container">
+				{% for author in data.authors %}
+					<a href="{{ path('userProfile', {'username': author.username}) }}" class="author-box">{{ author.username }}</a>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if data.categories|length > 0 %}
+			<h2 class="subsection-label">Matching categories</h2>
+			<div class="subsection-container category-container">
+				{% for category in data.categories %}
+					<div class="category-box">
+						<a href="{{ path('categoryView', {'name': category.name}) }}" class="category-name">{{ category.name }}</a>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if data.articles|length > 0 %}
+			<h2 class="subsection-label">Matching articles</h2>
+			<div class="subsection-container">
+				{% for article in data.articles %}
+					{% include "article/_article.html.twig" with {'article': article} %}
+				{% endfor %}
+			</div>
+		{% endif %}
+	</section>
 {% endblock %}

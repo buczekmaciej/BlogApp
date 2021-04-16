@@ -5,18 +5,21 @@ namespace App\Services;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserRepository;
 
 class DataServices
 {
     private $articleRepository;
     private $categoriesRepository;
     private $tagsRepository;
+    private $userRespository;
 
-    public function __construct(ArticleRepository $articleRepository, CategoryRepository $categoriesRepository, TagRepository $tagsRepository)
+    public function __construct(ArticleRepository $articleRepository, CategoryRepository $categoriesRepository, TagRepository $tagsRepository, UserRepository $userRepository)
     {
         $this->articleRepository = $articleRepository;
         $this->categoriesRepository = $categoriesRepository;
         $this->tagsRepository = $tagsRepository;
+        $this->userRespository = $userRepository;
     }
 
     public function getMostRecentArticles(): array
@@ -32,8 +35,9 @@ class DataServices
     public function getSearchedData(string $query)
     {
         return [
+            'authors' => $this->userRespository->getMatchingUsers($query),
+            'categories' => $this->categoriesRepository->getCategoriesMatching($query),
             'articles' => $this->articleRepository->getArticlesContainingString($query),
-            'categories',
         ];
     }
 

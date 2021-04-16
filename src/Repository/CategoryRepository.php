@@ -40,6 +40,15 @@ class CategoryRepository extends ServiceEntityRepository
         return $temp;
     }
 
+    public function getCategoriesMatching(string $query)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.name LIKE :query')
+            ->setParameter(":query", "%$query%")
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

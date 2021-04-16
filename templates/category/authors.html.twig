@@ -9,12 +9,9 @@
 	<section class="category-authors-container">
 		<h2 class="subcontainer-label">Category authors ({{ authors|length }})</h2>
 		<div class="author-container">
-			{% for author in authors|slice(0, 4) %}
-				<a href="" class="author-box">{{ author.username }}</a>
+			{% for author in authors %}
+				<a href="{{ path('userProfile', {'username': author.username}) }}" class="author-box">{{ author.username }}</a>
 			{% endfor %}
-			{% if authors|length > 4 %}
-				<a href="" class="category-authors-all">View all authors</a>
-			{% endif %}
 		</div>
 	</section>
 {% endblock %}
