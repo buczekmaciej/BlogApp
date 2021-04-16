@@ -21,13 +21,23 @@ class CategoryRepository extends ServiceEntityRepository
 
     public function getMostPopularCategories()
     {
-        return $this->createQueryBuilder('c')
+        $temp = [];
+        $data = $this->createQueryBuilder('c')
             ->select('COUNT(a) as articles, c.name')
+            ->andWhere('a.status != TRUE')
             ->orderBy('articles', 'DESC')
             ->leftJoin('c.articles', 'a')
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();
+
+        foreach ($data as $d) {
+            if ($d['name'] !== null) {
+                $temp[] = $d;
+            }
+        }
+
+        return $temp;
     }
 
     // /**

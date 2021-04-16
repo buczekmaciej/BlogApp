@@ -62,6 +62,11 @@ class Article
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status = false;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -195,6 +200,18 @@ class Article
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

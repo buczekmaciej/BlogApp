@@ -1,0 +1,25 @@
+{% extends 'defaults/_nav.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="/styles/user/edit.css">
+{% endblock %}
+
+{% block content %}
+	{{ form_start(form) }}
+	<div class="form-box">
+		{{ form_label(form.username) }}
+		{{ form_widget(form.username) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.password) }}
+		{{ form_widget(form.password) }}
+		{{ form_help(form.password) }}
+	</div>
+	<div class="form-box">
+		{{ form_label(form.email) }}
+		{{ form_widget(form.email) }}
+	</div>
+	{{ form_widget(form.submit) }}
+	{{ form_end(form) }}
+{% endblock %}

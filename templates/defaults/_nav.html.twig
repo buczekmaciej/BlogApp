@@ -21,7 +21,7 @@
 					<a href="{{ path('userProfile') }}" {% if app.request.get("_route") in ['userProfile', 'userProfileEdit'] %} class="active" {% endif %}>Profile</a>
 				{% endif %}
 				{% if app.user and "ROLE_ADMIN" in app.user.roles %}
-					<a href="">Dashboard</a>
+					<a href="{{ path('adminDashboard') }}">Dashboard</a>
 				{% endif %}
 			</div>
 			{% if app.user %}

@@ -21,7 +21,7 @@ class DataServices
 
     public function getMostRecentArticles(): array
     {
-        return $this->articleRepository->findBy([], ['postedAt' => 'DESC'], 10);
+        return $this->articleRepository->findBy(['status' => false], ['postedAt' => 'DESC'], 10);
     }
 
     public function getMostPopularCategories(): array

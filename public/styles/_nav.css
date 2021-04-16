@@ -190,7 +190,9 @@ a {
 }
 
 .admin-create-btn,
-.article-edit-btn {
+.article-edit-btn,
+.admin-disable-article,
+.user-edit-profile {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,14 +216,19 @@ a {
   outline: transparent;
   font-size: 1.1rem;
 }
+.admin-disable-article {
+  background: rgb(var(--pink));
+}
 .admin-create-btn svg {
   transform: scale(1.35);
   margin-right: 0.25rem;
 }
-.article-edit-btn svg {
+.article-edit-btn svg,
+.admin-disable-article svg,
+.user-edit-profile svg {
   margin-right: 0.5rem;
 }
-.admin-create-btn.disabled {
+.disabled {
   opacity: 0.75;
   pointer-events: none;
   position: relative;
