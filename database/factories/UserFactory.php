@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -17,11 +18,20 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $timezones = timezone_identifiers_list();
+        unset($timezones[sizeof($timezones) - 1]);
+
+        $roles = [["USER"], ["USER", "WRITER"]];
+
         return [
-            'name' => fake()->name(),
+            'displayName' => fake()->name(),
+            'username' => fake()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make('test'),
+            'timezone' => $timezones[array_rand($timezones)],
+            'image' => 'avatar.png',
+            'roles' => json_encode($roles[array_rand($roles)]),
             'remember_token' => Str::random(10),
         ];
     }

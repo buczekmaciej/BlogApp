@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('content');
+            $table->text('content');
             $table->string('title');
             $table->string('slug');
-            $table->uuid('author');
-            $table->uuid('warrant');
+            $table->uuid('author_uuid')->nullable();
+            $table->uuid('warrant_uuid')->nullable();
             $table->timestamps();
         });
     }

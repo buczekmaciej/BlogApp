@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('name');
-            $table->uuid('parent')->nullable();
+            $table->uuid('parent_uuid')->nullable();
             $table->timestamps();
         });
     }

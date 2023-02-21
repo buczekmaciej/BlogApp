@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Uuids;
 
     protected $primaryKey = 'uuid';
 
@@ -47,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Article::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
@@ -60,5 +67,16 @@ class User extends Authenticatable
     public function warrants()
     {
         return $this->hasMany(Warrant::class);
+    }
+
+    public function roles()
+    {
+        return json_decode($this->roles);
+    }
+
+    public function getRole()
+    {
+        $roles = $this->roles();
+        return ucfirst(strtolower(array_pop($roles)));
     }
 }

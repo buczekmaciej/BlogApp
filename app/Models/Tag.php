@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, Uuids;
 
     protected $primaryKey = 'uuid';
 
@@ -22,6 +23,6 @@ class Tag extends Model
 
     public function articles()
     {
-        return $this->hasMany(Article::class);
+        return $this->belongsToMany(Article::class);
     }
 }

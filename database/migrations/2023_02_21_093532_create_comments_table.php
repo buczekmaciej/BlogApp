@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('content');
-            $table->uuid('article');
-            $table->uuid('author');
+            $table->uuid('article_uuid')->nullable();
+            $table->uuid('author_uuid')->nullable();
             $table->timestamps();
         });
     }

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('likes', function (Blueprint $table) {
-            $table->uuid('user');
-            $table->uuid('article');
+            $table->uuid('user_uuid');
+            $table->uuid('article_uuid');
             $table->timestamps();
         });
     }

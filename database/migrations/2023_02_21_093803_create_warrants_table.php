@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('message');
             $table->string('status');
             $table->string('reason');
-            $table->uuid('article');
-            $table->uuid('author');
+            $table->uuid('article_uuid');
+            $table->uuid('author_uuid');
             $table->timestamps();
         });
     }

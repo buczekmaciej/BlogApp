@@ -16,8 +16,12 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->sentence(rand(4, 10));
+
         return [
-            //
+            'content' => fake()->realTextBetween(200, 800),
+            'title' => $title,
+            'slug' => implode("-", explode(" ", strtolower($title))),
         ];
     }
 }

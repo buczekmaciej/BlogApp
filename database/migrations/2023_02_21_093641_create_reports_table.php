@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('reason');
-            $table->uuid('author');
-            $table->uuid('article')->nullable();
-            $table->uuid('comment')->nullable();
+            $table->uuid('author_uuid');
+            $table->uuid('article_uuid')->nullable();
+            $table->uuid('comment_uuid')->nullable();
             $table->timestamps();
         });
     }
