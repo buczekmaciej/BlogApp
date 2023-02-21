@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class ReportController extends Controller
 {
-    //
+    public function submitReport()
+    {
+    }
 }
