@@ -68,7 +68,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', 'list')->name('list');
         Route::get('/{uuid}/edit', 'edit')->name('edit');
         Route::post('/{uuid}/edit', 'handleEdit');
-        Route::get('/{:uuid}/delete', 'delete')->name('delete');
+        Route::get('/{uuid}/delete', 'delete')->name('delete');
     });
 
     Route::controller(CommentController::class)->prefix('comments')->name('comments.')->group(function () {
@@ -99,6 +99,6 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/{uuid}', 'view')->name('view');
         Route::get('/{uuid}/edit', 'edit')->name('edit');
         Route::post('/{uuid}/edit', 'handleEdit');
-        Route::get('/{:uuid}/delete', 'delete')->name('delete');
+        Route::get('/{uuid}/delete', 'delete')->name('delete');
     });
 });
