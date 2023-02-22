@@ -7,5 +7,15 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    //
+    public function list()
+    {
+    }
+
+    public function view()
+    {
+    }
+
+    public function delete()
+    {
+    }
 }

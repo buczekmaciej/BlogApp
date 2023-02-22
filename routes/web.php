@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\TagController as AdminTagController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WarrantController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthorController;
@@ -52,3 +59,46 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
 });
 
 Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');
+
+
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::controller(AdminArticleController::class)->prefix('articles')->name('articles.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{uuid}/edit', 'edit')->name('edit');
+        Route::post('/{uuid}/edit', 'handleEdit');
+        Route::get('/{:uuid}/delete', 'delete')->name('delete');
+    });
+
+    Route::controller(CommentController::class)->prefix('comments')->name('comments.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{uuid}/delete', 'delete')->name('delete');
+    });
+
+    Route::controller(AdminReportController::class)->prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{uuid}', 'view')->name('view');
+        Route::get('/{uuid}/delete', 'delete')->name('delete');
+    });
+
+    Route::controller(AdminTagController::class)->prefix('tags')->name('tags.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::post('/{uuid}/edit', 'handleEdit');
+        Route::get('/{uuid}/delete', 'delete')->name('delete');
+    });
+
+    Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{user:username}/disable', 'disable')->name('disable');
+        Route::get('/{user:username}/delete', 'delete')->name('delete');
+    });
+
+    Route::controller(WarrantController::class)->prefix('warrants')->name('warrants.')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{uuid}', 'view')->name('view');
+        Route::get('/{uuid}/edit', 'edit')->name('edit');
+        Route::post('/{uuid}/edit', 'handleEdit');
+        Route::get('/{:uuid}/delete', 'delete')->name('delete');
+    });
+});

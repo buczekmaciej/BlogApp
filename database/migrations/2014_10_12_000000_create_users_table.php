@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('isSubscribed')->default(false);
             $table->dateTime('lastSeen')->nullable();
             $table->string('bio')->nullable();
+            $table->boolean('isDisabled')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

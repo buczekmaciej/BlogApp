@@ -7,5 +7,11 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    //
+    public function list()
+    {
+    }
+
+    public function delete()
+    {
+    }
 }

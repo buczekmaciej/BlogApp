@@ -28,7 +28,8 @@ class User extends Authenticatable
         'roles',
         'isSubscribed',
         'lastSeen',
-        'bio'
+        'bio',
+        'isDisabled'
     ];
 
     protected $hidden = [
@@ -41,7 +42,8 @@ class User extends Authenticatable
         'birthDate' => 'datetime',
         'roles' => 'array',
         'isSubscribed' => 'boolean',
-        'lastSeen' => 'datetime'
+        'lastSeen' => 'datetime',
+        'isDsiabled' => 'boolean'
     ];
 
     public function articles()
@@ -78,5 +80,10 @@ class User extends Authenticatable
     {
         $roles = $this->roles();
         return ucfirst(strtolower(array_pop($roles)));
+    }
+
+    public function isAdmin()
+    {
+        return str_contains($this->roles(), "ADMIN");
     }
 }

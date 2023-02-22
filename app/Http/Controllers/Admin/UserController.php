@@ -7,5 +7,15 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    //
+    public function list()
+    {
+    }
+
+    public function disable()
+    {
+    }
+
+    public function delete()
+    {
+    }
 }
