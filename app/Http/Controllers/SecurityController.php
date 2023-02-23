@@ -31,7 +31,7 @@ class SecurityController extends Controller
             'password' => 'required|string|min:4'
         ]);
 
-        if (Auth::attempt($valid)) {
+        if (Auth::attempt($valid, $request->get('remember_me'))) {
             $request->session()->regenerate();
 
             return $this->redirectServices->getIntended();
@@ -61,7 +61,7 @@ class SecurityController extends Controller
             $user = new User($data);
 
             if ($user->save()) {
-                Auth::login($user);
+                Auth::login($user, $request->get('remember_me'));
 
                 return $this->redirectServices->getIntended();
             } else return back()->withErrors('Failed to create account')->onlyInput('username', 'email');

@@ -16,7 +16,8 @@ class Article extends Model
         'content',
         'title',
         'slug',
-        'embeds'
+        'embeds',
+        'thumbnail'
     ];
 
     public function author()
