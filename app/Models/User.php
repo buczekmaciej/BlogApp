@@ -90,4 +90,9 @@ class User extends Authenticatable
     {
         return in_array("ADMIN", $this->roles());
     }
+
+    public function getName()
+    {
+        return $this->displayName ?? $this->username;
+    }
 }

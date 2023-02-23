@@ -16,7 +16,7 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->sentence(rand(4, 10));
+        $title = fake()->words(rand(4, 10), true);
 
         return [
             'content' => fake()->realTextBetween(200, 800),
