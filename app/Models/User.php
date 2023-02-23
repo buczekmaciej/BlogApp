@@ -40,7 +40,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'birthDate' => 'datetime',
-        'roles' => 'array',
         'isSubscribed' => 'boolean',
         'lastSeen' => 'datetime',
         'isDsiabled' => 'boolean'
@@ -53,7 +52,12 @@ class User extends Authenticatable
 
     public function likes()
     {
-        return $this->hasMany(Article::class);
+        return $this->belongsToMany(Article::class, 'likes');
+    }
+
+    public function bookmarks()
+    {
+        return $this->belongsToMany(Article::class, 'bookmarks');
     }
 
     public function comments()

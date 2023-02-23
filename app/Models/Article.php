@@ -16,6 +16,7 @@ class Article extends Model
         'content',
         'title',
         'slug',
+        'embeds'
     ];
 
     public function author()
@@ -25,7 +26,12 @@ class Article extends Model
 
     public function likes()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'likes');
+    }
+
+    public function bookmarkedBy()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks');
     }
 
     public function comments()

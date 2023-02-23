@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('article_tag', function (Blueprint $table) {
             $table->uuid('tag_uuid');
             $table->uuid('article_uuid');
-            $table->timestamps();
         });
     }
 

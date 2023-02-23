@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('title');
             $table->string('slug');
+            $table->json('embeds')->nullable();
             $table->uuid('author_uuid')->nullable();
             $table->uuid('warrant_uuid')->nullable();
             $table->timestamps();

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->uuid('user_uuid');
             $table->uuid('article_uuid');
-            $table->timestamps();
         });
     }
 

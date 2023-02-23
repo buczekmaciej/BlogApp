@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\TagController as AdminTagController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WarrantController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\ArticleController;
@@ -13,6 +13,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AppController::class)->name("app.")->group(function () {
     Route::get("/", 'index')->name('homepage');
-    Route::get("/search/{q}", 'search')->name('search');
+    Route::get("/search", 'search')->name('search');
 });
 
 Route::controller(SecurityController::class)->prefix('security')->name('security.')->group(function () {
@@ -59,8 +60,9 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
 });
 
 Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');
+Route::get('/profile', [UserController::class, 'profile'])->middleware('auth')->name('profile');
 
-
+// Admin routes
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
@@ -88,7 +90,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/{uuid}/delete', 'delete')->name('delete');
     });
 
-    Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
+    Route::controller(AdminUserController::class)->prefix('users')->name('users.')->group(function () {
         Route::get('/', 'list')->name('list');
         Route::get('/{user:username}/disable', 'disable')->name('disable');
         Route::get('/{user:username}/delete', 'delete')->name('delete');
