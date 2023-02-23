@@ -4,10 +4,18 @@
 
 @layer components {
     .active-link {
-        @apply h-full pointer-events-none flex items-center relative after:absolute after:w-full after:h-1 after:bg-neutral-400 after:top-full after:left-0;
+        @apply h-full pointer-events-none flex items-center relative after:absolute after:w-full after:h-[0.25rem] after:bg-blue-900 after:top-full after:left-0;
     }
 
     .with-errors {
         @apply border-2 border-solid border-red text-red;
+    }
+
+    .form-input {
+        @apply outline-transparent border-2 border-solid border-purple-800/10 focus:border-purple-800 py-2 px-3 rounded-md;
+    }
+
+    .form-input-error {
+        @apply border-red-500 text-red-500;
     }
 }

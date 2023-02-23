@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\SecurityServices;
+use App\Services\RedirectServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Illuminate\Http\RedirectResponse;
 
 class SecurityController extends Controller
 {
-    public function __construct(private readonly SecurityServices $securityServices)
+    public function __construct(private readonly RedirectServices $redirectServices)
     {
     }
 
     public function login(): View
     {
-        $this->securityServices->declareIntended();
+        $this->redirectServices->declareIntended();
 
         return view('layouts.security.login');
     }
@@ -28,13 +28,13 @@ class SecurityController extends Controller
     {
         $valid = $request->validate([
             'username' => 'required|string',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:4'
         ]);
 
         if (Auth::attempt($valid)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return $this->redirectServices->getIntended();
         }
 
         return back()->withErrors('Invalid credentials');
@@ -42,7 +42,7 @@ class SecurityController extends Controller
 
     public function register(): View
     {
-        $this->securityServices->declareIntended();
+        $this->redirectServices->declareIntended();
 
         return view('layouts.security.register');
     }
@@ -51,8 +51,8 @@ class SecurityController extends Controller
     {
         $valid = $request->validate([
             'username' => 'required|string|unique:users,username',
-            'email' => 'required|email|unqiue:users,email',
-            'password' => 'required|string|min:6',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:4',
         ]);
 
         if ($valid) {
@@ -63,11 +63,9 @@ class SecurityController extends Controller
             if ($user->save()) {
                 Auth::login($user);
 
-                return redirect()->intended('/');
+                return $this->redirectServices->getIntended();
             } else return back()->withErrors('Failed to create account')->onlyInput('username', 'email');
         } else return back()->withErrors('Given credentials are not matching requirements')->onlyInput('username', 'email');
-
-        return redirect()->intended('/');
     }
 
     public function logout(): RedirectResponse

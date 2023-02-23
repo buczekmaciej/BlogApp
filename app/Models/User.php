@@ -88,6 +88,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return str_contains($this->roles(), "ADMIN");
+        return in_array("ADMIN", $this->roles());
     }
 }
