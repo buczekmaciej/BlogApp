@@ -4,7 +4,7 @@
 
 @layer components {
     .active-link {
-        @apply h-full pointer-events-none flex items-center relative after:absolute after:w-full after:h-[0.25rem] after:bg-blue-900 after:top-full after:left-0;
+        @apply h-full pointer-events-none flex items-center relative after:absolute after:w-full after:h-[0.25rem] after:bg-blue-900 after:bottom-0 after:left-0;
     }
 
     .with-errors {

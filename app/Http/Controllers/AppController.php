@@ -15,7 +15,7 @@ class AppController extends Controller
 
     public function index(): View
     {
-        return view('layouts.app')->with('article', \App\Models\Article::with('author')->first());
+        return view('layouts.app')->with('articles', $this->appServices->getHomepageArticles())->with('tags', $this->appServices->getPopularTags());
     }
 
     public function search(Request $request): View

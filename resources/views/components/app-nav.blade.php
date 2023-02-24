@@ -1,4 +1,4 @@
-<nav class="flex items-center justify-between w-full px-24 h-20 border-b-[1px] border-b-solid border-b-slate-150">
+<nav class="flex items-center justify-between w-full px-24 h-20">
     <p class="font-bold text-3xl">Blog</p>
     <div class="flex items-center gap-8 h-full">
         @foreach ($links as $link)
@@ -7,8 +7,8 @@
         @if (auth()->user())
             @include('components.nav-link', [
                 'link' => [
-                    'routeGroup' => 'profile',
-                    'route' => 'profile',
+                    'routeGroup' => 'user.*',
+                    'route' => 'user.profile',
                     'routeName' => 'Profile',
                 ],
             ])

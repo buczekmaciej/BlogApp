@@ -59,8 +59,13 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
     Route::get('/{article:slug}')->name('view');
 });
 
+Route::controller(UserController::class)->middleware('auth')->name('user.')->group(function () {
+    Route::get('/profile', 'profile')->name('profile');
+    Route::get('/settings', 'settings')->name('settings');
+    Route::post('/settings', 'updateSettings');
+});
+
 Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');
-Route::get('/profile', [UserController::class, 'profile'])->middleware('auth')->name('profile');
 
 // Admin routes
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {

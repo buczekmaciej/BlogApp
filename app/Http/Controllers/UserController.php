@@ -10,4 +10,12 @@ class UserController extends Controller
     public function profile()
     {
     }
+
+    public function settings()
+    {
+    }
+
+    public function updateSettings()
+    {
+    }
 }

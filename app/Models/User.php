@@ -93,6 +93,6 @@ class User extends Authenticatable
 
     public function getName()
     {
-        return $this->displayName ?? $this->username;
+        return $this->displayName ?? "@{$this->username}";
     }
 }
