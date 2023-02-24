@@ -16,11 +16,6 @@ class Tag extends Model
         'name',
     ];
 
-    public function parent()
-    {
-        return $this->hasOne(Tag::class);
-    }
-
     public function articles()
     {
         return $this->belongsToMany(Article::class);
