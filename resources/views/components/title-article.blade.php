@@ -7,7 +7,7 @@
         <span class="h-2 w-0.5 bg-slate-50"></span>
         <p class="">{{ $article->created_at->format('F d, Y') }}</p>
     </div>
-    <p class="text-5xl font-semibold max-w-[55%]">{{ $article->title }}</p>
+    <p class="text-5xl font-semibold max-w-[55%]">{{ ucfirst($article->title) }}</p>
     <a class="mt-3"
        href="{{ route('articles.view', $article->slug) }}">Read article &nearr;</a>
 </div>

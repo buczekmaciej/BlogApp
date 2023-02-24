@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Article;
 use App\Models\Tag;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 
 class AppServices
 {
@@ -27,12 +27,7 @@ class AppServices
         ];
     }
 
-    public function getSearchMatchingData(string $q): array
-    {
-        return [];
-    }
-
-    public function getRecentlyActiveTags()
+    public function getRecentlyActiveTags(): array
     {
         $lastMonthArticles = Article::where('created_at', '>', Carbon::now()->subMonth())->get();
         $tagsUsed = [];
@@ -46,5 +41,14 @@ class AppServices
         uasort($tagsUsed, fn ($a, $b) => $b - $a);
 
         return array_slice($tagsUsed, 0);
+    }
+
+    public function getSearchMatchingData(string $q): array
+    {
+        return [
+            'tags' => Tag::where('name', 'LIKE', "%$q%")->get(),
+            'authors' => User::where('roles', 'LIKE', '%WRITER%')->where('username', 'LIKE', "%$q%")->get(),
+            'articles' => Article::where('title', 'LIKE', "%$q%")->paginate(9)
+        ];
     }
 }

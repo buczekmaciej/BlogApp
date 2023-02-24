@@ -21,7 +21,7 @@ class NavigationLinksProvider extends ServiceProvider
     {
         $links = [
             [
-                'routeGroup' => 'app.*',
+                'routeGroup' => 'app.homepage',
                 'route' => 'app.homepage',
                 'routeName' => 'Home'
             ],
