@@ -45,6 +45,6 @@ class AppServices
 
         uasort($tagsUsed, fn ($a, $b) => $b - $a);
 
-        return array_slice($tagsUsed, 0, 10);
+        return array_slice($tagsUsed, 0);
     }
 }

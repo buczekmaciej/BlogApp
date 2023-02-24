@@ -11,6 +11,7 @@ class Tag extends Model
     use HasFactory, Uuids;
 
     protected $primaryKey = 'uuid';
+    public $timestamps = false;
 
     protected $fillable = [
         'name',

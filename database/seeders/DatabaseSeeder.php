@@ -23,18 +23,18 @@ class DatabaseSeeder extends Seeder
 
         Article::factory(15)->create()->each(function ($article) {
             $randomTag = Tag::inRandomOrder()->limit(random_int(3, 10))->get();
-            $article->tags()->save($randomTag[array_rand($randomTag->toArray())]);
+            $article->tags()->saveMany($randomTag);
 
             $randomUsers = User::where('roles', 'LIKE', "%WRITER%")->get();
-            $article->author()->associate($randomUsers[array_rand($randomUsers->toArray())]);
+            $article->author()->associate($randomUsers->random())->save();
         });
 
         Comment::factory(55)->create()->each(function ($comment) {
             $randomUsers = User::inRandomOrder()->limit(6)->get();
-            $comment->author()->associate($randomUsers[array_rand($randomUsers->toArray())]);
+            $comment->author()->associate($randomUsers->random())->save();
 
             $randomArticle = Article::inRandomOrder()->limit(10)->get();
-            $comment->article()->associate($randomArticle[array_rand($randomArticle->toArray())]);
+            $comment->article()->associate($randomArticle->random())->save();
         });
     }
 }

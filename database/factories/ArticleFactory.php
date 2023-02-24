@@ -22,6 +22,7 @@ class ArticleFactory extends Factory
             'content' => fake()->realTextBetween(200, 800),
             'title' => $title,
             'slug' => implode("-", explode(" ", strtolower($title))),
+            'created_at' => fake()->dateTimeBetween('-6 months')
         ];
     }
 }
