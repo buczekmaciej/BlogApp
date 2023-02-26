@@ -16,10 +16,6 @@ class ArticleController extends Controller
     {
     }
 
-    public function handleEdit()
-    {
-    }
-
     public function delete()
     {
     }

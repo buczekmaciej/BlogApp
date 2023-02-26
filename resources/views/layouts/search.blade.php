@@ -16,17 +16,17 @@
                 </div>
             </div>
         @endif
-        @if ($results['authors']->count() > 0)
+        @if ($results['users']->count() > 0)
             <div class="flex flex-col gap-4">
-                <p class="font-semibold text-2xl">Authors</p>
+                <p class="font-semibold text-2xl">Users</p>
                 <div class="flex flex-wrap gap-3">
-                    @foreach ($results['authors'] as $author)
+                    @foreach ($results['users'] as $user)
                         <a class="flex items-center gap-2 hover:bg-blue-800/5 hover:text-blue-800 pr-3 rounded-md"
-                           href="{{ route('authors.view', $author->username) }}">
+                           href="{{ route('user.profile', $user->username) }}">
                             <img alt=""
                                  class="h-12 rounded-md"
-                                 src="{{ asset('assets/profileImages/' . $author->image) }}">
-                            <span>{{ $author->getName() }}</span>
+                                 src="{{ asset('assets/profileImages/' . $user->image) }}">
+                            <span>{{ $user->getName() }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -37,7 +37,7 @@
                 <p class="font-semibold text-2xl">Articles</p>
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($results['articles'] as $article)
-                        @include('components.article', ['article' => $article])
+                        @include('components.article', ['article' => $article, 'format' => 'F d, Y'])
                     @endforeach
                 </div>
                 {{ $results['articles']->withQueryString()->links() }}

@@ -8,11 +8,10 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Uuids;
+    use HasFactory, Notifiable, Uuids;
 
     protected $primaryKey = 'uuid';
 
@@ -29,7 +28,7 @@ class User extends Authenticatable
         'isSubscribed',
         'lastSeen',
         'bio',
-        'isDisabled'
+        'isDisabled',
     ];
 
     protected $hidden = [
@@ -75,6 +74,16 @@ class User extends Authenticatable
         return $this->hasMany(Warrant::class);
     }
 
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'following', 'follower_uuid', 'user_uuid');
+    }
+
+    public function followedBy()
+    {
+        return $this->belongsToMany(User::class, 'following', 'user_uuid', 'follower_uuid');
+    }
+
     public function roles()
     {
         return json_decode($this->roles);
@@ -84,6 +93,11 @@ class User extends Authenticatable
     {
         $roles = $this->roles();
         return ucfirst(strtolower(array_pop($roles)));
+    }
+
+    public function isWriter()
+    {
+        return in_array('WRITER', $this->roles());
     }
 
     public function isAdmin()

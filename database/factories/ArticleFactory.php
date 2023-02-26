@@ -19,7 +19,7 @@ class ArticleFactory extends Factory
         $title = fake()->words(rand(4, 10), true);
 
         return [
-            'content' => fake()->realTextBetween(200, 800),
+            'content' => fake()->paragraphs(random_int(15, 35), true),
             'title' => $title,
             'slug' => implode("-", explode(" ", strtolower($title))),
             'created_at' => fake()->dateTimeBetween('-6 months')

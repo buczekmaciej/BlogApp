@@ -3,7 +3,7 @@
 @section('title', 'Articles')
 
 @section('body')
-    <div class="px-24 py-10 flex flex-col gap-6">
+    <div class="px-24 py-10 w-full flex flex-col gap-6">
         <div class="flex justify-between items-center">
             <p class="font-semibold text-3xl">Articles</p>
             <div class="flex gap-4 items-center">
@@ -54,7 +54,7 @@
         </div>
         <div class="grid grid-cols-3 gap-4">
             @foreach ($articles as $article)
-                @include('components.article', ['article' => $article])
+                @include('components.article', ['article' => $article, 'format' => 'F d, Y'])
             @endforeach
         </div>
         {{ $articles->withQueryString()->links() }}

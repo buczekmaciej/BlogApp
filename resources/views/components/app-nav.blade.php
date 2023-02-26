@@ -10,6 +10,7 @@
                     'routeGroup' => 'user.*',
                     'route' => 'user.profile',
                     'routeName' => 'Profile',
+                    'arguments' => [auth()->user()->username],
                 ],
             ])
             @if (auth()->user()->isAdmin())
@@ -18,12 +19,25 @@
                         'routeGroup' => '',
                         'route' => 'admin.dashboard',
                         'routeName' => 'Dashboard',
+                        'arguments' => [],
                     ],
                 ])
             @endif
         @endif
     </div>
-    <div class="flex gap-6 items-center">
+    <div class="flex gap-3 items-center">
+        @if (auth()->user() &&
+                auth()->user()->isWriter())
+            <a class="p-3 bg-blue-700 rounded-md"
+               href="{{ route('articles.create') }}"
+               title="Create article">
+                <svg class="h-4 fill-slate-50"
+                     viewBox="0 0 448 512"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
+                </svg>
+            </a>
+        @endif
         <form action="{{ route('app.search') }}"
               autocomplete="off"
               class="p-3 border-[1px] border-solid border-neutral-200 flex items-center rounded-xl"
@@ -31,7 +45,7 @@
             <input class="bg-transparent outline-transparent w-80"
                    id="search"
                    name="q"
-                   placeholder="Title, author..."
+                   placeholder="Title, tag, username..."
                    type="text"
                    value="{{ request()->q }}">
             <button class="">
@@ -53,6 +67,7 @@
                     'routeGroup' => '',
                     'route' => 'security.logout',
                     'routeName' => 'Logout',
+                    'arguments' => [],
                 ],
             ])
         @else
@@ -61,6 +76,7 @@
                     'routeGroup' => '',
                     'route' => 'security.login',
                     'routeName' => 'Login',
+                    'arguments' => [],
                 ],
             ])
             @include('components.nav-link', [
@@ -68,6 +84,7 @@
                     'routeGroup' => '',
                     'route' => 'security.register',
                     'routeName' => 'Join',
+                    'arguments' => [],
                 ],
             ])
         @endif

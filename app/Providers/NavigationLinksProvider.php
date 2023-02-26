@@ -23,22 +23,26 @@ class NavigationLinksProvider extends ServiceProvider
             [
                 'routeGroup' => 'app.homepage',
                 'route' => 'app.homepage',
-                'routeName' => 'Home'
+                'routeName' => 'Home',
+                'arguments' => [],
             ],
             [
                 'routeGroup' => 'articles.*',
                 'route' => 'articles.list',
-                'routeName' => 'Articles'
+                'routeName' => 'Articles',
+                'arguments' => [],
             ],
             [
                 'routeGroup' => 'authors.*',
                 'route' => 'authors.list',
-                'routeName' => 'Authors'
+                'routeName' => 'Authors',
+                'arguments' => [],
             ],
             [
                 'routeGroup' => 'tags.*',
                 'route' => 'tags.list',
-                'routeName' => 'Tags'
+                'routeName' => 'Tags',
+                'arguments' => [],
             ],
         ];
 

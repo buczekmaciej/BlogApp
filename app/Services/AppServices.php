@@ -46,9 +46,9 @@ class AppServices
     public function getSearchMatchingData(string $q): array
     {
         return [
-            'tags' => Tag::where('name', 'LIKE', "%$q%")->get(),
-            'authors' => User::where('roles', 'LIKE', '%WRITER%')->where('username', 'LIKE', "%$q%")->get(),
-            'articles' => Article::where('title', 'LIKE', "%$q%")->paginate(9)
+            'tags' => Tag::where('name', 'LIKE', "%$q%")->orderBy('name', 'ASC')->get(),
+            'users' => User::where('username', 'LIKE', "%$q%")->get(),
+            'articles' => Article::where('title', 'LIKE', "%$q%")->orderBy('created_at', 'DESC')->paginate(9)
         ];
     }
 }

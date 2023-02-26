@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->text('content');
-            $table->string('title');
-            $table->string('slug');
+            $table->string('title')->unique();
+            $table->string('slug')->unique();
             $table->json('embeds')->nullable();
             $table->string('thumbnail')->nullable();
             $table->uuid('author_uuid')->nullable();

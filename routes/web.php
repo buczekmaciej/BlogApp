@@ -46,23 +46,38 @@ Route::controller(SecurityController::class)->prefix('security')->name('security
 
 Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(function () {
     Route::get('/', 'list')->name('list');
-    Route::get('/{tag:name}')->name('view');
+    Route::get('/{tag:name}', 'view')->name('view');
 });
 
 Route::controller(AuthorController::class)->name('authors.')->prefix('authors')->group(function () {
     Route::get('/', 'list')->name('list');
-    Route::get('/{user:username}')->name('view');
+    Route::get('/{user:username}', 'view')->name('view');
 });
 
 Route::controller(ArticleController::class)->name('articles.')->prefix('articles')->group(function () {
     Route::get('/', 'list')->name('list');
-    Route::get('/{article:slug}')->name('view');
+
+    Route::get('/create', 'create')->name('create');
+    Route::post('/create', 'handleCreate');
+
+    Route::get('/{article:slug}/edit', 'edit')->name('edit');
+    Route::post('/{article:slug}/edit', 'handleEdit');
+
+    Route::get('/{article:slug}', 'view')->name('view');
+
+    Route::middleware('auth')->group(function () {
+        Route::post('/{article:slug}/comment', 'addComment')->name('newComment');
+        Route::get('/{article:slug}/like', 'like')->name('like');
+        Route::get('/{article:slug}/bookmark', 'bookmark')->name('bookmark');
+    });
 });
 
-Route::controller(UserController::class)->middleware('auth')->name('user.')->group(function () {
-    Route::get('/profile', 'profile')->name('profile');
-    Route::get('/settings', 'settings')->name('settings');
-    Route::post('/settings', 'updateSettings');
+Route::controller(UserController::class)->name('user.')->group(function () {
+    Route::get('/u/{user:username}', 'profile')->name('profile');
+    Route::middleware('auth')->group(function () {
+        Route::get('/settings', 'settings')->name('settings');
+        Route::post('/settings', 'updateSettings');
+    });
 });
 
 Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');
@@ -74,7 +89,6 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::controller(AdminArticleController::class)->prefix('articles')->name('articles.')->group(function () {
         Route::get('/', 'list')->name('list');
         Route::get('/{uuid}/edit', 'edit')->name('edit');
-        Route::post('/{uuid}/edit', 'handleEdit');
         Route::get('/{uuid}/delete', 'delete')->name('delete');
     });
 
