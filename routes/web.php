@@ -61,6 +61,7 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
     Route::post('/create', 'handleCreate');
     Route::get('/create/images', 'createImages')->name('createImages');
     Route::post('/create/images', 'handleCreateImages');
+    Route::get('/create/images/remove', 'removeImage')->name('removeImage');
     Route::get('/create/layout', 'createLayout')->name('createLayout');
     Route::post('/create/layout', 'handleCreateLayout');
 

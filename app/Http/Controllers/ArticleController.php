@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Tag;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -87,6 +90,7 @@ class ArticleController extends Controller
     public function createImages(): View
     {
         $this->authorize('create', Article::class);
+        // $this->session->forget('uploaded');
 
         return view('layouts.articles.create-images');
     }
@@ -95,10 +99,61 @@ class ArticleController extends Controller
     {
         $this->authorize('create', Article::class);
 
-        // Storage::disk
+        $valid = $this->session->has('uploaded') ? true : $request->validate(
+            [
+                'files' => 'required',
+                'files.*' => 'file|max:5000|mimes:jpeg,jpg,png'
+            ]
+        );
 
-        return redirect()->route('articles.createLayout');
-        // return back();
+        if ($valid) {
+            if ($this->session->has('uploaded') && sizeof($request->files->all('files')) === 0) {
+                return redirect()->route('articles.createLayout');
+            }
+
+            $uploads = [];
+            $path = 'assets/uploads';
+            foreach ($request->files->all('files') as $img) {
+                $now = Carbon::now()->format('U');
+                $rand = Str::random(20);
+                $mime = $img->getClientOriginalExtension();
+                $newName = "temp_{$now}{$rand}.{$mime}";
+
+                try {
+                    $img->move($path, $newName);
+
+                    $uploads[] = $newName;
+                } catch (Exception $e) {
+                    return back()->withErrors($e->getMessage());
+                }
+            }
+
+            $this->session->put('uploaded', array_merge($this->session->get('uploaded'), $uploads));
+
+            return redirect()->route('articles.createLayout');
+        }
+
+        return back();
+    }
+
+    public function removeImage(Request $request)
+    {
+        $file = $request->get('filename');
+
+        if (File::exists(public_path('assets/uploads/' . $file))) {
+            try {
+                File::delete(public_path('assets/uploads/' . $file));
+
+                $files = session()->get('uploaded');
+                unset($files[array_search($file, $files)]);
+
+                session()->put('uploaded', $files);
+            } catch (Exception $e) {
+                return back()->withErrors($e->getMessage());
+            }
+        }
+
+        return back();
     }
 
     public function createLayout(): View
