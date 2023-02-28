@@ -12,21 +12,44 @@
             </div>
             <div class="h-96 relative w-full rounded-md {{ $article->thumbnail ? 'bg-[url(\'/assets/images/' . $article->uuid . $article->thumbnail . '\')] bg-cover bg-center' : 'article-bg-gradient' }}">
                 @if (auth()->user())
-                    <a class="absolute top-6 right-6 rounded-md bg-slate-50/30 p-3"
-                       href="{{ route('articles.bookmark', $article->slug) }}">
-                        <svg class="h-7 fill-blue-100"
-                             viewBox="0 0 384 512"
-                             xmlns="http://www.w3.org/2000/svg">
-                            @if (auth()->user()->bookmarks()->get()->contains($article))
-                                <path d="M0 512V48C0 21.49 21.49 0 48 0h288c26.51 0 48 21.49 48 48v464L192 400 0 512z"></path>
-                            @else
-                                <path d="M336 0H48C21.49 0 0 21.49 0 48v464l192-112 192 112V48c0-26.51-21.49-48-48-48zm0 428.43l-144-84-144 84V54a6 6 0 0 1 6-6h276c3.314 0 6 2.683 6 5.996V428.43z"></path>
-                            @endif
-                        </svg>
-                    </a>
+                    @can('update', $article)
+                        <div class="absolute top-6 right-6 flex gap-4 [&>a]:rounded-md [&>a]:bg-slate-50/30 [&>a]:p-3">
+                            <a href="{{ route('articles.edit', $article->slug) }}">
+                                <svg class="h-7 fill-blue-100"
+                                     viewBox="0 0 512 512"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
+                                </svg>
+                            </a>
+                            <a href="{{ route('articles.bookmark', $article->slug) }}">
+                                <svg class="h-7 fill-blue-100"
+                                     viewBox="0 0 384 512"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    @if (auth()->user()->bookmarks()->get()->contains($article))
+                                        <path d="M0 512V48C0 21.49 21.49 0 48 0h288c26.51 0 48 21.49 48 48v464L192 400 0 512z"></path>
+                                    @else
+                                        <path d="M336 0H48C21.49 0 0 21.49 0 48v464l192-112 192 112V48c0-26.51-21.49-48-48-48zm0 428.43l-144-84-144 84V54a6 6 0 0 1 6-6h276c3.314 0 6 2.683 6 5.996V428.43z"></path>
+                                    @endif
+                                </svg>
+                            </a>
+                        </div>
+                    @else
+                        <a class="absolute top-6 right-6 rounded-md bg-slate-50/30 p-3"
+                           href="{{ route('articles.bookmark', $article->slug) }}">
+                            <svg class="h-7 fill-blue-100"
+                                 viewBox="0 0 384 512"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                @if (auth()->user()->bookmarks()->get()->contains($article))
+                                    <path d="M0 512V48C0 21.49 21.49 0 48 0h288c26.51 0 48 21.49 48 48v464L192 400 0 512z"></path>
+                                @else
+                                    <path d="M336 0H48C21.49 0 0 21.49 0 48v464l192-112 192 112V48c0-26.51-21.49-48-48-48zm0 428.43l-144-84-144 84V54a6 6 0 0 1 6-6h276c3.314 0 6 2.683 6 5.996V428.43z"></path>
+                                @endif
+                            </svg>
+                        </a>
+                    @endcan
                 @endif
             </div>
-            <div class="px-20 text-lg">{!! $article->content !!}</div>
+            <div class="px-20 text-lg">{!! Markdown::parse($article->content) !!}</div>
             @if (auth()->user())
                 @if ($article->likes()->get()->contains(auth()->user()))
                     <a class="flex gap-3 bg-red-700 text-slate-50 px-6 py-3 rounded-md"
@@ -69,7 +92,7 @@
                 <p class="text-sm">To comment article you need to <a class="text-blue-700 font-semibold"
                        href="{{ route('security.login') }}">login</a></p>
             @endif
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-6 px-20 pt-8">
                 @foreach ($article->comments()->orderBy('created_at', 'DESC')->get() as $comment)
                     <div class="flex flex-wrap justify-between items-center border-b-[1px] border-solid border-gray-300 pb-6">
                         <a class="flex gap-2 items-center"
@@ -79,7 +102,7 @@
                                  src="{{ asset('assets/profileImages/' . $comment->author()->first()->image) }}">
                             <span class="text-lg">{{ $comment->author()->first()->getName() }}</span>
                         </a>
-                        <p class="">{{ $comment->created_at->timezone(auth()->user()->timezone)->format('M d, Y | H:i:s') }}</p>
+                        <p class="">{{ $comment->created_at->timezone(auth()->user()?->timezone ?? 'UTC')->format('M d, Y | H:i:s') }}</p>
                         <p class="w-full mt-4 px-12 text-2xl">{!! $comment->content !!}</p>
                     </div>
                 @endforeach

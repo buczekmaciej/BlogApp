@@ -7,8 +7,5 @@
     <form class="rounded-lg p-8 flex flex-col gap-8 items-start w-1/3 bg-slate-50 text-neutral-900"
           method="POST">
         @yield('form')
-        @if ($errors->any())
-            @include('components.error', ['errors' => $errors->all()])
-        @endif
     </form>
 @endsection

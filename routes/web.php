@@ -59,6 +59,10 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
 
     Route::get('/create', 'create')->name('create');
     Route::post('/create', 'handleCreate');
+    Route::get('/create/images', 'createImages')->name('createImages');
+    Route::post('/create/images', 'handleCreateImages');
+    Route::get('/create/layout', 'createLayout')->name('createLayout');
+    Route::post('/create/layout', 'handleCreateLayout');
 
     Route::get('/{article:slug}/edit', 'edit')->name('edit');
     Route::post('/{article:slug}/edit', 'handleEdit');

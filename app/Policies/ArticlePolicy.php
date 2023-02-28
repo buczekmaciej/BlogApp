@@ -15,7 +15,7 @@ class ArticlePolicy
 
     public function update(User $user, Article $article): Response
     {
-        return ($user->isWriter() && $article->author()->get()->username === $user->username) || $user->isAdmin() ? Response::allow() : Response::deny('You are not author or admin');
+        return ($user->isWriter() && $article->author()->first()->username === $user->username) || $user->isAdmin() ? Response::allow() : Response::deny('You are not author or admin');
     }
 
     public function delete(User $user, Article $article): Response

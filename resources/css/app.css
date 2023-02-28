@@ -12,14 +12,34 @@
     }
 
     .form-input {
-        @apply outline-transparent border-2 border-solid border-purple-800/10 focus:border-purple-800 py-2 px-3 rounded-md;
+        @apply outline-transparent border-2 border-solid border-blue-800/10 focus:border-blue-800 py-2 px-3 rounded-md;
+    }
+
+    .form-textarea {
+        @apply outline-transparent border-2 border-solid border-blue-800/10 focus:border-blue-800 py-2 px-3 rounded-md resize-none w-full h-[40rem];
     }
 
     .form-input-error {
         @apply border-red-500 text-red-500;
     }
 
+    .form-btn {
+        @apply self-end px-4 py-2 rounded-md bg-blue-800/10 text-blue-800 font-medium hover:bg-blue-800/20;
+    }
+
     .article-bg-gradient {
         @apply bg-gradient-to-br from-blue-900 via-blue-600 to-blue-300;
+    }
+
+    .input-help {
+        @apply text-sm text-gray-400 -mt-1 -mb-1;
+    }
+
+    .tag-suggestion {
+        @apply px-3 py-2 hover:bg-gray-300 cursor-pointer;
+    }
+
+    .listed-tag {
+        @apply px-2 py-1 bg-blue-900/10 text-blue-900 rounded-md flex items-center gap-3;
     }
 }

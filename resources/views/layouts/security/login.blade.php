@@ -14,14 +14,15 @@
 
     <div class="flex flex-col gap-4 w-full">
         @include('components.form-box', [
-            'errors' => $errors,
+            'error' => $errors->any() ? $errors->first() : null,
             'label' => 'Username',
             'id' => 'username',
             'name' => 'username',
+            'value' => old('username'),
         ])
 
         @include('components.form-box', [
-            'errors' => $errors,
+            'error' => $errors->any() ? $errors->first() : null,
             'label' => 'Password',
             'id' => 'password',
             'name' => 'password',
@@ -35,7 +36,7 @@
                        value="1">
                 <label for="remember">Remember me</label>
             </div>
-            <button class="self-end px-4 py-2 rounded-md bg-blue-800/10 text-blue-800 font-medium hover:bg-blue-800/20">Login</button>
+            <button class="form-btn">Login</button>
         </div>
         @csrf
     </div>

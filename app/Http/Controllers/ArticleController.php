@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Tag;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    public function __construct(private readonly Session $session)
+    {
+    }
+
     public function list(Request $request): View
     {
         $order = explode('_', $request->get('order', 'date_desc'));
@@ -46,14 +53,64 @@ class ArticleController extends Controller
         return back();
     }
 
-    public function create(Article $article): View
+    public function create(Request $request): View
     {
         $this->authorize('create', Article::class);
 
-        return view('layouts.articles.create');
+        return view('layouts.articles.create')->with('tags', Tag::orderBy('name', 'ASC')->pluck('name'));
     }
 
-    public function handleCreate(Article $article): RedirectResponse
+    public function handleCreate(Request $request): RedirectResponse
+    {
+        $this->authorize('create', Article::class);
+
+
+        $valid = $request->validate([
+            'title' => 'string|required',
+            'content' => 'string|required',
+            'tags' => 'array|required'
+        ]);
+
+        if ($valid) {
+            $this->session->put('article', [
+                'title' => $valid['title'],
+                'content' => $valid['content'],
+                'tags' => $valid['tags']
+            ]);
+
+            return redirect()->route('articles.createImages');
+        }
+
+        return back()->with('title', 'content');
+    }
+
+    public function createImages(): View
+    {
+        $this->authorize('create', Article::class);
+
+        return view('layouts.articles.create-images');
+    }
+
+    public function handleCreateImages(Request $request): RedirectResponse
+    {
+        $this->authorize('create', Article::class);
+
+        // Storage::disk
+
+        return redirect()->route('articles.createLayout');
+        // return back();
+    }
+
+    public function createLayout(): View
+    {
+        $this->authorize('create', Article::class);
+
+        dump($this->session->get('article_files'));
+
+        return view('layouts.articles.create-layout');
+    }
+
+    public function handleCreateLayout(Request $request): RedirectResponse
     {
         $this->authorize('create', Article::class);
 
@@ -67,7 +124,7 @@ class ArticleController extends Controller
         return view('layouts.articles.edit');
     }
 
-    public function handleEdit(Article $article): RedirectResponse
+    public function handleEdit(Request $request, Article $article): RedirectResponse
     {
         $this->authorize('update', Article::class);
 

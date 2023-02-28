@@ -26,8 +26,7 @@
         @endif
     </div>
     <div class="flex gap-3 items-center">
-        @if (auth()->user() &&
-                auth()->user()->isWriter())
+        @can('create', App\Models\Article::class)
             <a class="p-3 bg-blue-700 rounded-md"
                href="{{ route('articles.create') }}"
                title="Create article">
@@ -37,7 +36,7 @@
                     <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
                 </svg>
             </a>
-        @endif
+        @endcan
         <form action="{{ route('app.search') }}"
               autocomplete="off"
               class="p-3 border-[1px] border-solid border-neutral-200 flex items-center rounded-xl"

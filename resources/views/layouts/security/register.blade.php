@@ -14,25 +14,28 @@
 
     <div class="flex flex-col gap-4 w-full">
         @include('components.form-box', [
-            'errors' => $errors,
+            'error' => $errors->has('username') ? $errors->first('username') : null,
             'label' => 'Username',
             'id' => 'username',
             'name' => 'username',
+            'value' => old('username'),
         ])
         @include('components.form-box', [
-            'errors' => $errors,
+            'error' => $errors->has('email') ? $errors->first('email') : null,
             'label' => 'Email',
             'id' => 'email',
             'name' => 'email',
             'type' => 'email',
+            'value' => old('email'),
         ])
 
         @include('components.form-box', [
-            'errors' => $errors,
+            'error' => $errors->has('password') ? $errors->first('password') : null,
             'label' => 'Password',
             'id' => 'password',
             'name' => 'password',
             'type' => 'password',
+            'extra' => "<span class='input-help'>Must be at least 4 characters long</span>",
         ])
         <div class="flex justify-between items-center">
             <div class="flex gap-2 cursor-pointer [&>*]:cursor-pointer">
@@ -42,7 +45,7 @@
                        value="1">
                 <label for="remember">Remember me</label>
             </div>
-            <button class="self-end px-4 py-2 rounded-md bg-blue-800/10 text-blue-800 font-medium hover:bg-blue-800/20">Register</button>
+            <button class="form-btn">Register</button>
         </div>
         @csrf
     </div>
