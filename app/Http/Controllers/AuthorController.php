@@ -10,13 +10,9 @@ use Illuminate\View\View;
 
 class AuthorController extends Controller
 {
-    public function __construct(private readonly AuthorServices $authorServices)
-    {
-    }
-
     public function list(): View
     {
-        return view('layouts.authors.list')->with('authors', $this->authorServices->getWriters());
+        return view('layouts.authors.list')->with('authors', User::where('roles', 'LIKE', '%WRITER%')->orderBy('username', 'ASC')->get());
     }
 
     public function view(Request $request, User $user): View
