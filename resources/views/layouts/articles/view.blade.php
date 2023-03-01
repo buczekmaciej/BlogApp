@@ -10,7 +10,9 @@
                        href="{{ route('user.profile', $article->author()->first()->username) }}">{{ $article->author()->first()->getName() }}</a></p>
                 <p class="font-bold text-5xl w-2/3 text-center">{{ ucfirst($article->title) }}</p>
             </div>
-            <div class="h-96 relative w-full rounded-md {{ $article->thumbnail ? 'bg-[url(\'/assets/images/' . $article->uuid . $article->thumbnail . '\')] bg-cover bg-center' : 'article-bg-gradient' }}">
+            <img alt=""
+                 src="{{ asset('assets/images/' . $article->uuid . '/' . $article->thumbnail) }}">
+            <div class="h-96 relative w-full rounded-md {{ $article->thumbnail ? "bg-[url('assets/images/{$article->uuid}/{$article->thumbnail}')] bg-cover bg-center" : 'article-bg-gradient' }}">
                 @if (auth()->user())
                     @can('update', $article)
                         <div class="absolute top-6 right-6 flex gap-4 [&>a]:rounded-md [&>a]:bg-slate-50/30 [&>a]:p-3">
@@ -49,7 +51,7 @@
                     @endcan
                 @endif
             </div>
-            <div class="px-20 text-lg">{!! Markdown::parse($article->content) !!}</div>
+            <div class="px-20 text-lg">{!! Markdown::parse(nl2br($article->content)) !!}</div>
             @if (auth()->user())
                 @if ($article->likes()->get()->contains(auth()->user()))
                     <a class="flex gap-3 bg-red-700 text-slate-50 px-6 py-3 rounded-md"

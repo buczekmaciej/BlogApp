@@ -36,6 +36,7 @@
             'name' => 'password',
             'type' => 'password',
             'extra' => "<span class='input-help'>Must be at least 4 characters long</span>",
+            'value' => null,
         ])
         <div class="flex justify-between items-center">
             <div class="flex gap-2 cursor-pointer [&>*]:cursor-pointer">

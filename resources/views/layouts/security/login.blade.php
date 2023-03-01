@@ -27,6 +27,7 @@
             'id' => 'password',
             'name' => 'password',
             'type' => 'password',
+            'value' => null,
         ])
         <div class="flex justify-between items-center">
             <div class="flex gap-2 cursor-pointer [&>*]:cursor-pointer">

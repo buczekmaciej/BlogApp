@@ -39,7 +39,11 @@
         @apply px-3 py-2 hover:bg-gray-300 cursor-pointer;
     }
 
-    .listed-tag {
-        @apply px-2 py-1 bg-blue-900/10 text-blue-900 rounded-md flex items-center gap-3;
+    .tag-listed {
+        @apply px-2 py-1 bg-blue-900/10 text-blue-900 rounded-md flex items-center gap-3 fill-blue-900;
+    }
+
+    .styling-btn {
+        @apply px-2 py-1 cursor-pointer bg-slate-100 rounded-md text-sm;
     }
 }

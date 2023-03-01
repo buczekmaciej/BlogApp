@@ -11,7 +11,7 @@
             <div class="flex flex-col items-center gap-2">
                 <input @if (!session()->has('uploaded')) required @endif
                        accept="image/png, image/jpeg"
-                       class="files border-2 border-solid border-gray-100 rounded-md p-2 cursor-pointer"
+                       class="files border-2 border-solid border-gray-100 rounded-md p-2 outline-transparent cursor-pointer"
                        multiple
                        name="files[]"
                        type="file">

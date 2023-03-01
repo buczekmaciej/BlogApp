@@ -32,7 +32,7 @@
                     <input autocomplete="off"
                            class="form-input w-1/3"
                            id="tags">
-                    <div class="list flex flex-wrap gap-2 w-2/3"></div>
+                    <div class="list flex flex-wrap gap-2 w-2/3 [&>*]:tag-listed"></div>
                     <div class="results absolute left-0 bottom-full z-10 bg-slate-100 rounded-md h-0 max-h-[50vh] w-1/3 overflow-auto">
                         @foreach ($tags as $tag)
                             <p class="tag-suggestion">{{ $tag }}</p>
