@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserServices;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // auth()->user()->followedBy()->sync(User::class);
-    // auth()->user()->followedBy()->detach(User::class);
+    public function __construct(private readonly UserServices $userServices)
+    {
+    }
+
     public function profile(User $user)
     {
     }
@@ -20,5 +23,14 @@ class UserController extends Controller
 
     public function updateSettings()
     {
+    }
+
+    public function newFollower(User $user)
+    {
+        if ($user->username !== auth()->user()->username) {
+            $this->userServices->addFollow($user);
+        }
+
+        return back();
     }
 }

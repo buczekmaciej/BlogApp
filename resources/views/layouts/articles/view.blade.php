@@ -6,13 +6,26 @@
     <div class="px-24 py-10 w-full flex flex-col gap-8">
         <div class="px-16 flex flex-col items-center gap-12">
             <div class="relative flex flex-col items-center gap-4 w-full">
+                <div class="flex gap-2 items-center">
+                    <a class="underline text-blue-800 font-semibold"
+                       href="{{ route('articles.list') }}">Articles</a>
+                    <svg class="h-4 fill-blue-800"
+                         viewBox="0 0 256 512"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path>
+                    </svg>
+                    <p class="">{{ $article->title }}</p>
+                </div>
                 <p class="text-gray-400">Published {{ $article->created_at->format('F d, Y') }} by <a class="text-blue-800"
                        href="{{ route('user.profile', $article->author()->first()->username) }}">{{ $article->author()->first()->getName() }}</a></p>
                 <p class="font-bold text-5xl w-2/3 text-center">{{ ucfirst($article->title) }}</p>
             </div>
-            <img alt=""
-                 src="{{ asset('assets/images/' . $article->uuid . '/' . $article->thumbnail) }}">
-            <div class="h-96 relative w-full rounded-md {{ $article->thumbnail ? "bg-[url('assets/images/{$article->uuid}/{$article->thumbnail}')] bg-cover bg-center" : 'article-bg-gradient' }}">
+            <div class="relative w-full article-bg-gradient' }}">
+                @if ($article->thumbnail)
+                    <img alt=""
+                         class="rounded-md"
+                         src="{{ asset('assets/images/' . $article->uuid . '/' . $article->thumbnail) }}">
+                @endif
                 @if (auth()->user())
                     @can('update', $article)
                         <div class="absolute top-6 right-6 flex gap-4 [&>a]:rounded-md [&>a]:bg-slate-50/30 [&>a]:p-3">

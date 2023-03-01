@@ -31,8 +31,7 @@
                                  class=""
                                  src="{{ asset('assets/uploads/' . $img) }}">
                             <div class="flex items-center gap-2 cursor-pointer [&>*]:cursor-pointer">
-                                <input @if ($loop->first) checked @endif
-                                       id="image-{{ $key }}"
+                                <input id="image-{{ $key }}"
                                        name="thumbnail"
                                        required
                                        type="radio"

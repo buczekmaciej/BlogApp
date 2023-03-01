@@ -82,6 +82,7 @@ Route::controller(UserController::class)->name('user.')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/settings', 'settings')->name('settings');
         Route::post('/settings', 'updateSettings');
+        Route::get('/u/{user:username}/follow', 'newFollower')->name('newFollow');
     });
 });
 
