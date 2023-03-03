@@ -21,10 +21,17 @@
                        href="{{ route('user.newFollow', $user->username) }}">{{ $isFollowing ? 'Following' : 'Follow' }}</a>
                 @endif
                 @if ($user->displayName)
-                    <p class="flex flex-col gap-1">
-                        <span class="text-2xl">{{ $user->displayName }}</span>
-                        <span class="text-gray-400 text-sm">{{ '@' . $user->username }}</span>
-                    </p>
+                    <div class="flex flex-col gap-1">
+                        @if ($user->isWriter())
+                            <p class="flex items-center gap-4">
+                                <span class="text-2xl">{{ $user->displayName }}</span>
+                                <span class="{{ $user->isAdmin() ? 'bg-fuchsia-800/10 text-fuchsia-800' : 'bg-orange-600/10 text-orange-600' }} text-sm font-bold px-2 py-1.5 rounded-md">{{ $user->getRole() }}</span>
+                            </p>
+                        @else
+                            <p class="text-2xl">{{ $user->displayName }}</p>
+                        @endif
+                        <p class="text-gray-400 text-sm">{{ '@' . $user->username }}</p>
+                    </div>
                 @else
                     <p class="text-2xl">{{ $user->username }}</p>
                 @endif
@@ -33,6 +40,9 @@
                     <span>{{ $user->followedBy()->count() }} followers</span>
                     <span>Following {{ $user->following()->count() }}</span>
                 </p>
+                @if ($user->bio)
+                    <p>{{ $user->bio }}</p>
+                @endif
                 @if ($user->username === auth()->user()->username)
                     <a class="px-3 py-1 mt-3 rounded-md border-2 border-solid border-gray-400 text-gray-400"
                        href="{{ route('user.settings') }}">Settings</a>

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserServices;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -35,11 +38,41 @@ class UserController extends Controller
 
     public function settings(): View
     {
-        return view('layouts.user.settings');
+        $timezones = timezone_identifiers_list();
+
+        return view('layouts.user.settings')->with('timezones', $timezones);
     }
 
-    public function updateSettings(): RedirectResponse
+    public function updateSettings(Request $request): RedirectResponse
     {
+        $valid = $request->validate([
+            'email' => 'required|email|unique:users,email,' . auth()->user()->uuid . ',uuid',
+            'timezone' => 'timezone',
+            'image' => 'nullable|file|max:5000|mimes:png,jpg,jpeg',
+            'displayName' => 'nullable|string',
+            'birthDate' => 'nullable|date',
+            'location' => 'nullable|string',
+            'bio' => 'nullable|string',
+            'isSubscribed' => 'boolean'
+        ]);
+
+        if ($valid) {
+            $user = User::where('username', auth()->user()->username)->first();
+            if (File::exists(public_path('assets/profileImages/' . $user->username))) {
+                File::delete(public_path('assets/profileImages/' . $user->username));
+            }
+            $file = $request->files->get('image');
+
+            $newName = $user->username . '.' . $file->getClientOriginalExtension();
+
+            $file->move('assets/profileImages', $newName);
+
+            $data = array_merge(['birthDate' => Carbon::createFromFormat('Y-m-d', $valid['birthDate'], 'UTC')], $valid);
+            $data['image'] = $newName;
+
+            $user->update($data);
+        }
+
         return back();
     }
 

@@ -14,6 +14,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, Uuids;
 
     protected $primaryKey = 'uuid';
+    protected $table = 'users';
 
     protected $fillable = [
         'displayName',

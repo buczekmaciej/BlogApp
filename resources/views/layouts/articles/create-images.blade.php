@@ -4,7 +4,7 @@
 
 @section('body')
     <div class="w-1/2 py-10 px-8 my-10 bg-white text-natural-900 flex flex-col items-center gap-8 rounded-md shadow-md">
-        <p class="font-bold text-4xl">Upload images</p>
+        <p class="font-bold text-4xl">Upload images <sup class="text-red-600">*</sup></p>
         <form class="flex flex-col items-center gap-4 w-full"
               enctype="multipart/form-data"
               method="post">

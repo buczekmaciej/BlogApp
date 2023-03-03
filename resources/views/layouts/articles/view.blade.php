@@ -106,7 +106,8 @@
                     <button class="bg-blue-700 text-slate-50 rounded-md px-3 py-2">Share</button>
                     <textarea class="w-full resize-none h-40 border-b-2 border-solid border-gray-150 bg-transparent outline-transparent focus:border-gray-600"
                               name="content"
-                              placeholder="Your opinion"></textarea>
+                              placeholder="Your opinion"
+                              required></textarea>
                     @csrf
                 </form>
             @else

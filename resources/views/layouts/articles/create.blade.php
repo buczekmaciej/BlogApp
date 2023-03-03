@@ -26,7 +26,7 @@
                 'value' => session()->get('article.content'),
             ])
             <div class="tags-container flex flex-col gap-2">
-                <label class="text-lg">Tags</label>
+                <label class="text-lg">Tags <sup class="text-red-600">*</sup></label>
                 <div class="w-full flex items-center gap-2 relative outline-transparent"
                      tabindex="0">
                     <input autocomplete="off"
