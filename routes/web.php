@@ -51,7 +51,6 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
 
 Route::controller(AuthorController::class)->name('authors.')->prefix('authors')->group(function () {
     Route::get('/', 'list')->name('list');
-    Route::get('/{user:username}', 'view')->name('view');
 });
 
 Route::controller(ArticleController::class)->name('articles.')->prefix('articles')->group(function () {
@@ -78,12 +77,12 @@ Route::controller(ArticleController::class)->name('articles.')->prefix('articles
 });
 
 Route::controller(UserController::class)->name('user.')->group(function () {
-    Route::get('/u/{user:username}', 'profile')->name('profile');
     Route::middleware('auth')->group(function () {
         Route::get('/settings', 'settings')->name('settings');
         Route::post('/settings', 'updateSettings');
         Route::get('/u/{user:username}/follow', 'newFollower')->name('newFollow');
     });
+    Route::get('/u/{user:username}/{view?}', 'profile')->name('profile');
 });
 
 Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');

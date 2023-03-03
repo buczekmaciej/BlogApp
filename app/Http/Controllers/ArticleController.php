@@ -173,7 +173,7 @@ class ArticleController extends Controller
             $thumbnail = $valid['thumbnail'];
 
             $article = new Article($articleData);
-            $tags = Tag::where('name', 'IN', $this->session->get('article.tags'))->get();
+            $tags = Tag::whereIn('name', $this->session->get('article.tags'))->get();
             $article->tags()->saveMany($tags);
             $article->author()->associate(auth()->user());
             $article->save();

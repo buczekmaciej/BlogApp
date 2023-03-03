@@ -21,7 +21,7 @@
                             <p class="text-2xl">{{ $author->username }}</p>
                         @endif
                         <a class="fill-blue-900"
-                           href="{{ route('authors.view', $author->username) }}">
+                           href="{{ route('user.profile', $author->username) }}">
                             <svg class="h-4"
                                  viewBox="0 0 512 512"
                                  xmlns="http://www.w3.org/2000/svg">

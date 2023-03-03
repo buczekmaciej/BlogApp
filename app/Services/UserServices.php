@@ -11,7 +11,7 @@ class UserServices
     {
         $current = Auth::user();
 
-        if (!$user->followedBy()->get()->contains($current)) $user->followedBy()->sync($current);
-        else $user->followedBy()->detach($current);
+        if ($user->followedBy()->get()->contains($current)) $user->followedBy()->detach($current);
+        else $user->followedBy()->sync($current);
     }
 }

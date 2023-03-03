@@ -47,7 +47,9 @@ class AppServices
     {
         return [
             'tags' => Tag::where('name', 'LIKE', "%$q%")->orderBy('name', 'ASC')->get(),
-            'users' => User::where('username', 'LIKE', "%$q%")->get(),
+            'users' => User::where(function ($builder) use ($q) {
+                $builder->where('username', 'LIKE', "%$q%")->orWhere('displayName', 'LIKE', "%$q%");
+            })->get(),
             'articles' => Article::where('title', 'LIKE', "%$q%")->orderBy('created_at', 'DESC')->paginate(9)
         ];
     }

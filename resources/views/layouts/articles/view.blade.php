@@ -65,6 +65,12 @@
                 @endif
             </div>
             <div class="px-20 text-lg">{!! Markdown::parse(nl2br($article->content)) !!}</div>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($article->tags()->get() as $tag)
+                    <a class="bg-blue-800/5 text-blue-800 text-lg font-medium px-4 py-2 rounded-md"
+                       href="{{ route('tags.view', $tag->name) }}">#{{ $tag->name }}</a>
+                @endforeach
+            </div>
             @if (auth()->user())
                 @if ($article->likes()->get()->contains(auth()->user()))
                     <a class="flex gap-3 bg-red-700 text-slate-50 px-6 py-3 rounded-md"
