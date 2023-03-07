@@ -16,7 +16,7 @@
         <textarea @if (!isset($required) || $required) required @endif
                   class="form-textarea{{ $error ? ' border-red-500' : '' }}"
                   id="{{ $id }}"
-                  name="{{ $name }}">{{ $value }}</textarea>
+                  name="{{ $name }}">{!! $value !!}</textarea>
     @endif
     @if (isset($extra))
         {!! $extra !!}

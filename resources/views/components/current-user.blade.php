@@ -7,5 +7,5 @@
     </div>
 @else
     <a class="text-gray-400 text-sm"
-       href="">Configure your profile</a>
+       href="{{ route('user.settings') }}">Configure your profile</a>
 @endif

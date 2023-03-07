@@ -46,10 +46,8 @@ class NavigationLinksProvider extends ServiceProvider
             ],
         ];
 
-        view()->composer('*', function ($view) use ($links) {
-            if (!in_array($view->getName(), ['base', 'navigation', 'security.login', 'security.register'])) {
-                $view->with('links', $links);
-            }
+        view()->composer('components.app-nav', function ($view) use ($links) {
+            $view->with('links', $links);
         });
     }
 }

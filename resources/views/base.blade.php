@@ -13,7 +13,7 @@
 </head>
 
 <body class="bg-slate-50 text-neutral-900 flex {{ $__env->yieldContent('bodyClass', 'flex-col items-center') }}">
-    @includeUnless(Route::is('security.*'), 'components.app-nav')
+    @includeUnless(Route::is('security.*') || Route::is('admin.*'), 'components.app-nav')
     @yield('body')
     @yield('javascripts')
 </body>

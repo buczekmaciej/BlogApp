@@ -6,51 +6,55 @@
     <div class="w-1/2 py-10 px-8 my-10 bg-white text-natural-900 flex flex-col items-center gap-3 rounded-md shadow-md">
         <p class="font-bold text-4xl">New article</p>
         <form class="flex flex-col gap-4 w-full"
-              id="article-create"
+              enctype="multipart/form-data"
               method="post">
-            @include('components.form-box', [
-                'id' => 'title',
-                'label' => 'Title',
-                'name' => 'title',
-                'error' => $errors->has('title') ? $errors->first('title') : null,
-                'extra' => "<span class='input-help'>Title will be used as identifier</span>",
-                'value' => session()->get('article.title'),
-            ])
-            @include('components.form-box', [
-                'item' => 'textarea',
-                'id' => 'content',
-                'label' => 'Content',
-                'name' => 'content',
-                'error' => $errors->has('content') ? $errors->first('content') : null,
-                'extra' => "<span class='input-help'>You will be able to add images in further steps</span>",
-                'value' => session()->get('article.content'),
-            ])
-            <div class="tags-container flex flex-col gap-2">
-                <label class="text-lg">Tags <sup class="text-red-600">*</sup></label>
-                <div class="w-full flex items-center gap-2 relative outline-transparent"
-                     tabindex="0">
-                    <input autocomplete="off"
-                           class="form-input w-1/3"
-                           id="tags">
-                    <div class="list flex flex-wrap gap-2 w-2/3 [&>*]:tag-listed"></div>
-                    <div class="results absolute left-0 bottom-full z-10 bg-slate-100 rounded-md h-0 max-h-[50vh] w-1/3 overflow-auto">
-                        @foreach ($tags as $tag)
-                            <p class="tag-suggestion">{{ $tag }}</p>
-                        @endforeach
-                    </div>
-                </div>
-                <span class='input-help'>First tag will be representing tag, so pick it wise. At least 1 tag required</span>
-                @error('tags')
-                    <p class="font-medium text-red-500">{{ $errors->first('tags') }}</p>
-                @enderror
+            <div class="flex flex-col items-center gap-2">
+                <input @if (!session()->has('uploaded')) required @endif
+                       accept="image/png, image/jpeg"
+                       class="files border-2 border-solid border-gray-100 rounded-md p-2 outline-transparent cursor-pointer"
+                       multiple
+                       name="files[]"
+                       type="file">
+                <span class='input-help'>Max 5MB, only .png, .jpg, .jpeg</span>
+                @if ($errors->has('files'))
+                    @include('components.error', ['error' => $errors->first('files')])
+                @endif
             </div>
-
-            <button class="form-btn">Upload images</button>
+            <div class="previews flex flex-col gap-4">
+                @if (session()->get('uploaded'))
+                    <div>
+                        <p class="font-semibold">Previously uploaded</p>
+                        <div class="grid grid-cols-3 grid-rows-1 items-start gap-3">
+                            @foreach (session()->get('uploaded') as $img)
+                                <div class="flex flex-wrap justify-between items-center gap-2"
+                                     data-name="{{ $img }}">
+                                    <p class="w-3/4 truncate">{{ $img }}</p>
+                                    <a class=""
+                                       href="{{ route('articles.removeImage', ['filename' => $img, 'asset' => 'uploads', 'session' => 'uploaded']) }}">
+                                        <svg class="remove-img h-4"
+                                             viewBox="0 0 352 512"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
+                                        </svg>
+                                    </a>
+                                    <img alt="Uploaded file"
+                                         src="{{ asset('assets/uploads/' . $img) }}">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+                <div>
+                    <p class="font-semibold hidden">Preview</p>
+                    <div class="preview-list grid grid-cols-4 grid-rows-1 items-center gap-3"></div>
+                </div>
+            </div>
+            <button class="form-btn">Build layout</button>
             @csrf
         </form>
     </div>
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('js/create.js') }}"></script>
+    <script src="{{ asset('js/createImages.js') }}"></script>
 @endsection

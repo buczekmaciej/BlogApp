@@ -56,16 +56,16 @@ Route::controller(AuthorController::class)->name('authors.')->prefix('authors')-
 Route::controller(ArticleController::class)->name('articles.')->prefix('articles')->group(function () {
     Route::get('/', 'list')->name('list');
 
+    Route::get('/images/remove', 'removeImage')->name('removeImage');
     Route::get('/create', 'create')->name('create');
     Route::post('/create', 'handleCreate');
-    Route::get('/create/images', 'createImages')->name('createImages');
-    Route::post('/create/images', 'handleCreateImages');
-    Route::get('/create/images/remove', 'removeImage')->name('removeImage');
     Route::get('/create/layout', 'createLayout')->name('createLayout');
     Route::post('/create/layout', 'handleCreateLayout');
 
     Route::get('/{article:slug}/edit', 'edit')->name('edit');
     Route::post('/{article:slug}/edit', 'handleEdit');
+    Route::get('/{article:slug}/edit/layout', 'editLayout')->name('editLayout');
+    Route::post('/{article:slug}/edit/layout', 'handleEditLayout');
 
     Route::get('/{article:slug}', 'view')->name('view');
 
