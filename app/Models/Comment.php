@@ -28,6 +28,6 @@ class Comment extends Model
 
     public function reports()
     {
-        return $this->belongsToMany(Report::class);
+        return $this->hasMany(Report::class);
     }
 }

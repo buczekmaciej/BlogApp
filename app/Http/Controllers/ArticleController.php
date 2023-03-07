@@ -30,7 +30,7 @@ class ArticleController extends Controller
 
     public function view(Article $article): View
     {
-        return view('layouts.articles.view')->with('article', $article);
+        return view('layouts.articles.view')->with('article', $article)->with('reports', $this->articleServices->getReportReasons());
     }
 
     public function like(Article $article): RedirectResponse

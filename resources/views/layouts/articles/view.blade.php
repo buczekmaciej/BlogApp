@@ -20,15 +20,15 @@
                        href="{{ route('user.profile', $article->author()->first()->username) }}">{{ $article->author()->first()->getName() }}</a></p>
                 <p class="font-bold text-5xl w-2/3 text-center">{{ ucfirst($article->title) }}</p>
             </div>
-            <div class="relative w-full article-bg-gradient' }}">
+            <div class="relative w-full min-h-[20rem] article-bg-gradient rounded-md">
                 @if ($article->thumbnail)
                     <img alt=""
                          class="rounded-md"
                          src="{{ asset('assets/images/' . $article->uuid . '/' . $article->thumbnail) }}">
                 @endif
                 @if (auth()->user())
-                    @can('update', $article)
-                        <div class="absolute top-6 right-6 flex gap-4 [&>a]:rounded-md [&>a]:bg-slate-50/30 [&>a]:p-3">
+                    <div class="absolute top-6 right-6 flex gap-4 [&>*]:rounded-md [&>*]:bg-slate-50/30 [&>*]:p-3">
+                        @can('update', $article)
                             <a href="{{ route('articles.edit', $article->slug) }}">
                                 <svg class="h-7 fill-blue-100"
                                      viewBox="0 0 512 512"
@@ -36,21 +36,8 @@
                                     <path d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
                                 </svg>
                             </a>
-                            <a href="{{ route('articles.bookmark', $article->slug) }}">
-                                <svg class="h-7 fill-blue-100"
-                                     viewBox="0 0 384 512"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    @if (auth()->user()->bookmarks()->get()->contains($article))
-                                        <path d="M0 512V48C0 21.49 21.49 0 48 0h288c26.51 0 48 21.49 48 48v464L192 400 0 512z"></path>
-                                    @else
-                                        <path d="M336 0H48C21.49 0 0 21.49 0 48v464l192-112 192 112V48c0-26.51-21.49-48-48-48zm0 428.43l-144-84-144 84V54a6 6 0 0 1 6-6h276c3.314 0 6 2.683 6 5.996V428.43z"></path>
-                                    @endif
-                                </svg>
-                            </a>
-                        </div>
-                    @else
-                        <a class="absolute top-6 right-6 rounded-md bg-slate-50/30 p-3"
-                           href="{{ route('articles.bookmark', $article->slug) }}">
+                        @endcan
+                        <a href="{{ route('articles.bookmark', $article->slug) }}">
                             <svg class="h-7 fill-blue-100"
                                  viewBox="0 0 384 512"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -61,8 +48,42 @@
                                 @endif
                             </svg>
                         </a>
-                    @endcan
+                        <div class="report-btn cursor-pointer">
+                            <svg class="h-7 fill-blue-100"
+                                 viewBox="0 0 512 512"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                      d="M349.565 98.783C295.978 98.783 251.721 64 184.348 64c-24.955 0-47.309 4.384-68.045 12.013a55.947 55.947 0 0 0 3.586-23.562C118.117 24.015 94.806 1.206 66.338.048 34.345-1.254 8 24.296 8 56c0 19.026 9.497 35.825 24 45.945V488c0 13.255 10.745 24 24 24h16c13.255 0 24-10.745 24-24v-94.4c28.311-12.064 63.582-22.122 114.435-22.122 53.588 0 97.844 34.783 165.217 34.783 48.169 0 86.667-16.294 122.505-40.858C506.84 359.452 512 349.571 512 339.045v-243.1c0-23.393-24.269-38.87-45.485-29.016-34.338 15.948-76.454 31.854-116.95 31.854z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
                 @endif
+            </div>
+            <div class="report-container hidden fixed grid place-items-center top-0 left-0 z-40 bg-neutral-800/90 h-screen w-full">
+                <form action="{{ route('submitReport') }}"
+                      class="report-form w-1/4 p-8 flex flex-col gap-6 rounded-md bg-slate-50"
+                      method="POST">
+                    @csrf
+                    <p class="text-xl font-semibold">Report article</p>
+                    <div class="flex flex-col items-start gap-2">
+                        @foreach ($reports as $key => $reason)
+                            <div class="flex gap-3 items-center cursor-pointer [&>*]:cursor-pointer">
+                                <input id="reason-{{ $key }}"
+                                       name="reason"
+                                       required
+                                       type="radio"
+                                       value="{{ $key }}" />
+                                <label for="reason-{{ $key }}">{{ $reason }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="flex items-center justify-end gap-4 w-full">
+                        <button class="report-container-close"
+                                type="button">Close</button>
+                        <button class="form-btn">Submit</button>
+                    </div>
+                </form>
             </div>
             <div class="px-20 text-lg">{!! Markdown::parse(nl2br($article->content)) !!}</div>
             <div class="flex flex-wrap gap-2">
@@ -126,9 +147,17 @@
                         </a>
                         <p class="">{{ $comment->created_at->timezone(auth()->user()?->timezone ?? 'UTC')->format('M d, Y | H:i:s') }}</p>
                         <p class="w-full mt-4 px-12 text-2xl">{!! $comment->content !!}</p>
+                        <p class="ml-12 mt-4 cursor-pointer report-comment"
+                           data-id="{{ $comment->uuid }}">Report</p>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascripts')
+    @if (auth()->user())
+        <script src="{{ asset('js/article.js') }}"></script>
+    @endif
 @endsection

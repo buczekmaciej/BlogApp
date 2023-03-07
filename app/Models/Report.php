@@ -23,11 +23,11 @@ class Report extends Model
 
     public function article()
     {
-        return $this->hasOne(Article::class);
+        return $this->belongsTo(Article::class);
     }
 
     public function comment()
     {
-        return $this->hasOne(Comment::class);
+        return $this->belongsTo(Comment::class);
     }
 }

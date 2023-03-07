@@ -207,4 +207,14 @@ class ArticleServices
     {
         return Tag::whereNotIn('name', $tags)->orderBy('name', 'ASC')->pluck('name');
     }
+
+    public function getReportReasons(): array
+    {
+        return [
+            'Missing content',
+            'Racial content',
+            'Content for adults',
+            'Inappropriate attachements',
+        ];
+    }
 }

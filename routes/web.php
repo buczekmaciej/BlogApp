@@ -85,7 +85,7 @@ Route::controller(UserController::class)->name('user.')->group(function () {
     Route::get('/u/{user:username}/{view?}', 'profile')->name('profile');
 });
 
-Route::post('/submit-report', [ReportController::class, 'list'])->name('submitReport')->middleware('auth');
+Route::post('/submit-report', [ReportController::class, 'submitReport'])->name('submitReport')->middleware('auth');
 
 // Admin routes
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
