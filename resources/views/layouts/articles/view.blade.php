@@ -24,7 +24,7 @@
                 @if ($article->thumbnail)
                     <img alt=""
                          class="rounded-md"
-                         src="{{ asset('assets/images/' . $article->uuid . '/' . $article->thumbnail) }}">
+                         src="{{ asset('assets/images/' . $article->getStrippedUuid() . '/' . $article->thumbnail) }}">
                 @endif
                 @if (auth()->user())
                     <div class="absolute top-6 right-6 flex gap-4 [&>*]:rounded-md [&>*]:bg-slate-50/30 [&>*]:p-3">

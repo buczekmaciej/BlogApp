@@ -54,4 +54,14 @@ class Article extends Model
     {
         return $this->hasMany(Report::class);
     }
+
+    public function getEmbeds()
+    {
+        return json_decode($this->embeds ?? "[]", true);
+    }
+
+    public function getStrippedUuid()
+    {
+        return implode("", explode("-", $this->uuid));
+    }
 }

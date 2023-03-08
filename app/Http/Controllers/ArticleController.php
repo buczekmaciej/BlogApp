@@ -82,21 +82,21 @@ class ArticleController extends Controller
         if (!$this->session->has('existing'))
             $this->session->put('existing', json_decode($article->embeds));
 
-        return view('layouts.articles.edit')->with('title', $article->title)->with('uuid', $article->uuid);
+        return view('layouts.articles.edit')->with('title', $article->title)->with('uuid', $article->getStrippedUuid());
     }
 
     public function handleEdit(Request $request, Article $article): RedirectResponse
     {
         $this->authorize('update', $article);
 
-        return $this->articleServices->handleFilesUpload($request, 'existing', "images/{$article->uuid}", 'articles.editLayout', ['article' => $article->slug]);
+        return $this->articleServices->handleFilesUpload($request, 'existing', "images/{$article->getStrippedUuid()}", 'articles.editLayout', ['article' => $article->slug]);
     }
 
     public function editLayout(Article $article): View
     {
         $this->authorize('update', $article);
 
-        return view('layouts.articles.editLayout')->with('article', $article)->with('unusedTags', $this->articleServices->getUnusedTags($article->tags()->pluck('name')));
+        return view('layouts.articles.edit-layout')->with('article', $article)->with('unusedTags', $this->articleServices->getUnusedTags($article->tags()->pluck('name')));
     }
 
     public function handleEditLayout(Request $request, Article $article): RedirectResponse

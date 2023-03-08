@@ -12,6 +12,6 @@ class AuthorController extends Controller
 {
     public function list(): View
     {
-        return view('layouts.authors.list')->with('authors', User::where('roles', 'LIKE', '%WRITER%')->orderBy('username', 'ASC')->get());
+        return view('layouts.authors.list')->with('authors', User::where('roles', 'LIKE', '%WRITER%')->orderBy('username', 'ASC')->paginate(50));
     }
 }

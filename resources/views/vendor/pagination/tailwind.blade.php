@@ -1,24 +1,23 @@
-@if ($paginator->hasPages())
-    <nav aria-label="{{ __('Pagination Navigation') }}"
-         class="flex items-center w-full justify-end"
-         role="navigation">
-        <div class="flex items-center gap-6">
-            <div>
-                <p class="text-sm text-gray-700 leading-5">
-                    {!! __('Showing') !!}
-                    @if ($paginator->firstItem())
-                        <span class="font-medium">{{ $paginator->firstItem() }}</span>
-                        {!! __('to') !!}
-                        <span class="font-medium">{{ $paginator->lastItem() }}</span>
-                    @else
-                        {{ $paginator->count() }}
-                    @endif
-                    {!! __('of') !!}
-                    <span class="font-medium">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
-                </p>
-            </div>
-
+<nav aria-label="{{ __('Pagination Navigation') }}"
+     class="flex items-center w-full justify-end"
+     role="navigation">
+    <div class="flex items-center gap-6">
+        <div>
+            <p class="text-sm text-gray-700 leading-5">
+                {!! __('Showing') !!}
+                @if ($paginator->firstItem())
+                    <span class="font-medium">{{ $paginator->firstItem() }}</span>
+                    {!! __('to') !!}
+                    <span class="font-medium">{{ $paginator->lastItem() }}</span>
+                @else
+                    {{ $paginator->count() }}
+                @endif
+                {!! __('of') !!}
+                <span class="font-medium">{{ $paginator->total() }}</span>
+                {!! __('results') !!}
+            </p>
+        </div>
+        @if ($paginator->hasPages())
             <div>
                 <span class="relative z-0 inline-flex shadow-sm rounded-md">
                     {{-- Previous Page Link --}}
@@ -109,6 +108,6 @@
                     @endif
                 </span>
             </div>
-        </div>
-    </nav>
-@endif
+        @endif
+    </div>
+</nav>

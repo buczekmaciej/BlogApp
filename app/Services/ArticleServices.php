@@ -133,7 +133,7 @@ class ArticleServices
                 $extension = explode(".", $img)[1];
                 $newName = "{$rand}.{$extension}";
 
-                $articleFolderPath = public_path('assets/images/' . $article->uuid);
+                $articleFolderPath = public_path('assets/images/' . $article->getStrippedUuid());
                 if (!File::isDirectory($articleFolderPath)) {
                     File::makeDirectory($articleFolderPath, 0777, true, true);
                 }
@@ -142,7 +142,7 @@ class ArticleServices
 
                 $embeds[] = $newName;
                 if (str_contains($content, $img)) {
-                    str_replace($img, "/assets/images/" . $article->uuid . '/' . $newName, $content);
+                    $content = str_replace($img, "/assets/images/" . $article->getStrippedUuid() . '/' . $newName, $content);
                 }
 
                 if ($valid['thumbnail'] === $img) {
@@ -180,8 +180,8 @@ class ArticleServices
             ];
             $content = $valid['content'];
             foreach ($this->session->get('existing') as $img) {
-                if (str_contains($content, $img) && !str_contains($content, "/assets/images/{$article->uuid}/$img")) {
-                    str_replace($img, "/assets/images/" . $article->uuid . '/' . $img, $content);
+                if (str_contains($content, $img) && !str_contains($content, "/assets/images/{$article->getStrippedUuid()}/$img")) {
+                    $content = str_replace($img, "/assets/images/" . $article->getStrippedUuid() . '/' . $img, $content);
                 }
             }
             $data['content'] = $content;
@@ -197,6 +197,7 @@ class ArticleServices
 
             $article->update($data);
 
+            $this->session->forget('existing');
             return redirect()->route($route, $article->slug);
         }
 

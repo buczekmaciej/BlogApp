@@ -37,5 +37,6 @@
                 </div>
             @endforeach
         </div>
+        {{ $authors->links() }}
     </div>
 @endsection

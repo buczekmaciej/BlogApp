@@ -45,7 +45,7 @@
                             <p class="text-sm">{{ $img }}</p>
                             <img alt=""
                                  class=""
-                                 src="{{ asset('assets/images/' . $article->uuid . '/' . $img) }}">
+                                 src="{{ asset('assets/images/' . $article->getStrippedUuid() . '/' . $img) }}">
                             <div class="flex items-center gap-2 cursor-pointer [&>*]:cursor-pointer">
                                 <input @if ($article->thumbnail && $article->thumbnail === $img) checked @endif
                                        id="image-{{ $key }}"

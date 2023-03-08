@@ -93,8 +93,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(AdminArticleController::class)->prefix('articles')->name('articles.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::get('/{uuid}/edit', 'edit')->name('edit');
-        Route::get('/{uuid}/delete', 'delete')->name('delete');
+        Route::get('/{article:slug}/edit', 'edit')->name('edit');
+        Route::get('/{article:slug}/delete', 'delete')->name('delete');
     });
 
     Route::controller(CommentController::class)->prefix('comments')->name('comments.')->group(function () {
@@ -110,8 +110,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(AdminTagController::class)->prefix('tags')->name('tags.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::post('/{uuid}/edit', 'handleEdit');
-        Route::get('/{uuid}/delete', 'delete')->name('delete');
+        Route::post('/{tag:name}/edit', 'handleEdit');
+        Route::get('/{tag:name}/delete', 'delete')->name('delete');
     });
 
     Route::controller(AdminUserController::class)->prefix('users')->name('users.')->group(function () {
