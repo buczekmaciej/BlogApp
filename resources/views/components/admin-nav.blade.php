@@ -1,5 +1,6 @@
 <nav class="flex items-center gap-8 w-3/4 h-20">
-    <p class="font-bold text-3xl">Blog</p>
+    <a class="font-bold text-3xl"
+       href="{{ route('app.homepage') }}">Blog</a>
     <div class="flex items-center gap-8 h-full">
         @foreach ($links as $link)
             @include('components.nav-link', ['link' => $link])

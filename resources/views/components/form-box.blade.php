@@ -7,7 +7,9 @@
         @endif
     </label>
     @if (!isset($item) || $item === 'input')
-        <input class="form-input{{ $error ? ' form-input-error' : '' }}"
+        <input @if (isset($disabled)) disabled @endif
+               @if (!isset($required) || $required) required @endif
+               class="form-input{{ $error ? ' form-input-error' : '' }}"
                id="{{ $id }}"
                name="{{ $name }}"
                type="{{ $type ?? 'text' }}"

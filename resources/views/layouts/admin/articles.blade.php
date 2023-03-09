@@ -4,6 +4,33 @@
 
 @section('content')
     <div class="w-3/4 flex flex-col gap-8 py-10">
+        <div class="flex items-center justify-start gap-4">
+            {!! $articles->links('vendor.pagination.tailwind', ['onlyCounter' => true]) !!}
+            <form class="flex items-center gap-2 ml-auto">
+                <p class="">Order by:</p>
+                @include('components.sort-form', [
+                    'options' => [
+                        ['value' => 'uuid-asc', 'view' => 'UUID growing'],
+                        ['value' => 'uuid-desc', 'view' => 'UUID decreasing'],
+                        ['value' => 'title-asc', 'view' => 'Title growing'],
+                        ['value' => 'title-desc', 'view' => 'Title decreasing'],
+                        ['value' => 'embeds-asc', 'view' => 'Embeds growing'],
+                        ['value' => 'embeds-desc', 'view' => 'Embeds decreasing'],
+                        ['value' => 'users.username-asc', 'view' => 'Author growing'],
+                        ['value' => 'users.username-desc', 'view' => 'Author decreasing'],
+                        ['value' => 'created_at-asc', 'view' => 'Created growing'],
+                        ['value' => 'created_at-desc', 'view' => 'Created decreasing'],
+                        ['value' => 'updated_at-asc', 'view' => 'Updated growing'],
+                        ['value' => 'updated_at-desc', 'view' => 'Updated decreasing'],
+                    ],
+                    'selectKey' => 'order',
+                    'default' => 'created_at-desc',
+                    'excludedKeys' => ['order'],
+                ])
+            </form>
+            <a class="form-btn"
+               href="{{ route('articles.create') }}">Create article</a>
+        </div>
         <div class="w-full flex flex-col gap-4">
             <div class="w-full flex gap-4 py-4 pl-6 bg-slate-100">
                 <p class="font-semibold flex-[2] text-center">UUID</p>
@@ -12,10 +39,10 @@
                 <p class="font-semibold flex-[2] text-center">Author</p>
                 <p class="font-semibold flex-[2] text-center">Created</p>
                 <p class="font-semibold flex-1 text-center">Updated</p>
-                <p class="font-semibold flex-1">Actions</p>
+                <p class="font-semibold flex-1 text-center">Actions</p>
             </div>
             @foreach ($articles as $article)
-                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 last:border-0 py-4 pl-6 first:pt-0">
+                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 last:border-0 py-4 pl-6 group">
                     <p class="flex-[2] truncate"
                        title="{{ $article->uuid }}">{{ $article->uuid }}</p>
                     <a class="flex-[4] truncate"
@@ -27,7 +54,7 @@
                        target="_blank">{{ $article->author->displayName ? $article->author->displayName . " (@{$article->author->username})" : "@{$article->author->username}" }}</a>
                     <p class="flex-[2] text-center">{{ $article->created_at->format('d/m/Y H:i') }}</p>
                     <p class="flex-1 text-center">{{ $article->updated_at->diffInDays(now()) }}d ago</p>
-                    <div class="flex gap-6 items-center flex-1">
+                    <div class="flex gap-6 items-center justify-center flex-1 opacity-0 group-hover:opacity-100">
                         <a href="{{ route('articles.edit', $article->slug) }}"
                            target="_blank">
                             <svg class="h-4 fill-blue-600"
@@ -47,6 +74,10 @@
                 </div>
             @endforeach
         </div>
-        {{ $articles->withQueryString()->links() }}
+        {!! $articles->withQueryString()->links() !!}
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('js/select.js') }}"></script>
 @endsection

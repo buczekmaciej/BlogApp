@@ -1,5 +1,5 @@
 <form>
-    <select class="sort cursor-pointer bg-transparent border-[1px] border-solid border-neutral-200 rounded-md px-2 py-1"
+    <select class="sort cursor-pointer bg-transparent border-[1px] border-solid border-neutral-200 rounded-md px-2 py-1 outline-transparent"
             name="{{ $selectKey }}">
         @foreach ($options as $option)
             <option @if (request()->get($selectKey) === $option['value'] || (!request()->has($selectKey) && $option['value'] === $default)) selected @endif

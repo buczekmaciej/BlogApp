@@ -110,8 +110,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(AdminTagController::class)->prefix('tags')->name('tags.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::post('/{tag:name}/edit', 'handleEdit');
-        Route::get('/{tag:name}/delete', 'delete')->name('delete');
+        Route::post('/create', 'create')->name('create');
+        Route::post('/{tag}/edit', 'handleEdit')->name('edit');
+        Route::get('/{tag}/delete', 'delete')->name('delete');
     });
 
     Route::controller(AdminUserController::class)->prefix('users')->name('users.')->group(function () {
