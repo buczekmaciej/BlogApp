@@ -16,8 +16,13 @@
                     </svg>
                     <p class="">{{ $article->title }}</p>
                 </div>
-                <p class="text-gray-400">Published {{ $article->created_at->format('F d, Y') }} by <a class="text-blue-800"
-                       href="{{ route('user.profile', $article->author()->first()->username) }}">{{ $article->author()->first()->getName() }}</a></p>
+                <p class="text-gray-400">Published {{ $article->created_at->format('F d, Y') }} by @if ($article->author)
+                        <a class="text-blue-800"
+                           href="{{ route('user.profile', $article->author()->first()->username) }}">{{ $article->author()->first()->getName() }}</a>
+                    @else
+                        <span>Deleted user</span>
+                    @endif
+                </p>
                 <p class="font-bold text-5xl w-2/3 text-center">{{ ucfirst($article->title) }}</p>
             </div>
             <div class="relative w-full min-h-[20rem] article-bg-gradient rounded-md">
@@ -138,13 +143,22 @@
             <div class="flex flex-col gap-6 px-20 pt-8">
                 @foreach ($article->comments()->orderBy('created_at', 'DESC')->get() as $comment)
                     <div class="flex flex-wrap justify-between items-center border-b-[1px] border-solid border-gray-300 pb-6">
-                        <a class="flex gap-2 items-center"
-                           href="{{ route('user.profile', $comment->author()->first()->username) }}">
-                            <img alt=""
-                                 class="h-10 rounded-md"
-                                 src="{{ asset('assets/profileImages/' . $comment->author()->first()->image) }}">
-                            <span class="text-lg">{{ $comment->author()->first()->getName() }}</span>
-                        </a>
+                        @if ($comment->author)
+                            <a class="flex gap-2 items-center"
+                               href="{{ route('user.profile', $comment->author()->first()->username) }}">
+                                <img alt=""
+                                     class="h-10 rounded-md"
+                                     src="{{ asset('assets/profileImages/' . $comment->author()->first()->image) }}">
+                                <span class="text-lg">{{ $comment->author()->first()->getName() }}</span>
+                            </a>
+                        @else
+                            <p class="flex gap-2 items-center">
+                                <img alt=""
+                                     class="h-10 rounded-md"
+                                     src="{{ asset('assets/profileImages/avatar.png') }}">
+                                <span class="text-lg">Deleted user</span>
+                            </p>
+                        @endif
                         <p class="">{{ $comment->created_at->timezone(auth()->user()?->timezone ?? 'UTC')->format('M d, Y | H:i:s') }}</p>
                         <p class="w-full mt-4 px-12 text-2xl">{!! $comment->content !!}</p>
                         <p class="ml-12 mt-4 cursor-pointer report-comment"

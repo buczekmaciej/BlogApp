@@ -117,6 +117,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(AdminUserController::class)->prefix('users')->name('users.')->group(function () {
         Route::get('/', 'list')->name('list');
+        Route::post('/{user:username}/roles', 'changeRoles')->name('changeRoles');
         Route::get('/{user:username}/disable', 'disable')->name('disable');
         Route::get('/{user:username}/delete', 'delete')->name('delete');
     });

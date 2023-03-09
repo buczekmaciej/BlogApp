@@ -49,5 +49,3 @@ function hideModal(form) {
     bgContainer.classList.replace("grid", "hidden");
     form.classList.replace("flex", "hidden");
 }
-
-function setData(el) {}
