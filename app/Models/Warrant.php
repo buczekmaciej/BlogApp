@@ -13,7 +13,6 @@ class Warrant extends Model
     protected $primaryKey = 'uuid';
 
     protected $fillable = [
-        'message',
         'status',
         'reason'
     ];

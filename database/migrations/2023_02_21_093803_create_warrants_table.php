@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('warrants', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('message');
             $table->string('status');
             $table->string('reason');
             $table->uuid('article_uuid');

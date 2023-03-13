@@ -123,8 +123,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(WarrantController::class)->prefix('warrants')->name('warrants.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::get('/{warrant}/edit', 'edit')->name('edit');
-        Route::post('/{warrant}/edit', 'handleEdit');
+        Route::post('/create', 'handleCreate')->name('create');
+        Route::post('/{warrant}/edit', 'handleEdit')->name('edit');
         Route::get('/{warrant}/delete', 'delete')->name('delete');
     });
 });

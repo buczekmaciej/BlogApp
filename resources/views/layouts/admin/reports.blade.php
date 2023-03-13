@@ -89,5 +89,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/select.js') }}"></script>
-    <script src="{{ asset('js/copy.js') }}"></script>
+    @if (sizeof($reports) > 0)
+        <script src="{{ asset('js/copy.js') }}"></script>
+    @endif
 @endsection

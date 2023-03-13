@@ -10,9 +10,7 @@ use App\Services\ArticleServices;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
-use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
