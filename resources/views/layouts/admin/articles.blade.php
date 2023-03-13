@@ -41,17 +41,21 @@
                 <p class="font-semibold flex-1 text-center">Updated</p>
                 <p class="font-semibold flex-1 text-center">Actions</p>
             </div>
-            @foreach ($articles as $article)
-                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 last:border-0 py-4 pl-6 group">
+            @forelse ($articles as $article)
+                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 group last:border-0 py-4 pl-6">
                     <p class="flex-[2] truncate"
                        title="{{ $article->uuid }}">{{ $article->uuid }}</p>
-                    <a class="flex-[4] truncate"
+                    <a class="flex-[4] truncate text-blue-800 font-bold"
                        href="{{ route('articles.view', $article->slug) }}"
                        target="_blank">{{ $article->title }}</a>
                     <p class="flex-1 text-center">{{ sizeof($article->getEmbeds()) }}</p>
-                    <a class="flex-[2] truncate"
-                       href="{{ route('user.profile', $article->author->username) }}"
-                       target="_blank">{{ $article->author->displayName ? $article->author->displayName . " (@{$article->author->username})" : "@{$article->author->username}" }}</a>
+                    @if ($article->author)
+                        <a class="flex-[2] truncate text-blue-800 font-bold"
+                           href="{{ route('user.profile', $article->author->username) }}"
+                           target="_blank">{{ $article->author->displayName ? $article->author->displayName . " (@{$article->author->username})" : "@{$article->author->username}" }}</a>
+                    @else
+                        <p class="flex-[2] truncate text-gray-400">Deleted user</p>
+                    @endif
                     <p class="flex-[2] text-center">{{ $article->created_at->format('d/m/Y H:i') }}</p>
                     <p class="flex-1 text-center">{{ $article->updated_at->diffInDays(now()) }}d ago</p>
                     <div class="flex gap-6 items-center justify-center flex-1 opacity-0 group-hover:opacity-100">
@@ -72,7 +76,11 @@
                         </a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="w-full text-center py-4">
+                    <p>There's nothing to show</p>
+                </div>
+            @endforelse
         </div>
         {!! $articles->withQueryString()->links() !!}
     </div>

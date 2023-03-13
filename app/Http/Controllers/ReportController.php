@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Comment;
 use App\Models\Report;
 use App\Services\ArticleServices;
 use Illuminate\Http\RedirectResponse;

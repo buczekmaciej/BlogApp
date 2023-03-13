@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('reason');
             $table->uuid('article_uuid');
-            $table->uuid('author_uuid');
+            $table->uuid('author_uuid')->nullable();
             $table->timestamps();
         });
     }

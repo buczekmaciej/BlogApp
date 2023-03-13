@@ -43,8 +43,11 @@ class UserController extends Controller
 
     public function delete(User $user): RedirectResponse
     {
+        $user->comments()->detach();
+        $user->articles()->detach();
         $user->followedBy()->detach();
         $user->following()->detach();
+        $user->reports()->detach();
         $user->delete();
         return back();
     }

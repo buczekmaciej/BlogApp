@@ -64,12 +64,12 @@
                 <p class="font-semibold flex-[2] text-center">Articles</p>
                 <p class="font-semibold flex-1 text-center">Actions</p>
             </div>
-            @foreach ($tags as $tag)
-                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 last:border-0 py-4 pl-6 first:pt-0">
+            @forelse ($tags as $tag)
+                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 group last:border-0 py-4 pl-6 first:pt-0">
                     <p class="flex-[3]">{{ $tag->uuid }}</p>
                     <p class="flex-[3]">{{ $tag->name }}</p>
                     <p class="flex-[2] text-center">{{ $tag->articles->count() }}</p>
-                    <div class="flex gap-6 items-center justify-center flex-1">
+                    <div class="flex gap-6 items-center justify-center flex-1 opacity-0 group-hover:opacity-100">
                         <p class="edit-btn cursor-pointer"
                            data-id="{{ $tag->uuid }}">
                             <svg class="h-4 fill-blue-600"
@@ -87,7 +87,11 @@
                         </a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="w-full text-center py-4">
+                    <p>There's nothing to show</p>
+                </div>
+            @endforelse
         </div>
         {!! $tags->withQueryString()->links() !!}
     </div>

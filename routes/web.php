@@ -99,13 +99,12 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(CommentController::class)->prefix('comments')->name('comments.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::get('/{uuid}/delete', 'delete')->name('delete');
+        Route::get('/{comment}/delete', 'delete')->name('delete');
     });
 
     Route::controller(AdminReportController::class)->prefix('reports')->name('reports.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::get('/{uuid}', 'view')->name('view');
-        Route::get('/{uuid}/delete', 'delete')->name('delete');
+        Route::get('/{report}/delete', 'delete')->name('delete');
     });
 
     Route::controller(AdminTagController::class)->prefix('tags')->name('tags.')->group(function () {
@@ -124,9 +123,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::controller(WarrantController::class)->prefix('warrants')->name('warrants.')->group(function () {
         Route::get('/', 'list')->name('list');
-        Route::get('/{uuid}', 'view')->name('view');
-        Route::get('/{uuid}/edit', 'edit')->name('edit');
-        Route::post('/{uuid}/edit', 'handleEdit');
-        Route::get('/{uuid}/delete', 'delete')->name('delete');
+        Route::get('/{warrant}/edit', 'edit')->name('edit');
+        Route::post('/{warrant}/edit', 'handleEdit');
+        Route::get('/{warrant}/delete', 'delete')->name('delete');
     });
 });

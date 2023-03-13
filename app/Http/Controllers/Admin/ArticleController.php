@@ -26,6 +26,9 @@ class ArticleController extends Controller
             File::deleteDirectory(public_path("assets/images/{$uuidStripped}"));
         }
 
+        $article->comments()->delete();
+        $article->reports()->delete();
+        $article->warrant()->delete();
         $article->delete();
 
         return back();

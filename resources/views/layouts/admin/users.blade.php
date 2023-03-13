@@ -68,7 +68,7 @@
         <div class="w-full flex flex-col gap-4">
             <div class="w-full flex gap-4 py-4 pl-6 bg-slate-100">
                 <p class="font-semibold flex-[2] text-center">UUID</p>
-                <p class="font-semibold flex-[2] text-center">Username</p>
+                <p class="font-semibold flex-[3] text-center">Username</p>
                 <p class="font-semibold flex-[3] text-center">E-mail</p>
                 <p class="font-semibold flex-[2] text-center">Role</p>
                 <p class="font-semibold flex-1 text-center">Disabled</p>
@@ -76,17 +76,17 @@
                 <p class="font-semibold flex-1 text-center">Updated</p>
                 <p class="font-semibold flex-1 text-center">Actions</p>
             </div>
-            @foreach ($users as $user)
-                <div class="w-full flex gap-4 border-b-[1px] border-solid border-gray-200 last:border-0 py-4 pl-6 first:pt-0">
+            @forelse ($users as $user)
+                <div class="w-full flex gap-4 border-b-[1px] border-solid group border-gray-200 last:border-0 py-4 pl-6 first:pt-0">
                     <p class="flex-[2] truncate">{{ $user->uuid }}</p>
-                    <a class="flex-[2] text-center"
-                       href="{{ route('user.profile', $user->username) }}">{{ $user->username }}</a>
+                    <a class="flex-[3] text-center truncate text-blue-800 font-bold"
+                       href="{{ route('user.profile', $user->username) }}">{{ $user->displayName ? $user->displayName . " (@{$user->username})" : "@{$user->username}" }}</a>
                     <p class="flex-[3] text-center">{{ $user->email }}</p>
                     <p class="flex-[2] text-center">{{ $user->getRole() }}</p>
                     <p class="flex-1 text-center">{{ $user->isDisabled }}</p>
                     <p class="flex-[2] text-center">{{ $user->created_at->format('d/m/Y H:i') }}</p>
                     <p class="flex-1 text-center">{{ $user->updated_at->diffInDays(now()) }}d ago</p>
-                    <div class="flex gap-6 items-center justify-center flex-1">
+                    <div class="flex gap-6 items-center justify-center flex-1 opacity-0 group-hover:opacity-100">
                         <p class="edit-btn cursor-pointer"
                            data-username="{{ $user->username }}">
                             <svg class="h-4 fill-blue-600"
@@ -117,7 +117,11 @@
                         </a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="w-full text-center py-4">
+                    <p>There's nothing to show</p>
+                </div>
+            @endforelse
         </div>
         {!! $users->withQueryString()->links() !!}
     </div>
