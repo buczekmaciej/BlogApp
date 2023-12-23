@@ -1,3 +1,10 @@
 # BlogApp
 
-Blog application written with Laravel, Blade, JavaScript and TailwindCSS
+Blog application
+
+## Build using:
+- Laravel
+- Blade
+- JavaScript
+- TailwindCSS
+- MySQL
